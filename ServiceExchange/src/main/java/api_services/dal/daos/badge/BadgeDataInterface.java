@@ -6,7 +6,6 @@
 package api_services.dal.daos.badge;
 
 import entities.Badge;
-import entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 

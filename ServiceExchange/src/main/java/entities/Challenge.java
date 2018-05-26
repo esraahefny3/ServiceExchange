@@ -150,5 +150,18 @@ public class Challenge implements Serializable {
     public String toString() {
         return "com.example.demo.Challenge[ id=" + id + " ]";
     }
+
+    @Override
+    public Challenge clone()  {
+   Challenge ch = new Challenge(id);
+   ch.setAddedBy(addedBy);
+   ch.setDescription(description);
+   ch.setName(name);
+   ch.setPeriod(period);
+   ch.setReward(reward);
+   ch.setUserChallengeCollection(userChallengeCollection);
+   return ch;
+    }
+    
     
 }
