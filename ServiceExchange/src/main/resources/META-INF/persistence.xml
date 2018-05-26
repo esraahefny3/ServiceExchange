@@ -2,26 +2,26 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="com.example_ServiceExchange_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>API.entities.Challenge</class>
-    <class>API.entities.AdminTelephone</class>
-    <class>API.entities.Transaction</class>
-    <class>API.entities.UserAuthority</class>
-    <class>API.entities.AdminAuthority</class>
-    <class>API.entities.User</class>
-    <class>API.entities.Message</class>
-    <class>API.entities.Skill</class>
-    <class>API.entities.Review</class>
-    <class>API.entities.UserChallenge</class>
-    <class>API.entities.Notification</class>
-    <class>API.entities.Admin</class>
-    <class>API.entities.UserEmail</class>
-    <class>API.entities.Badge</class>
-    <class>API.entities.UserTelephone</class>
-    <class>API.entities.Service</class>
-    <class>API.entities.Complaint</class>
-    <class>API.entities.Education</class>
-    <class>API.entities.ReviewSkill</class>
-    <class>API.entities.UserBadge</class>
+    <class>entities.Complaint</class>
+    <class>entities.Skill</class>
+    <class>entities.Transaction</class>
+    <class>entities.UserAuthority</class>
+    <class>entities.Education</class>
+    <class>entities.User</class>
+    <class>entities.UserBadge</class>
+    <class>entities.UserTelephone</class>
+    <class>entities.AdminAuthority</class>
+    <class>entities.AdminTelephone</class>
+    <class>entities.Badge</class>
+    <class>entities.UserEmail</class>
+    <class>entities.Service</class>
+    <class>entities.UserChallenge</class>
+    <class>entities.ReviewSkill</class>
+    <class>entities.Challenge</class>
+    <class>entities.Notification</class>
+    <class>entities.Review</class>
+    <class>entities.Admin</class>
+    <class>entities.Message</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/service_exchange?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
