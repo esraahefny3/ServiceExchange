@@ -2,26 +2,26 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="com.example_ServiceExchange_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>entities.Complaint</class>
-    <class>entities.Skill</class>
-    <class>entities.Transaction</class>
-    <class>entities.UserAuthority</class>
-    <class>entities.Education</class>
-    <class>entities.User</class>
-    <class>entities.UserBadge</class>
-    <class>entities.UserTelephone</class>
-    <class>entities.AdminAuthority</class>
-    <class>entities.AdminTelephone</class>
-    <class>entities.Badge</class>
-    <class>entities.UserEmail</class>
-    <class>entities.Service</class>
-    <class>entities.UserChallenge</class>
-    <class>entities.ReviewSkill</class>
-    <class>entities.Challenge</class>
-    <class>entities.Notification</class>
-    <class>entities.Review</class>
-    <class>entities.Admin</class>
-    <class>entities.Message</class>
+    <class>com.service_exchange.entities.Skill</class>
+    <class>com.service_exchange.entities.UserEmail</class>
+    <class>com.service_exchange.entities.Education</class>
+    <class>com.service_exchange.entities.ReviewSkill</class>
+    <class>com.service_exchange.entities.Transaction</class>
+    <class>com.service_exchange.entities.Complaint</class>
+    <class>com.service_exchange.entities.Badge</class>
+    <class>com.service_exchange.entities.AdminAuthority</class>
+    <class>com.service_exchange.entities.UserAuthority</class>
+    <class>com.service_exchange.entities.User</class>
+    <class>com.service_exchange.entities.AdminTelephone</class>
+    <class>com.service_exchange.entities.UserTelephone</class>
+    <class>com.service_exchange.entities.Challenge</class>
+    <class>com.service_exchange.entities.UserChallenge</class>
+    <class>com.service_exchange.entities.Review</class>
+    <class>com.service_exchange.entities.Service</class>
+    <class>com.service_exchange.entities.Notification</class>
+    <class>com.service_exchange.entities.Admin</class>
+    <class>com.service_exchange.entities.UserBadge</class>
+    <class>com.service_exchange.entities.Message</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/service_exchange?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
