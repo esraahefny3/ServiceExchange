@@ -7,9 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"api_services","demo"})
-@EnableJpaRepositories({"api_services"})
-@EntityScan("entities")
+@ComponentScan({"com.service_exchange.api_services"})
+@EnableJpaRepositories({"com.service_exchange.api_services"})
+@EntityScan("com.service_exchange.entities")
 public class ServiceExchangeApplication {
 
 	public static void main(String[] args) {
