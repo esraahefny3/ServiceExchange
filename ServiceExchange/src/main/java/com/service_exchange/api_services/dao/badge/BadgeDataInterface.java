@@ -6,14 +6,15 @@
 package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author esraa
  */
-@Component
-public interface BadgeDataInterface extends  CrudRepository<Badge,Integer>  {
+@Repository 
+public interface BadgeDataInterface extends  PagingAndSortingRepository<Badge,Integer>  {
   
 }
