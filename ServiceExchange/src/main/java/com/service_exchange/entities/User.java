@@ -7,6 +7,7 @@ package com.service_exchange.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "user")
@@ -40,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByBirthDate", query = "SELECT u FROM User u WHERE u.birthDate = :birthDate")
     , @NamedQuery(name = "User.findByAccountId", query = "SELECT u FROM User u WHERE u.accountId = :accountId")
     , @NamedQuery(name = "User.findByAccountType", query = "SELECT u FROM User u WHERE u.accountType = :accountType")})
-public class User implements Serializable {
+public class User implements Serializable,Clonable<User> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,8 +68,6 @@ public class User implements Serializable {
     @Column(name = "account_type")
     private String accountType;
     @ManyToMany(mappedBy = "userCollection")
-    private Collection<Notification> notificationCollection;
-    @ManyToMany(mappedBy = "userCollection")
     private Collection<Skill> skillCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<UserEmail> userEmailCollection;
@@ -76,18 +75,20 @@ public class User implements Serializable {
     private Collection<Education> educationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<UserTelephone> userTelephoneCollection;
-    @OneToMany(mappedBy = "receiverId")
-    private Collection<Message> messageCollection;
+   // @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+   // private Collection<UserNotification> userNotificationCollection;
+//    @OneToMany(mappedBy = "receiverId")
+//    private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "senderId")
     private Collection<Message> messageCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserChallenge> userChallengeCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private Collection<UserChallenge> userChallengeCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private UserAuthority userAuthority;
-    @OneToMany(mappedBy = "userId")
-    private Collection<Complaint> complaintCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserBadge> userBadgeCollection;
+//    @OneToMany(mappedBy = "userId")
+//    private Collection<Complaint> complaintCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private Collection<UserBadge> userBadgeCollection;
     @OneToMany(mappedBy = "madeBy")
     private Collection<Review> reviewCollection;
     @OneToMany(mappedBy = "madeBy")
@@ -159,15 +160,6 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Notification> getNotificationCollection() {
-        return notificationCollection;
-    }
-
-    public void setNotificationCollection(Collection<Notification> notificationCollection) {
-        this.notificationCollection = notificationCollection;
-    }
-
-    @XmlTransient
     public Collection<Skill> getSkillCollection() {
         return skillCollection;
     }
@@ -203,14 +195,23 @@ public class User implements Serializable {
         this.userTelephoneCollection = userTelephoneCollection;
     }
 
-    @XmlTransient
-    public Collection<Message> getMessageCollection() {
-        return messageCollection;
-    }
+//    @XmlTransient
+//    public Collection<UserNotification> getUserNotificationCollection() {
+//        return userNotificationCollection;
+//    }
+//
+//    public void setUserNotificationCollection(Collection<UserNotification> userNotificationCollection) {
+//        this.userNotificationCollection = userNotificationCollection;
+//    }
 
-    public void setMessageCollection(Collection<Message> messageCollection) {
-        this.messageCollection = messageCollection;
-    }
+//    @XmlTransient
+//    public Collection<Message> getMessageCollection() {
+//        return messageCollection;
+//    }
+//
+//    public void setMessageCollection(Collection<Message> messageCollection) {
+//        this.messageCollection = messageCollection;
+//    }
 
     @XmlTransient
     public Collection<Message> getMessageCollection1() {
@@ -221,14 +222,14 @@ public class User implements Serializable {
         this.messageCollection1 = messageCollection1;
     }
 
-    @XmlTransient
-    public Collection<UserChallenge> getUserChallengeCollection() {
-        return userChallengeCollection;
-    }
-
-    public void setUserChallengeCollection(Collection<UserChallenge> userChallengeCollection) {
-        this.userChallengeCollection = userChallengeCollection;
-    }
+//    @XmlTransient
+//    public Collection<UserChallenge> getUserChallengeCollection() {
+//        return userChallengeCollection;
+//    }
+//
+//    public void setUserChallengeCollection(Collection<UserChallenge> userChallengeCollection) {
+//        this.userChallengeCollection = userChallengeCollection;
+//    }
 
     public UserAuthority getUserAuthority() {
         return userAuthority;
@@ -238,23 +239,23 @@ public class User implements Serializable {
         this.userAuthority = userAuthority;
     }
 
-    @XmlTransient
-    public Collection<Complaint> getComplaintCollection() {
-        return complaintCollection;
-    }
+//    @XmlTransient
+//    public Collection<Complaint> getComplaintCollection() {
+//        return complaintCollection;
+//    }
+//
+//    public void setComplaintCollection(Collection<Complaint> complaintCollection) {
+//        this.complaintCollection = complaintCollection;
+//    }
 
-    public void setComplaintCollection(Collection<Complaint> complaintCollection) {
-        this.complaintCollection = complaintCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserBadge> getUserBadgeCollection() {
-        return userBadgeCollection;
-    }
-
-    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
-        this.userBadgeCollection = userBadgeCollection;
-    }
+//    @XmlTransient
+//    public Collection<UserBadge> getUserBadgeCollection() {
+//        return userBadgeCollection;
+//    }
+//
+//    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
+//        this.userBadgeCollection = userBadgeCollection;
+//    }
 
     @XmlTransient
     public Collection<Review> getReviewCollection() {
@@ -305,7 +306,64 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.User[ id=" + id + " ]";
+        return "com.service_exchange.entities.User[ id=" + id + " ]";
     }
     
+    public Boolean addChallange(Integer ch) {
+        UserChallenge uc = new UserChallenge(id, ch);
+//        if (!userChallengeCollection.contains(uc)) {
+//            userChallengeCollection.add(uc);
+//            return true;
+//        }else{
+//            return false;
+//        }
+return Boolean.FALSE;
+    }
+     public Boolean removeChallange(Integer ch) {
+        UserChallenge uc = new UserChallenge(id, ch);
+//        if (userChallengeCollection.contains(uc)) {
+//            userChallengeCollection.remove(uc);
+//            return true;
+//        }else{
+//            return false;
+//        }
+return Boolean.FALSE;
+    }
+
+    @Override
+    public User clone() {
+        User user = new User();
+        user.setAccountId(accountId);
+        user.setAccountType(accountType);
+        user.setBirthDate(birthDate);
+        //user.setComplaintCollection(complaintCollection);
+        user.setEducationCollection(educationCollection);
+        user.setId(id);
+        user.setImage(image);
+       // user.setMessageCollection(messageCollection);
+       // user.setMessageCollection1(messageCollection1);
+        user.setName(name);
+        //user.setUserNotificationCollection(userNotificationCollection);
+        user.setReviewCollection(reviewCollection);
+        user.setServiceCollection(serviceCollection);
+        user.setSkillCollection(skillCollection);
+        user.setStatus(status);
+        user.setTransactionCollection(transactionCollection);
+        user.setUserAuthority(userAuthority);
+        //user.setUserBadgeCollection(userBadgeCollection);
+        //user.setUserChallengeCollection(userChallengeCollection);
+        user.setUserEmailCollection(userEmailCollection);
+        user.setUserTelephoneCollection(userTelephoneCollection);
+        return user;
+    }
+
+    private <T> Collection<T> copyArray(Collection<T> list) {
+
+        Collection<T> newList = new LinkedList<>();
+        if (list != null) {
+            list.forEach(e -> newList.add(e));
+        }
+
+        return newList;
+    }
 }

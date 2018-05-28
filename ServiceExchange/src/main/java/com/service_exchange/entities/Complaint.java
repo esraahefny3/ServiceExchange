@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "complaint")
@@ -162,7 +162,7 @@ public class Complaint implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Complaint[ id=" + id + " ]";
+        return "com.service_exchange.entities.Complaint[ id=" + id + " ]";
     }
     
 }

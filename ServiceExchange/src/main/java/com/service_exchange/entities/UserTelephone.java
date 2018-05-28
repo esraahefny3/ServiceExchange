@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "user_telephone")
@@ -84,7 +84,7 @@ public class UserTelephone implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.UserTelephone[ userTelephonePK=" + userTelephonePK + " ]";
+        return "com.service_exchange.entities.UserTelephone[ userTelephonePK=" + userTelephonePK + " ]";
     }
     
 }

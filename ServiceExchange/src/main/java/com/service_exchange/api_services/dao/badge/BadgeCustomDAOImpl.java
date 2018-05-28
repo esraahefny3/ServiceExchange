@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.api_services.dal.daos.badge;
+package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.User;

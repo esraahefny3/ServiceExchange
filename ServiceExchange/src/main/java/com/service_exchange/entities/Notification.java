@@ -9,17 +9,17 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "notification")
@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n")
     , @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id")
     , @NamedQuery(name = "Notification.findByBody", query = "SELECT n FROM Notification n WHERE n.body = :body")
-    , @NamedQuery(name = "Notification.findByDate", query = "SELECT n FROM Notification n WHERE n.date = :date")})
+    , @NamedQuery(name = "Notification.findByNotifecationDate", query = "SELECT n FROM Notification n WHERE n.notifecationDate = :notifecationDate")})
 public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,14 +50,11 @@ public class Notification implements Serializable {
     @Size(max = 1000)
     @Column(name = "body")
     private String body;
-    @Column(name = "date")
+    @Column(name = "notifecation_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
-    @JoinTable(name = "user_notification", joinColumns = {
-        @JoinColumn(name = "notification_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<User> userCollection;
+    private Date notifecationDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notification")
+    private Collection<UserNotification> userNotificationCollection;
     @JoinColumn(name = "sent_by", referencedColumnName = "email")
     @ManyToOne
     private Admin sentBy;
@@ -85,21 +82,21 @@ public class Notification implements Serializable {
         this.body = body;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getNotifecationDate() {
+        return notifecationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setNotifecationDate(Date notifecationDate) {
+        this.notifecationDate = notifecationDate;
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<UserNotification> getUserNotificationCollection() {
+        return userNotificationCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setUserNotificationCollection(Collection<UserNotification> userNotificationCollection) {
+        this.userNotificationCollection = userNotificationCollection;
     }
 
     public Admin getSentBy() {
@@ -132,7 +129,7 @@ public class Notification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Notification[ id=" + id + " ]";
+        return "com.service_exchange.entities.Notification[ id=" + id + " ]";
     }
     
 }

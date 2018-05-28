@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "skill")
@@ -175,7 +175,7 @@ public class Skill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Skill[ id=" + id + " ]";
+        return "com.service_exchange.entities.Skill[ id=" + id + " ]";
     }
     
 }

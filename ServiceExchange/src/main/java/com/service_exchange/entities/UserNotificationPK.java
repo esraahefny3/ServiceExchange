@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * @author Altysh
  */
 @Embeddable
-public class UserChallengePK implements Serializable {
+public class UserNotificationPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -24,15 +24,15 @@ public class UserChallengePK implements Serializable {
     private int userId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "challenge_id")
-    private int challengeId;
+    @Column(name = "notification_id")
+    private int notificationId;
 
-    public UserChallengePK() {
+    public UserNotificationPK() {
     }
 
-    public UserChallengePK(int userId, int challengeId) {
+    public UserNotificationPK(int userId, int notificationId) {
         this.userId = userId;
-        this.challengeId = challengeId;
+        this.notificationId = notificationId;
     }
 
     public int getUserId() {
@@ -43,33 +43,33 @@ public class UserChallengePK implements Serializable {
         this.userId = userId;
     }
 
-    public int getChallengeId() {
-        return challengeId;
+    public int getNotificationId() {
+        return notificationId;
     }
 
-    public void setChallengeId(int challengeId) {
-        this.challengeId = challengeId;
+    public void setNotificationId(int notificationId) {
+        this.notificationId = notificationId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) userId;
-        hash += (int) challengeId;
+        hash += (int) notificationId;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserChallengePK)) {
+        if (!(object instanceof UserNotificationPK)) {
             return false;
         }
-        UserChallengePK other = (UserChallengePK) object;
+        UserNotificationPK other = (UserNotificationPK) object;
         if (this.userId != other.userId) {
             return false;
         }
-        if (this.challengeId != other.challengeId) {
+        if (this.notificationId != other.notificationId) {
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ public class UserChallengePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserChallengePK[ userId=" + userId + ", challengeId=" + challengeId + " ]";
+        return "com.service_exchange.entities.UserNotificationPK[ userId=" + userId + ", notificationId=" + notificationId + " ]";
     }
     
 }

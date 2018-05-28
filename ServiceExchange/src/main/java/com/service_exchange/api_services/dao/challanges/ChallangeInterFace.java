@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.api_services.challanges.dao;
+package com.service_exchange.api_services.dao.challanges;
 
 import com.service_exchange.entities.Challenge;
 import com.service_exchange.entities.User;
@@ -21,7 +21,7 @@ public interface ChallangeInterFace {
     boolean deleteChallange(Challenge challenge);
     List<Challenge> getAllChallanges();
     List<Challenge> getUserChallanges(User user);
-    
+    Challenge getChallange(Integer id);
     
     
 }

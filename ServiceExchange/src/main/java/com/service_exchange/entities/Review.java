@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "review")
@@ -136,7 +136,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Review[ id=" + id + " ]";
+        return "com.service_exchange.entities.Review[ id=" + id + " ]";
     }
     
 }

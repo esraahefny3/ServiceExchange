@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Embeddable
 public class ReviewSkillPK implements Serializable {
@@ -77,7 +77,7 @@ public class ReviewSkillPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
+        return "com.service_exchange.entities.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
     }
     
 }

@@ -22,6 +22,7 @@
     <class>com.service_exchange.entities.Admin</class>
     <class>com.service_exchange.entities.UserBadge</class>
     <class>com.service_exchange.entities.Message</class>
+    <class>com.service_exchange.entities.UserNotification</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/service_exchange?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

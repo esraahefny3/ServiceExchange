@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "admin")
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Admin.findByPassword", query = "SELECT a FROM Admin a WHERE a.password = :password")
     , @NamedQuery(name = "Admin.findByImage", query = "SELECT a FROM Admin a WHERE a.image = :image")})
 public class Admin implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Id
@@ -181,7 +181,7 @@ public class Admin implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Admin[ email=" + email + " ]";
+        return "com.service_exchange.entities.Admin[ email=" + email + " ]";
     }
     
 }

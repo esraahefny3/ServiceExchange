@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Embeddable
 public class AdminAuthorityPK implements Serializable {
@@ -80,7 +80,7 @@ public class AdminAuthorityPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
+        return "com.service_exchange.entities.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
     }
     
 }

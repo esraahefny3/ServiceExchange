@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "message")
@@ -159,7 +159,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Message[ id=" + id + " ]";
+        return "com.service_exchange.entities.Message[ id=" + id + " ]";
     }
     
 }

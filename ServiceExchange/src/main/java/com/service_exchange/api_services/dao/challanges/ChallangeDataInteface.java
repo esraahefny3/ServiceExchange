@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.api_services.challanges.dao;
+package com.service_exchange.api_services.dao.challanges;
 
 import com.service_exchange.entities.Challenge;
 import org.springframework.data.repository.CrudRepository;

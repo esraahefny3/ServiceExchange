@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Altysh
  */
 @RestController
+@RequestMapping("/challange")
 public class ChallangeRest {
     @Autowired
     ChallangeService service;

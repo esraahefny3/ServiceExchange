@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.api_services.dal.daos.badge;
+package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author esraa
  */
-public interface BadgeCustomInterface {
-   public boolean isUserDeserveBadge(User user);
-   public boolean assignBadgeToUser(User user,Badge badge);
+@Component
+public interface BadgeDataInterface extends  CrudRepository<Badge,Integer>  {
+  
 }

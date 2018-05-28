@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "education")
@@ -149,7 +149,7 @@ public class Education implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Education[ educationPK=" + educationPK + " ]";
+        return "com.service_exchange.entities.Education[ educationPK=" + educationPK + " ]";
     }
     
 }

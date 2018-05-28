@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Embeddable
 public class UserEmailPK implements Serializable {
@@ -80,7 +80,7 @@ public class UserEmailPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
+        return "com.service_exchange.entities.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
     }
     
 }

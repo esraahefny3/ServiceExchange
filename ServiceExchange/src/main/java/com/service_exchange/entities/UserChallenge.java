@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "user_challenge")
@@ -136,7 +136,7 @@ public class UserChallenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
+        return "com.service_exchange.entities.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
     }
     
 }

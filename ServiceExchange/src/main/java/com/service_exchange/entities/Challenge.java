@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "challenge")
@@ -148,10 +148,9 @@ public class Challenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Challenge[ id=" + id + " ]";
+        return "com.service_exchange.entities.Challenge[ id=" + id + " ]";
     }
-
-    @Override
+     @Override
     public Challenge clone()  {
    Challenge ch = new Challenge(id);
    ch.setAddedBy(addedBy);
@@ -162,6 +161,5 @@ public class Challenge implements Serializable {
    ch.setUserChallengeCollection(userChallengeCollection);
    return ch;
     }
-    
-    
+     
 }

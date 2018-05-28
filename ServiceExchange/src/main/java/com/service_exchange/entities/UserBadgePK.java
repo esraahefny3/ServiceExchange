@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Embeddable
 public class UserBadgePK implements Serializable {
@@ -77,7 +77,7 @@ public class UserBadgePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.UserBadgePK[ userId=" + userId + ", badgeId=" + badgeId + " ]";
+        return "com.service_exchange.entities.UserBadgePK[ userId=" + userId + ", badgeId=" + badgeId + " ]";
     }
     
 }

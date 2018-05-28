@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "badge")
@@ -162,7 +162,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.Badge[ id=" + id + " ]";
+        return "com.service_exchange.entities.Badge[ id=" + id + " ]";
     }
     
 }

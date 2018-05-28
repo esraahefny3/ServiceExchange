@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "user_authority")
@@ -98,7 +98,7 @@ public class UserAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.UserAuthority[ userId=" + userId + " ]";
+        return "com.service_exchange.entities.UserAuthority[ userId=" + userId + " ]";
     }
     
 }

@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author esraa
+ * @author Altysh
  */
 @Entity
 @Table(name = "review_skill")
@@ -107,7 +107,7 @@ public class ReviewSkill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.example.demo.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
+        return "com.service_exchange.entities.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
     }
     
 }
