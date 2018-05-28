@@ -10,12 +10,10 @@ import com.service_exchange.api_services.dao.challanges.ChallangeInterFace;
 import com.service_exchange.entities.Challenge;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -40,13 +38,13 @@ public class ChallangeService implements ChallangeInterFace {
     @Override
     public Challenge createChallange(Challenge challenge) {
         Challenge challenge1 = challangeDao.createChallange(challenge);
-        return challenge1.clone();
+        return challenge1;
     }
 
     @Override
     public Challenge updateChallange(Challenge challenge) {
         Challenge challenge1 = challangeDao.updateChallange(challenge);
-        return challenge1.clone();
+        return challenge1;
     }
 
     @Override
@@ -61,7 +59,7 @@ public class ChallangeService implements ChallangeInterFace {
         List<Challenge> challenges2 = new LinkedList<>();
         challenge1.stream().map((t) -> {
 
-            return t.clone();
+            return t;
         }).forEach(t -> challenges2.add(t));
         return challenges2;
     }
@@ -72,7 +70,7 @@ public class ChallangeService implements ChallangeInterFace {
         List<Challenge> challenges2 = new LinkedList<>();
         challenge1.stream().map((t) -> {
 
-            return t.clone();
+            return t;
         }).forEach(t -> challenges2.add(t));
         return challenges2;
     }

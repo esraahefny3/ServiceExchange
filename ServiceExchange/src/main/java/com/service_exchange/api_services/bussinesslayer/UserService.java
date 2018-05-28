@@ -72,12 +72,12 @@ public class UserService implements UserInterFace{
     }
 
     @Override
-    public Boolean addChallangeToUser(Integer chId,Integer userId) {
-   return daoImpl.addChallangeToUser(chId, userId);
+    public Boolean addChallangeToUser(Integer challangeId,Integer userId) {
+   return daoImpl.addChallangeToUser(challangeId, userId);
     }
      @Override
-    public Boolean removeChallangeToUser(Integer chId,Integer userId) {
-   return daoImpl.removeChallangeToUser(chId, userId);
+    public Boolean removeChallangeToUser(Integer challangeId,Integer userId) {
+   return daoImpl.removeChallangeToUser(challangeId, userId);
     }
     
 }

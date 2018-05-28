@@ -5,7 +5,6 @@
  */
 package com.service_exchange.utal;
 
-import com.service_exchange.entities.Clonable;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -15,10 +14,10 @@ import org.springframework.data.domain.Page;
  * @author Altysh
  */
 public class PageToListConverter {
-    public static <T extends Clonable> List<T> convertList(Page<T> list){
+    public static <T > List<T> convertList(Page<T> list){
         List<T> newList = new LinkedList<>();
         
-        list.forEach(e->newList.add((T)e.clone()));
+        list.forEach(e->newList.add(e));
         System.out.println(newList);
        // System.out.println(newList);
         return newList;

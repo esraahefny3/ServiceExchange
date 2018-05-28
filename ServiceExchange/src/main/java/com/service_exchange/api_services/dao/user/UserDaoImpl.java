@@ -8,6 +8,7 @@ package com.service_exchange.api_services.dao.user;
 import com.service_exchange.api_services.dao.challanges.ChallangeDao;
 import com.service_exchange.entities.Challenge;
 import com.service_exchange.entities.TransactionInfo;
+import com.service_exchange.entities.UserChallenge;
 
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
@@ -60,11 +61,12 @@ public class UserDaoImpl implements UserInterFace {
 
         return us;
     }
-    public List<UserTable> getAllUser(){
+
+    public List<UserTable> getAllUser() {
         List<UserTable> list = new LinkedList<>();
         dataInterface.findAll().forEach((t) -> {
             list.add(t);
-           // System.out.println(t.getComplaintCollection());
+            // System.out.println(t.getComplaintCollection());
         });
         return list;
     }
@@ -92,13 +94,19 @@ public class UserDaoImpl implements UserInterFace {
 
     @Override
     public Boolean addChallangeToUser(Integer chId, Integer userId) {
-        Optional<UserTable> user = dataInterface.findById(chId);
-        if (user.isPresent()) {
-            return user.get().addChallange(chId);
 
-        } else {
-            return false;
+        Optional<UserTable> user = dataInterface.findById(chId);
+
+        if (user.isPresent()) {
+            boolean state = user.get().addChallange(chId);
+            if (state) {
+                dataInterface.save(user.get());
+
+            }
+            return state;
         }
+        
+        return false;
     }
 
     @Override

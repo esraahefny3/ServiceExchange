@@ -5,6 +5,7 @@
  */
 package com.service_exchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "UserTable.findByBirthDate", query = "SELECT u FROM UserTable u WHERE u.birthDate = :birthDate")
     , @NamedQuery(name = "UserTable.findByAccountId", query = "SELECT u FROM UserTable u WHERE u.accountId = :accountId")
     , @NamedQuery(name = "UserTable.findByAccountType", query = "SELECT u FROM UserTable u WHERE u.accountType = :accountType")})
-public class UserTable implements Serializable,Clonable<UserTable> {
+public class UserTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -214,7 +215,7 @@ public class UserTable implements Serializable,Clonable<UserTable> {
     public void setMessageCollection1(Collection<Message> messageCollection1) {
         this.messageCollection1 = messageCollection1;
     }
-
+    @JsonIgnore
     @XmlTransient
     public Collection<UserChallenge> getUserChallengeCollection() {
         return userChallengeCollection;

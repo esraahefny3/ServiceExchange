@@ -5,6 +5,7 @@
  */
 package com.service_exchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -105,7 +106,7 @@ public class Challenge implements Serializable {
     public void setPeriod(Integer period) {
         this.period = period;
     }
-
+    @JsonIgnore
     @XmlTransient
     public Collection<UserChallenge> getUserChallengeCollection() {
         return userChallengeCollection;
@@ -147,15 +148,5 @@ public class Challenge implements Serializable {
     public String toString() {
         return "com.altysh.mavenproject1.Challenge[ id=" + id + " ]";
     }
-         @Override
-    public Challenge clone()  {
-   Challenge ch = new Challenge(id);
-   ch.setAddedBy(addedBy);
-   ch.setDescription(description);
-   ch.setName(name);
-   ch.setPeriod(period);
-   ch.setReward(reward);
-   ch.setUserChallengeCollection(userChallengeCollection);
-   return ch;
-    }
+   
 }
