@@ -6,8 +6,8 @@
 package com.service_exchange.api_services.dao.user;
 
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.Transaction;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.TransactionInfo;
+import com.service_exchange.entities.UserTable;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
@@ -16,14 +16,14 @@ import org.springframework.data.domain.Page;
  * @author Altysh
  */
 public interface UserInterFace  {
-    User createUser(User user);
-    User updateUser(User user);
+    UserTable createUser(UserTable user);
+    UserTable updateUser(UserTable user);
     Boolean checkEmailAvalible(Integer email);
-     Page<User> getAllUser(int start);
-    Page<User> scerchUserByName(String name,int start);
+     Page<UserTable> getAllUser(int start);
+    Page<UserTable> scerchUserByName(String name,int start);
     Long getDuration();
-    Long getDurtation(User user,long start,long end);
-    List<Transaction> getSuccsfullTransaction(User user); 
+    Long getDurtation(UserTable user,long start,long end);
+    List<TransactionInfo> getSuccsfullTransaction(UserTable user); 
     Boolean addChallangeToUser(Integer chId,Integer userId);
    Boolean removeChallangeToUser(Integer chId, Integer userId) ;
     

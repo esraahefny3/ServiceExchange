@@ -6,13 +6,13 @@
 package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 
 /**
  *
  * @author esraa
  */
 public interface BadgeCustomInterface {
-   public boolean isUserDeserveBadge(User user);
-   public boolean assignBadgeToUser(User user,Badge badge);
+   public boolean isUserDeserveBadge(UserTable user);
+   public boolean assignBadgeToUser(UserTable user,Badge badge);
 }

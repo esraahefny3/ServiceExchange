@@ -6,10 +6,8 @@
 package com.service_exchange.api_services.dao.challanges;
 
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.User;
-import com.service_exchange.entities.UserChallenge;
+import com.service_exchange.entities.UserTable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +25,12 @@ public class ChallangeDao implements ChallangeInterFace {
     ChallangeDataInteface dataInteface;
 
     @Override
-    public boolean isChallangeComplete(Challenge challenge, User user) {
+    public boolean isChallangeComplete(Challenge challenge, UserTable user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public double getChallangeState(Challenge challenge, User user) {
+    public double getChallangeState(Challenge challenge, UserTable user) {
         //Optional<UserChallenge> ob = user.getUserChallengeCollection().stream().filter(e -> e.getChallenge().getId().equals(challenge.getId())).findAny();
 //        if (ob.isPresent()) {
 //            return 0.0;
@@ -86,7 +84,7 @@ public class ChallangeDao implements ChallangeInterFace {
     }
 
     @Override
-    public List<Challenge> getUserChallanges(User user) {
+    public List<Challenge> getUserChallanges(UserTable user) {
         List<Integer> list = new LinkedList<>();
        // Integer[] a = (Integer[]) user.getUserChallengeCollection().stream().map(e -> e.getChallenge().getId()).toArray();
 

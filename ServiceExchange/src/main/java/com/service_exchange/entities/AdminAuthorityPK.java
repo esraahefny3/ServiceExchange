@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,13 +18,9 @@ import javax.validation.constraints.Size;
 public class AdminAuthorityPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "admin_email")
     private String adminEmail;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "authority")
     private String authority;
 
@@ -80,7 +74,7 @@ public class AdminAuthorityPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
+        return "com.altysh.mavenproject1.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
     }
     
 }

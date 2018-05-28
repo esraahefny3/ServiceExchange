@@ -6,12 +6,10 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.UserService;
-import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.PageToListConverter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,17 +27,17 @@ public class UserRestController {
     private UserService service;
 
     @RequestMapping(value = "/getAll",method = RequestMethod.GET,params = "start")
-    private List<User> getAllChanges( Integer start) {
+    private List<UserTable> getAllChanges( Integer start) {
      
         return PageToListConverter.convertList(service.getAllUser((start != null)?start:0));
     }
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    private List<User> getAllChanges() {
-        System.out.println("the right one");
+    private List<UserTable> getAllChanges() {
+        //System.out.println("the right one");
         return service.getAllUser();
     }
       @RequestMapping(value = "/createUser",method = RequestMethod.POST)
-    private User createUser(@RequestBody User user) {
+    private UserTable createUser(@RequestBody UserTable user) {
      
         return service.createUser(user);
     }

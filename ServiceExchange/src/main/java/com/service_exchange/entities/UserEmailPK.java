@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,13 +18,9 @@ import javax.validation.constraints.Size;
 public class UserEmailPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private int userId;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "email")
     private String email;
 
@@ -80,7 +74,7 @@ public class UserEmailPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
+        return "com.altysh.mavenproject1.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
     }
     
 }

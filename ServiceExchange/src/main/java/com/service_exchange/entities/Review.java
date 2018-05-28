@@ -20,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,7 +44,6 @@ public class Review implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 1000)
     @Column(name = "comment")
     private String comment;
     @Column(name = "rating")
@@ -56,7 +54,7 @@ public class Review implements Serializable {
     private Collection<ReviewSkill> reviewSkillCollection;
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
-    private User madeBy;
+    private UserTable madeBy;
 
     public Review() {
     }
@@ -106,11 +104,11 @@ public class Review implements Serializable {
         this.reviewSkillCollection = reviewSkillCollection;
     }
 
-    public User getMadeBy() {
+    public UserTable getMadeBy() {
         return madeBy;
     }
 
-    public void setMadeBy(User madeBy) {
+    public void setMadeBy(UserTable madeBy) {
         this.madeBy = madeBy;
     }
 
@@ -136,7 +134,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Review[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Review[ id=" + id + " ]";
     }
     
 }

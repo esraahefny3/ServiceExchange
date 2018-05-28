@@ -21,7 +21,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,18 +29,18 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Altysh
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-    , @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
-    , @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")
-    , @NamedQuery(name = "User.findByImage", query = "SELECT u FROM User u WHERE u.image = :image")
-    , @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status")
-    , @NamedQuery(name = "User.findByBirthDate", query = "SELECT u FROM User u WHERE u.birthDate = :birthDate")
-    , @NamedQuery(name = "User.findByAccountId", query = "SELECT u FROM User u WHERE u.accountId = :accountId")
-    , @NamedQuery(name = "User.findByAccountType", query = "SELECT u FROM User u WHERE u.accountType = :accountType")})
-public class User implements Serializable,Clonable<User> {
+    @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u")
+    , @NamedQuery(name = "UserTable.findById", query = "SELECT u FROM UserTable u WHERE u.id = :id")
+    , @NamedQuery(name = "UserTable.findByName", query = "SELECT u FROM UserTable u WHERE u.name = :name")
+    , @NamedQuery(name = "UserTable.findByImage", query = "SELECT u FROM UserTable u WHERE u.image = :image")
+    , @NamedQuery(name = "UserTable.findByStatus", query = "SELECT u FROM UserTable u WHERE u.status = :status")
+    , @NamedQuery(name = "UserTable.findByBirthDate", query = "SELECT u FROM UserTable u WHERE u.birthDate = :birthDate")
+    , @NamedQuery(name = "UserTable.findByAccountId", query = "SELECT u FROM UserTable u WHERE u.accountId = :accountId")
+    , @NamedQuery(name = "UserTable.findByAccountType", query = "SELECT u FROM UserTable u WHERE u.accountType = :accountType")})
+public class UserTable implements Serializable,Clonable<UserTable> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,57 +48,51 @@ public class User implements Serializable,Clonable<User> {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 300)
     @Column(name = "image")
     private String image;
-    @Size(max = 45)
     @Column(name = "status")
     private String status;
-    @Size(max = 45)
     @Column(name = "birth_date")
     private String birthDate;
-    @Size(max = 100)
     @Column(name = "account_id")
     private String accountId;
-    @Size(max = 45)
     @Column(name = "account_type")
     private String accountType;
-    @ManyToMany(mappedBy = "userCollection")
+    @ManyToMany(mappedBy = "userTableCollection")
     private Collection<Skill> skillCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserEmail> userEmailCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<Education> educationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserTelephone> userTelephoneCollection;
-   // @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-   // private Collection<UserNotification> userNotificationCollection;
-//    @OneToMany(mappedBy = "receiverId")
-//    private Collection<Message> messageCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    private Collection<UserNotification> userNotificationCollection;
+    @OneToMany(mappedBy = "receiverId")
+    private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "senderId")
     private Collection<Message> messageCollection1;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-//    private Collection<UserChallenge> userChallengeCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    private Collection<UserChallenge> userChallengeCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userTable")
     private UserAuthority userAuthority;
-//    @OneToMany(mappedBy = "userId")
-//    private Collection<Complaint> complaintCollection;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-//    private Collection<UserBadge> userBadgeCollection;
+    @OneToMany(mappedBy = "userId")
+    private Collection<Complaint> complaintCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    private Collection<UserBadge> userBadgeCollection;
     @OneToMany(mappedBy = "madeBy")
     private Collection<Review> reviewCollection;
     @OneToMany(mappedBy = "madeBy")
     private Collection<Service> serviceCollection;
     @OneToMany(mappedBy = "startedBy")
-    private Collection<Transaction> transactionCollection;
+    private Collection<TransactionInfo> transactionInfoCollection;
 
-    public User() {
+    public UserTable() {
     }
 
-    public User(Integer id) {
+    public UserTable(Integer id) {
         this.id = id;
     }
 
@@ -195,23 +188,23 @@ public class User implements Serializable,Clonable<User> {
         this.userTelephoneCollection = userTelephoneCollection;
     }
 
-//    @XmlTransient
-//    public Collection<UserNotification> getUserNotificationCollection() {
-//        return userNotificationCollection;
-//    }
-//
-//    public void setUserNotificationCollection(Collection<UserNotification> userNotificationCollection) {
-//        this.userNotificationCollection = userNotificationCollection;
-//    }
+    @XmlTransient
+    public Collection<UserNotification> getUserNotificationCollection() {
+        return userNotificationCollection;
+    }
 
-//    @XmlTransient
-//    public Collection<Message> getMessageCollection() {
-//        return messageCollection;
-//    }
-//
-//    public void setMessageCollection(Collection<Message> messageCollection) {
-//        this.messageCollection = messageCollection;
-//    }
+    public void setUserNotificationCollection(Collection<UserNotification> userNotificationCollection) {
+        this.userNotificationCollection = userNotificationCollection;
+    }
+
+    @XmlTransient
+    public Collection<Message> getMessageCollection() {
+        return messageCollection;
+    }
+
+    public void setMessageCollection(Collection<Message> messageCollection) {
+        this.messageCollection = messageCollection;
+    }
 
     @XmlTransient
     public Collection<Message> getMessageCollection1() {
@@ -222,14 +215,14 @@ public class User implements Serializable,Clonable<User> {
         this.messageCollection1 = messageCollection1;
     }
 
-//    @XmlTransient
-//    public Collection<UserChallenge> getUserChallengeCollection() {
-//        return userChallengeCollection;
-//    }
-//
-//    public void setUserChallengeCollection(Collection<UserChallenge> userChallengeCollection) {
-//        this.userChallengeCollection = userChallengeCollection;
-//    }
+    @XmlTransient
+    public Collection<UserChallenge> getUserChallengeCollection() {
+        return userChallengeCollection;
+    }
+
+    public void setUserChallengeCollection(Collection<UserChallenge> userChallengeCollection) {
+        this.userChallengeCollection = userChallengeCollection;
+    }
 
     public UserAuthority getUserAuthority() {
         return userAuthority;
@@ -239,23 +232,23 @@ public class User implements Serializable,Clonable<User> {
         this.userAuthority = userAuthority;
     }
 
-//    @XmlTransient
-//    public Collection<Complaint> getComplaintCollection() {
-//        return complaintCollection;
-//    }
-//
-//    public void setComplaintCollection(Collection<Complaint> complaintCollection) {
-//        this.complaintCollection = complaintCollection;
-//    }
+    @XmlTransient
+    public Collection<Complaint> getComplaintCollection() {
+        return complaintCollection;
+    }
 
-//    @XmlTransient
-//    public Collection<UserBadge> getUserBadgeCollection() {
-//        return userBadgeCollection;
-//    }
-//
-//    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
-//        this.userBadgeCollection = userBadgeCollection;
-//    }
+    public void setComplaintCollection(Collection<Complaint> complaintCollection) {
+        this.complaintCollection = complaintCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserBadge> getUserBadgeCollection() {
+        return userBadgeCollection;
+    }
+
+    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
+        this.userBadgeCollection = userBadgeCollection;
+    }
 
     @XmlTransient
     public Collection<Review> getReviewCollection() {
@@ -276,12 +269,12 @@ public class User implements Serializable,Clonable<User> {
     }
 
     @XmlTransient
-    public Collection<Transaction> getTransactionCollection() {
-        return transactionCollection;
+    public Collection<TransactionInfo> getTransactionInfoCollection() {
+        return transactionInfoCollection;
     }
 
-    public void setTransactionCollection(Collection<Transaction> transactionCollection) {
-        this.transactionCollection = transactionCollection;
+    public void setTransactionInfoCollection(Collection<TransactionInfo> transactionInfoCollection) {
+        this.transactionInfoCollection = transactionInfoCollection;
     }
 
     @Override
@@ -294,10 +287,10 @@ public class User implements Serializable,Clonable<User> {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
+        if (!(object instanceof UserTable)) {
             return false;
         }
-        User other = (User) object;
+        UserTable other = (UserTable) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -306,52 +299,52 @@ public class User implements Serializable,Clonable<User> {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.User[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.UserTable[ id=" + id + " ]";
     }
-    
+        
     public Boolean addChallange(Integer ch) {
         UserChallenge uc = new UserChallenge(id, ch);
-//        if (!userChallengeCollection.contains(uc)) {
-//            userChallengeCollection.add(uc);
-//            return true;
-//        }else{
-//            return false;
-//        }
-return Boolean.FALSE;
+        if (!userChallengeCollection.contains(uc)) {
+            userChallengeCollection.add(uc);
+            return true;
+        }else{
+            return false;
+        }
+//return Boolean.FALSE;
     }
      public Boolean removeChallange(Integer ch) {
         UserChallenge uc = new UserChallenge(id, ch);
-//        if (userChallengeCollection.contains(uc)) {
-//            userChallengeCollection.remove(uc);
-//            return true;
-//        }else{
-//            return false;
-//        }
-return Boolean.FALSE;
+        if (userChallengeCollection.contains(uc)) {
+            userChallengeCollection.remove(uc);
+            return true;
+        }else{
+            return false;
+        }
+//return Boolean.FALSE;
     }
 
     @Override
-    public User clone() {
-        User user = new User();
+    public UserTable clone() {
+        UserTable user = new UserTable();
         user.setAccountId(accountId);
         user.setAccountType(accountType);
         user.setBirthDate(birthDate);
-        //user.setComplaintCollection(complaintCollection);
+        user.setComplaintCollection(complaintCollection);
         user.setEducationCollection(educationCollection);
         user.setId(id);
         user.setImage(image);
-       // user.setMessageCollection(messageCollection);
-       // user.setMessageCollection1(messageCollection1);
+        user.setMessageCollection(messageCollection);
+        user.setMessageCollection1(messageCollection1);
         user.setName(name);
-        //user.setUserNotificationCollection(userNotificationCollection);
+        user.setUserNotificationCollection(userNotificationCollection);
         user.setReviewCollection(reviewCollection);
         user.setServiceCollection(serviceCollection);
         user.setSkillCollection(skillCollection);
         user.setStatus(status);
-        user.setTransactionCollection(transactionCollection);
+        user.setTransactionInfoCollection(transactionInfoCollection);
         user.setUserAuthority(userAuthority);
-        //user.setUserBadgeCollection(userBadgeCollection);
-        //user.setUserChallengeCollection(userChallengeCollection);
+      user.setUserBadgeCollection(userBadgeCollection);
+        user.setUserChallengeCollection(userChallengeCollection);
         user.setUserEmailCollection(userEmailCollection);
         user.setUserTelephoneCollection(userTelephoneCollection);
         return user;

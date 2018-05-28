@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -22,7 +21,6 @@ public class EducationPK implements Serializable {
     @Column(name = "id")
     private int id;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private int userId;
 
@@ -76,7 +74,7 @@ public class EducationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.EducationPK[ id=" + id + ", userId=" + userId + " ]";
+        return "com.altysh.mavenproject1.EducationPK[ id=" + id + ", userId=" + userId + " ]";
     }
     
 }

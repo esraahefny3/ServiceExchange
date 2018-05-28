@@ -5,7 +5,7 @@
  */
 package com.service_exchange.api_services.dao.user;
 
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author Altysh
  */
 @Component
-public interface UserDataInterFace extends CrudRepository<User,Integer>{
-    Page<User> findAll(Pageable page );
-    Page<User> findByNameContains(String name ,Pageable page );
+public interface UserDataInterFace extends CrudRepository<UserTable,Integer>{
+    Page<UserTable> findAll(Pageable page );
+    Page<UserTable> findByNameContains(String name ,Pageable page );
 }

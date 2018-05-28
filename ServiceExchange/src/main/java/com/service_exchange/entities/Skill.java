@@ -22,7 +22,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,10 +46,8 @@ public class Skill implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 100)
     @Column(name = "description")
     private String description;
     @Column(name = "is_verified")
@@ -61,7 +58,7 @@ public class Skill implements Serializable {
         @JoinColumn(name = "skill_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")})
     @ManyToMany
-    private Collection<User> userCollection;
+    private Collection<UserTable> userTableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "skill")
     private Collection<ReviewSkill> reviewSkillCollection;
     @OneToMany(mappedBy = "parentSkillId")
@@ -119,12 +116,12 @@ public class Skill implements Serializable {
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<UserTable> getUserTableCollection() {
+        return userTableCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setUserTableCollection(Collection<UserTable> userTableCollection) {
+        this.userTableCollection = userTableCollection;
     }
 
     @XmlTransient
@@ -175,7 +172,7 @@ public class Skill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Skill[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Skill[ id=" + id + " ]";
     }
     
 }

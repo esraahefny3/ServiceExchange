@@ -20,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,24 +46,19 @@ public class Badge implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 45)
     @Column(name = "image")
     private String image;
-    @Size(max = 45)
     @Column(name = "description")
     private String description;
-    @Size(max = 45)
     @Column(name = "time_needed")
     private String timeNeeded;
-    @Size(max = 45)
     @Column(name = "type")
     private String type;
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
-    private Admin addedBy;
+    private AdminTable addedBy;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "badge")
     private Collection<UserBadge> userBadgeCollection;
 
@@ -123,11 +117,11 @@ public class Badge implements Serializable {
         this.type = type;
     }
 
-    public Admin getAddedBy() {
+    public AdminTable getAddedBy() {
         return addedBy;
     }
 
-    public void setAddedBy(Admin addedBy) {
+    public void setAddedBy(AdminTable addedBy) {
         this.addedBy = addedBy;
     }
 
@@ -162,7 +156,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Badge[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Badge[ id=" + id + " ]";
     }
     
 }

@@ -33,7 +33,7 @@ public class AdminAuthority implements Serializable {
     protected AdminAuthorityPK adminAuthorityPK;
     @JoinColumn(name = "admin_email", referencedColumnName = "email", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Admin admin;
+    private AdminTable adminTable;
 
     public AdminAuthority() {
     }
@@ -54,12 +54,12 @@ public class AdminAuthority implements Serializable {
         this.adminAuthorityPK = adminAuthorityPK;
     }
 
-    public Admin getAdmin() {
-        return admin;
+    public AdminTable getAdminTable() {
+        return adminTable;
     }
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setAdminTable(AdminTable adminTable) {
+        this.adminTable = adminTable;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AdminAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.AdminAuthority[ adminAuthorityPK=" + adminAuthorityPK + " ]";
+        return "com.altysh.mavenproject1.AdminAuthority[ adminAuthorityPK=" + adminAuthorityPK + " ]";
     }
     
 }

@@ -8,8 +8,8 @@ package com.service_exchange.api_services.bussinesslayer;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.api_services.dao.user.UserInterFace;
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.Transaction;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.TransactionInfo;
+import com.service_exchange.entities.UserTable;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ public class UserService implements UserInterFace{
     @Autowired
     private UserDaoImpl daoImpl;
     @Override
-    public User createUser(User user) {
+    public UserTable createUser(UserTable user) {
     return daoImpl.createUser(user);
     }
     public String getSome(){
@@ -33,7 +33,7 @@ public class UserService implements UserInterFace{
         else return "good";
     }
     @Override
-    public User updateUser(User user) {
+    public UserTable updateUser(UserTable user) {
     return daoImpl.updateUser(user);
     }
 
@@ -43,16 +43,16 @@ public class UserService implements UserInterFace{
     }
 
     @Override
-    public Page<User> getAllUser(int start) {
+    public Page<UserTable> getAllUser(int start) {
       
    return  daoImpl.getAllUser(start);
     }
-    public List<User> getAllUser(){
+    public List<UserTable> getAllUser(){
         return daoImpl.getAllUser();
     }
 
     @Override
-    public Page<User> scerchUserByName(String name, int start) {
+    public Page<UserTable> scerchUserByName(String name, int start) {
    return daoImpl.scerchUserByName(name,start);
     }
 
@@ -62,12 +62,12 @@ public class UserService implements UserInterFace{
     }
 
     @Override
-    public Long getDurtation(User user, long start, long end) {
+    public Long getDurtation(UserTable user, long start, long end) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Transaction> getSuccsfullTransaction(User user) {
+    public List<TransactionInfo> getSuccsfullTransaction(UserTable user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

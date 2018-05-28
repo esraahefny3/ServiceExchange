@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,11 +18,9 @@ import javax.validation.constraints.NotNull;
 public class ReviewSkillPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "review_id")
     private int reviewId;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "skill_id")
     private int skillId;
 
@@ -77,7 +74,7 @@ public class ReviewSkillPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
+        return "com.altysh.mavenproject1.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
     }
     
 }

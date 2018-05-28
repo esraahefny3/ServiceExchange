@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,7 +33,6 @@ public class UserNotification implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserNotificationPK userNotificationPK;
-    @Size(max = 45)
     @Column(name = "state")
     private String state;
     @JoinColumn(name = "notification_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -42,7 +40,7 @@ public class UserNotification implements Serializable {
     private Notification notification;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public UserNotification() {
     }
@@ -79,12 +77,12 @@ public class UserNotification implements Serializable {
         this.notification = notification;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -109,7 +107,7 @@ public class UserNotification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
+        return "com.altysh.mavenproject1.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
     }
     
 }

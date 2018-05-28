@@ -20,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -46,10 +45,8 @@ public class Challenge implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 1000)
     @Column(name = "description")
     private String description;
     @Column(name = "reward")
@@ -60,7 +57,7 @@ public class Challenge implements Serializable {
     private Collection<UserChallenge> userChallengeCollection;
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
-    private Admin addedBy;
+    private AdminTable addedBy;
 
     public Challenge() {
     }
@@ -118,11 +115,11 @@ public class Challenge implements Serializable {
         this.userChallengeCollection = userChallengeCollection;
     }
 
-    public Admin getAddedBy() {
+    public AdminTable getAddedBy() {
         return addedBy;
     }
 
-    public void setAddedBy(Admin addedBy) {
+    public void setAddedBy(AdminTable addedBy) {
         this.addedBy = addedBy;
     }
 
@@ -148,9 +145,9 @@ public class Challenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Challenge[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Challenge[ id=" + id + " ]";
     }
-     @Override
+         @Override
     public Challenge clone()  {
    Challenge ch = new Challenge(id);
    ch.setAddedBy(addedBy);
@@ -161,5 +158,4 @@ public class Challenge implements Serializable {
    ch.setUserChallengeCollection(userChallengeCollection);
    return ch;
     }
-     
 }

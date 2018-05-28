@@ -107,7 +107,7 @@ public class ReviewSkill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
+        return "com.altysh.mavenproject1.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
     }
     
 }

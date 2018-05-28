@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,10 +43,8 @@ public class Message implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 1000)
     @Column(name = "text")
     private String text;
-    @Size(max = 300)
     @Column(name = "attachment")
     private String attachment;
     @Column(name = "date")
@@ -58,13 +55,13 @@ public class Message implements Serializable {
     private Complaint complaintId;
     @JoinColumn(name = "transaction_id", referencedColumnName = "id")
     @ManyToOne
-    private Transaction transactionId;
+    private TransactionInfo transactionId;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     @ManyToOne
-    private User receiverId;
+    private UserTable receiverId;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @ManyToOne
-    private User senderId;
+    private UserTable senderId;
 
     public Message() {
     }
@@ -113,27 +110,27 @@ public class Message implements Serializable {
         this.complaintId = complaintId;
     }
 
-    public Transaction getTransactionId() {
+    public TransactionInfo getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Transaction transactionId) {
+    public void setTransactionId(TransactionInfo transactionId) {
         this.transactionId = transactionId;
     }
 
-    public User getReceiverId() {
+    public UserTable getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(User receiverId) {
+    public void setReceiverId(UserTable receiverId) {
         this.receiverId = receiverId;
     }
 
-    public User getSenderId() {
+    public UserTable getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(User senderId) {
+    public void setSenderId(UserTable senderId) {
         this.senderId = senderId;
     }
 
@@ -159,7 +156,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Message[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Message[ id=" + id + " ]";
     }
     
 }

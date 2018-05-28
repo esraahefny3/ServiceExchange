@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,12 +18,9 @@ import javax.validation.constraints.Size;
 public class UserTelephonePK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private int userId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "telephone")
     private String telephone;
 
@@ -79,7 +74,7 @@ public class UserTelephonePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserTelephonePK[ userId=" + userId + ", telephone=" + telephone + " ]";
+        return "com.altysh.mavenproject1.UserTelephonePK[ userId=" + userId + ", telephone=" + telephone + " ]";
     }
     
 }

@@ -6,7 +6,7 @@
 package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 public class BadgeCustomDAOImpl implements BadgeCustomInterface{
 
     @Override
-    public boolean isUserDeserveBadge(User user) {
+    public boolean isUserDeserveBadge(UserTable user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean assignBadgeToUser(User user, Badge badge) {
+    public boolean assignBadgeToUser(UserTable user, Badge badge) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

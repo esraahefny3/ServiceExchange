@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,13 +40,10 @@ public class Education implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EducationPK educationPK;
-    @Size(max = 45)
     @Column(name = "degree")
     private String degree;
-    @Size(max = 45)
     @Column(name = "major")
     private String major;
-    @Size(max = 45)
     @Column(name = "grade")
     private String grade;
     @Column(name = "start_date")
@@ -58,7 +54,7 @@ public class Education implements Serializable {
     private Date endDate;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public Education() {
     }
@@ -119,12 +115,12 @@ public class Education implements Serializable {
         this.endDate = endDate;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -149,7 +145,7 @@ public class Education implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Education[ educationPK=" + educationPK + " ]";
+        return "com.altysh.mavenproject1.Education[ educationPK=" + educationPK + " ]";
     }
     
 }

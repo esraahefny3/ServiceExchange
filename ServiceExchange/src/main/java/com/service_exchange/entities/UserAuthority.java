@@ -15,8 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,15 +33,13 @@ public class UserAuthority implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private Integer userId;
-    @Size(max = 45)
     @Column(name = "authority")
     private String authority;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public UserAuthority() {
     }
@@ -68,12 +64,12 @@ public class UserAuthority implements Serializable {
         this.authority = authority;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -98,7 +94,7 @@ public class UserAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserAuthority[ userId=" + userId + " ]";
+        return "com.altysh.mavenproject1.UserAuthority[ userId=" + userId + " ]";
     }
     
 }

@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,7 +44,6 @@ public class UserChallenge implements Serializable {
     @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
-    @Size(max = 45)
     @Column(name = "ended")
     private String ended;
     @JoinColumn(name = "challenge_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -53,7 +51,7 @@ public class UserChallenge implements Serializable {
     private Challenge challenge;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public UserChallenge() {
     }
@@ -106,12 +104,12 @@ public class UserChallenge implements Serializable {
         this.challenge = challenge;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -136,7 +134,7 @@ public class UserChallenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
+        return "com.altysh.mavenproject1.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
     }
     
 }

@@ -16,8 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -26,50 +24,44 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Altysh
  */
 @Entity
-@Table(name = "admin")
+@Table(name = "admin_table")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Admin.findAll", query = "SELECT a FROM Admin a")
-    , @NamedQuery(name = "Admin.findByEmail", query = "SELECT a FROM Admin a WHERE a.email = :email")
-    , @NamedQuery(name = "Admin.findByName", query = "SELECT a FROM Admin a WHERE a.name = :name")
-    , @NamedQuery(name = "Admin.findByPassword", query = "SELECT a FROM Admin a WHERE a.password = :password")
-    , @NamedQuery(name = "Admin.findByImage", query = "SELECT a FROM Admin a WHERE a.image = :image")})
-public class Admin implements Serializable {
+    @NamedQuery(name = "AdminTable.findAll", query = "SELECT a FROM AdminTable a")
+    , @NamedQuery(name = "AdminTable.findByEmail", query = "SELECT a FROM AdminTable a WHERE a.email = :email")
+    , @NamedQuery(name = "AdminTable.findByName", query = "SELECT a FROM AdminTable a WHERE a.name = :name")
+    , @NamedQuery(name = "AdminTable.findByPassword", query = "SELECT a FROM AdminTable a WHERE a.password = :password")
+    , @NamedQuery(name = "AdminTable.findByImage", query = "SELECT a FROM AdminTable a WHERE a.image = :image")})
+public class AdminTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "email")
     private String email;
-    @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 45)
     @Column(name = "password")
     private String password;
-    @Size(max = 45)
     @Column(name = "image")
     private String image;
     @OneToMany(mappedBy = "addedBy")
     private Collection<Badge> badgeCollection;
     @OneToMany(mappedBy = "sentBy")
     private Collection<Notification> notificationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "admin")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminAuthority> adminAuthorityCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "admin")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminTelephone> adminTelephoneCollection;
     @OneToMany(mappedBy = "reviewedBy")
     private Collection<Complaint> complaintCollection;
     @OneToMany(mappedBy = "addedBy")
     private Collection<Challenge> challengeCollection;
 
-    public Admin() {
+    public AdminTable() {
     }
 
-    public Admin(String email) {
+    public AdminTable(String email) {
         this.email = email;
     }
 
@@ -169,10 +161,10 @@ public class Admin implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Admin)) {
+        if (!(object instanceof AdminTable)) {
             return false;
         }
-        Admin other = (Admin) object;
+        AdminTable other = (AdminTable) object;
         if ((this.email == null && other.email != null) || (this.email != null && !this.email.equals(other.email))) {
             return false;
         }
@@ -181,7 +173,7 @@ public class Admin implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Admin[ email=" + email + " ]";
+        return "com.altysh.mavenproject1.AdminTable[ email=" + email + " ]";
     }
     
 }

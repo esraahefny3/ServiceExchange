@@ -40,7 +40,7 @@ public class UserBadge implements Serializable {
     private Badge badge;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public UserBadge() {
     }
@@ -77,12 +77,12 @@ public class UserBadge implements Serializable {
         this.badge = badge;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class UserBadge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserBadge[ userBadgePK=" + userBadgePK + " ]";
+        return "com.altysh.mavenproject1.UserBadge[ userBadgePK=" + userBadgePK + " ]";
     }
     
 }

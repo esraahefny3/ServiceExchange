@@ -33,7 +33,7 @@ public class UserEmail implements Serializable {
     protected UserEmailPK userEmailPK;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private User user;
+    private UserTable userTable;
 
     public UserEmail() {
     }
@@ -54,12 +54,12 @@ public class UserEmail implements Serializable {
         this.userEmailPK = userEmailPK;
     }
 
-    public User getUser() {
-        return user;
+    public UserTable getUserTable() {
+        return userTable;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserTable(UserTable userTable) {
+        this.userTable = userTable;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserEmail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserEmail[ userEmailPK=" + userEmailPK + " ]";
+        return "com.altysh.mavenproject1.UserEmail[ userEmailPK=" + userEmailPK + " ]";
     }
     
 }

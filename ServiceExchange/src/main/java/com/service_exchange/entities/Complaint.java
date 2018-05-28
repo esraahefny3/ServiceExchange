@@ -22,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,10 +46,8 @@ public class Complaint implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "state")
     private String state;
-    @Size(max = 1000)
     @Column(name = "description")
     private String description;
     @Column(name = "date")
@@ -60,13 +57,13 @@ public class Complaint implements Serializable {
     private Collection<Message> messageCollection;
     @JoinColumn(name = "reviewed_by", referencedColumnName = "email")
     @ManyToOne
-    private Admin reviewedBy;
+    private AdminTable reviewedBy;
     @JoinColumn(name = "transaction_id", referencedColumnName = "id")
     @ManyToOne
-    private Transaction transactionId;
+    private TransactionInfo transactionId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
-    private User userId;
+    private UserTable userId;
 
     public Complaint() {
     }
@@ -116,27 +113,27 @@ public class Complaint implements Serializable {
         this.messageCollection = messageCollection;
     }
 
-    public Admin getReviewedBy() {
+    public AdminTable getReviewedBy() {
         return reviewedBy;
     }
 
-    public void setReviewedBy(Admin reviewedBy) {
+    public void setReviewedBy(AdminTable reviewedBy) {
         this.reviewedBy = reviewedBy;
     }
 
-    public Transaction getTransactionId() {
+    public TransactionInfo getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Transaction transactionId) {
+    public void setTransactionId(TransactionInfo transactionId) {
         this.transactionId = transactionId;
     }
 
-    public User getUserId() {
+    public UserTable getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(UserTable userId) {
         this.userId = userId;
     }
 
@@ -162,7 +159,7 @@ public class Complaint implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Complaint[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Complaint[ id=" + id + " ]";
     }
     
 }

@@ -6,7 +6,7 @@
 package com.service_exchange.api_services.dao.challanges;
 
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 import java.util.List;
 
 /**
@@ -14,13 +14,13 @@ import java.util.List;
  * @author Altysh
  */
 public interface ChallangeInterFace {
-    boolean isChallangeComplete(Challenge challenge,User user);
-    double getChallangeState(Challenge challenge,User user);
+    boolean isChallangeComplete(Challenge challenge,UserTable user);
+    double getChallangeState(Challenge challenge,UserTable user);
     Challenge createChallange(Challenge challenge);
     Challenge updateChallange(Challenge challenge);
     boolean deleteChallange(Challenge challenge);
     List<Challenge> getAllChallanges();
-    List<Challenge> getUserChallanges(User user);
+    List<Challenge> getUserChallanges(UserTable user);
     Challenge getChallange(Integer id);
     
     

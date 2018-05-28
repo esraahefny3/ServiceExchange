@@ -7,8 +7,9 @@ package com.service_exchange.api_services.dao.user;
 
 import com.service_exchange.api_services.dao.challanges.ChallangeDao;
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.Transaction;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.TransactionInfo;
+
+import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,17 +34,17 @@ public class UserDaoImpl implements UserInterFace {
     private ChallangeDao challangeDao;
 
     @Override
-    public User createUser(User user) {
-        User muser = dataInterface.save(user);
+    public UserTable createUser(UserTable user) {
+        UserTable muser = dataInterface.save(user);
         //  System.out.println(muser.getName());
-        User nUser = (User) UnoptimizedDeepCopy.copy(user);
+        UserTable nUser = (UserTable) UnoptimizedDeepCopy.copy(user);
         //nUser.getName();
         return nUser;
     }
 
     @Override
-    public User updateUser(User user) {
-        return (User) UnoptimizedDeepCopy.copy(dataInterface.save(user));
+    public UserTable updateUser(UserTable user) {
+        return (UserTable) UnoptimizedDeepCopy.copy(dataInterface.save(user));
     }
 
     @Override
@@ -53,21 +54,24 @@ public class UserDaoImpl implements UserInterFace {
 
     @Override
     @Transactional
-    public Page<User> getAllUser(int start) {
+    public Page<UserTable> getAllUser(int start) {
 
-        Page<User> us = dataInterface.findAll(new PageRequest(start, 20));
+        Page<UserTable> us = dataInterface.findAll(new PageRequest(start, 20));
 
         return us;
     }
-    public List<User> getAllUser(){
-        List<User> list = new LinkedList<>();
-        dataInterface.findAll().forEach(e->list.add( e.clone()));
+    public List<UserTable> getAllUser(){
+        List<UserTable> list = new LinkedList<>();
+        dataInterface.findAll().forEach((t) -> {
+            list.add(t);
+           // System.out.println(t.getComplaintCollection());
+        });
         return list;
     }
 
     @Override
-    public Page<User> scerchUserByName(String name, int start) {
-        return (Page<User>) UnoptimizedDeepCopy.copy(dataInterface.findByNameContains(name, new PageRequest(start, start + 20)));
+    public Page<UserTable> scerchUserByName(String name, int start) {
+        return (Page<UserTable>) UnoptimizedDeepCopy.copy(dataInterface.findByNameContains(name, new PageRequest(start, start + 20)));
 
     }
 
@@ -77,18 +81,18 @@ public class UserDaoImpl implements UserInterFace {
     }
 
     @Override
-    public Long getDurtation(User user, long start, long end) {
+    public Long getDurtation(UserTable user, long start, long end) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Transaction> getSuccsfullTransaction(User user) {
+    public List<TransactionInfo> getSuccsfullTransaction(UserTable user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Boolean addChallangeToUser(Integer chId, Integer userId) {
-        Optional<User> user = dataInterface.findById(chId);
+        Optional<UserTable> user = dataInterface.findById(chId);
         if (user.isPresent()) {
             return user.get().addChallange(chId);
 
@@ -99,7 +103,7 @@ public class UserDaoImpl implements UserInterFace {
 
     @Override
     public Boolean removeChallangeToUser(Integer chId, Integer userId) {
-        Optional<User> user = dataInterface.findById(chId);
+        Optional<UserTable> user = dataInterface.findById(chId);
         Challenge ch = challangeDao.getChallange(chId);
         if (user.isPresent() && ch != null) {
             return user.get().removeChallange(chId);

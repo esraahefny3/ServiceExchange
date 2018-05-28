@@ -23,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,7 +46,6 @@ public class Notification implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 1000)
     @Column(name = "body")
     private String body;
     @Column(name = "notifecation_date")
@@ -57,7 +55,7 @@ public class Notification implements Serializable {
     private Collection<UserNotification> userNotificationCollection;
     @JoinColumn(name = "sent_by", referencedColumnName = "email")
     @ManyToOne
-    private Admin sentBy;
+    private AdminTable sentBy;
 
     public Notification() {
     }
@@ -99,11 +97,11 @@ public class Notification implements Serializable {
         this.userNotificationCollection = userNotificationCollection;
     }
 
-    public Admin getSentBy() {
+    public AdminTable getSentBy() {
         return sentBy;
     }
 
-    public void setSentBy(Admin sentBy) {
+    public void setSentBy(AdminTable sentBy) {
         this.sentBy = sentBy;
     }
 
@@ -129,7 +127,7 @@ public class Notification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Notification[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Notification[ id=" + id + " ]";
     }
     
 }

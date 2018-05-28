@@ -8,7 +8,7 @@ package com.service_exchange.api_services.bussinesslayer;
 import com.service_exchange.api_services.dao.challanges.ChallangeDao;
 import com.service_exchange.api_services.dao.challanges.ChallangeInterFace;
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.User;
+import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -28,12 +28,12 @@ public class ChallangeService implements ChallangeInterFace {
     ChallangeDao challangeDao;
 
     @Override
-    public boolean isChallangeComplete(Challenge challenge, User user) {
+    public boolean isChallangeComplete(Challenge challenge, UserTable user) {
         return challangeDao.isChallangeComplete(challenge, user);
     }
 
     @Override
-    public double getChallangeState(Challenge challenge, User user) {
+    public double getChallangeState(Challenge challenge, UserTable user) {
         return challangeDao.getChallangeState(challenge, user);
     }
 
@@ -67,7 +67,7 @@ public class ChallangeService implements ChallangeInterFace {
     }
 
     @Override
-    public List<Challenge> getUserChallanges(User user) {
+    public List<Challenge> getUserChallanges(UserTable user) {
         List<Challenge> challenge1 = challangeDao.getUserChallanges(user);
         List<Challenge> challenges2 = new LinkedList<>();
         challenge1.stream().map((t) -> {

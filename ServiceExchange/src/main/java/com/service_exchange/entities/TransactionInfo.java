@@ -22,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,18 +30,18 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Altysh
  */
 @Entity
-@Table(name = "transaction")
+@Table(name = "transaction_info")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t")
-    , @NamedQuery(name = "Transaction.findById", query = "SELECT t FROM Transaction t WHERE t.id = :id")
-    , @NamedQuery(name = "Transaction.findByType", query = "SELECT t FROM Transaction t WHERE t.type = :type")
-    , @NamedQuery(name = "Transaction.findByState", query = "SELECT t FROM Transaction t WHERE t.state = :state")
-    , @NamedQuery(name = "Transaction.findByStartDate", query = "SELECT t FROM Transaction t WHERE t.startDate = :startDate")
-    , @NamedQuery(name = "Transaction.findByEndDate", query = "SELECT t FROM Transaction t WHERE t.endDate = :endDate")
-    , @NamedQuery(name = "Transaction.findByDuration", query = "SELECT t FROM Transaction t WHERE t.duration = :duration")
-    , @NamedQuery(name = "Transaction.findByPrice", query = "SELECT t FROM Transaction t WHERE t.price = :price")})
-public class Transaction implements Serializable {
+    @NamedQuery(name = "TransactionInfo.findAll", query = "SELECT t FROM TransactionInfo t")
+    , @NamedQuery(name = "TransactionInfo.findById", query = "SELECT t FROM TransactionInfo t WHERE t.id = :id")
+    , @NamedQuery(name = "TransactionInfo.findByType", query = "SELECT t FROM TransactionInfo t WHERE t.type = :type")
+    , @NamedQuery(name = "TransactionInfo.findByState", query = "SELECT t FROM TransactionInfo t WHERE t.state = :state")
+    , @NamedQuery(name = "TransactionInfo.findByStartDate", query = "SELECT t FROM TransactionInfo t WHERE t.startDate = :startDate")
+    , @NamedQuery(name = "TransactionInfo.findByEndDate", query = "SELECT t FROM TransactionInfo t WHERE t.endDate = :endDate")
+    , @NamedQuery(name = "TransactionInfo.findByDuration", query = "SELECT t FROM TransactionInfo t WHERE t.duration = :duration")
+    , @NamedQuery(name = "TransactionInfo.findByPrice", query = "SELECT t FROM TransactionInfo t WHERE t.price = :price")})
+public class TransactionInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,10 +49,8 @@ public class Transaction implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
     @Column(name = "type")
     private String type;
-    @Size(max = 45)
     @Column(name = "state")
     private String state;
     @Column(name = "start_date")
@@ -75,12 +72,12 @@ public class Transaction implements Serializable {
     private Service serviceId;
     @JoinColumn(name = "started_by", referencedColumnName = "id")
     @ManyToOne
-    private User startedBy;
+    private UserTable startedBy;
 
-    public Transaction() {
+    public TransactionInfo() {
     }
 
-    public Transaction(Integer id) {
+    public TransactionInfo(Integer id) {
         this.id = id;
     }
 
@@ -166,11 +163,11 @@ public class Transaction implements Serializable {
         this.serviceId = serviceId;
     }
 
-    public User getStartedBy() {
+    public UserTable getStartedBy() {
         return startedBy;
     }
 
-    public void setStartedBy(User startedBy) {
+    public void setStartedBy(UserTable startedBy) {
         this.startedBy = startedBy;
     }
 
@@ -184,10 +181,10 @@ public class Transaction implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transaction)) {
+        if (!(object instanceof TransactionInfo)) {
             return false;
         }
-        Transaction other = (Transaction) object;
+        TransactionInfo other = (TransactionInfo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -196,7 +193,7 @@ public class Transaction implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Transaction[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.TransactionInfo[ id=" + id + " ]";
     }
     
 }

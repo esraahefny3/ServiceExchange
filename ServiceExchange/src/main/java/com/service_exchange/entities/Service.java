@@ -21,7 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -49,18 +48,14 @@ public class Service implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 100)
     @Column(name = "name")
     private String name;
-    @Size(max = 300)
     @Column(name = "image")
     private String image;
     @Column(name = "price")
     private Integer price;
-    @Size(max = 45)
     @Column(name = "type")
     private String type;
-    @Size(max = 1000)
     @Column(name = "description")
     private String description;
     @Column(name = "is_available")
@@ -72,9 +67,9 @@ public class Service implements Serializable {
     private Collection<Skill> skillCollection;
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
-    private User madeBy;
+    private UserTable madeBy;
     @OneToMany(mappedBy = "serviceId")
-    private Collection<Transaction> transactionCollection;
+    private Collection<TransactionInfo> transactionInfoCollection;
 
     public Service() {
     }
@@ -148,21 +143,21 @@ public class Service implements Serializable {
         this.skillCollection = skillCollection;
     }
 
-    public User getMadeBy() {
+    public UserTable getMadeBy() {
         return madeBy;
     }
 
-    public void setMadeBy(User madeBy) {
+    public void setMadeBy(UserTable madeBy) {
         this.madeBy = madeBy;
     }
 
     @XmlTransient
-    public Collection<Transaction> getTransactionCollection() {
-        return transactionCollection;
+    public Collection<TransactionInfo> getTransactionInfoCollection() {
+        return transactionInfoCollection;
     }
 
-    public void setTransactionCollection(Collection<Transaction> transactionCollection) {
-        this.transactionCollection = transactionCollection;
+    public void setTransactionInfoCollection(Collection<TransactionInfo> transactionInfoCollection) {
+        this.transactionInfoCollection = transactionInfoCollection;
     }
 
     @Override
@@ -187,7 +182,7 @@ public class Service implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.Service[ id=" + id + " ]";
+        return "com.altysh.mavenproject1.Service[ id=" + id + " ]";
     }
     
 }

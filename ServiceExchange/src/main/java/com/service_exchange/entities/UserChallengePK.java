@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,11 +18,9 @@ import javax.validation.constraints.NotNull;
 public class UserChallengePK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private int userId;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "challenge_id")
     private int challengeId;
 
@@ -77,7 +74,7 @@ public class UserChallengePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.entities.UserChallengePK[ userId=" + userId + ", challengeId=" + challengeId + " ]";
+        return "com.altysh.mavenproject1.UserChallengePK[ userId=" + userId + ", challengeId=" + challengeId + " ]";
     }
     
 }
