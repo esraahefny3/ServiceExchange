@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BadgeCustomDAOImpl implements BadgeCustomInterface{
 
+    
     @Override
     public boolean isUserDeserveBadge(UserTable user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

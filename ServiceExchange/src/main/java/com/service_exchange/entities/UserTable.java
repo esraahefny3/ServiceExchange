@@ -399,4 +399,19 @@ public class UserTable implements Serializable {
 
         return newList;
     }
+    
+    
+    
+    //---------esraa------
+     public Boolean addBadge(UserBadge userBadge){
+         if(!userBadgeCollection.contains(userBadge)){
+             userBadgeCollection.add(userBadge);
+             return true;
+         }
+         return false;
+     }
+     
+     
+     
+     //-------esraaa--------------
 }
