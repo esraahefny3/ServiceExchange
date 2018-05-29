@@ -95,7 +95,7 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/getAllBadges/{pageNum}", method = RequestMethod.GET)
-    public List<Badge> getAllBadges(@PathVariable("num") Integer pageNum) {
+    public List<Badge> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
         return PageToListConverter.convertList(badgeService.getAllBadge(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
     }
     

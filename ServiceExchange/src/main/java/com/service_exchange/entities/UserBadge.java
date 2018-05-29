@@ -33,7 +33,7 @@ public class UserBadge implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserBadgePK userBadgePK;
-    @Column(name = "progress")
+    @Column(name = "progress",unique=true)
     private Integer progress;
     @JoinColumn(name = "badge_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
