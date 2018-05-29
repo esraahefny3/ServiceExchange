@@ -7,6 +7,7 @@ package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
+
 import org.springframework.stereotype.Component;
 
 /**

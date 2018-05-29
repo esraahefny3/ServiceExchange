@@ -5,11 +5,13 @@
  */
 package com.service_exchange.api_services.bussinesslayer;
 
-
 import com.service_exchange.api_services.dao.badge.BadgeCustomDAOImpl;
 import com.service_exchange.api_services.dao.badge.BadgeDataInterface;
 import com.service_exchange.entities.Badge;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,9 +27,50 @@ public class BadgeService {
     @Autowired
     private BadgeDataInterface badgeDataInterface;
     
-    public void  createBadge(Badge badge)
+    public Badge getBadge(int id)
     { 
-        badgeDataInterface.save(badge);
-        
+        Optional<Badge>retrievedBadge= badgeDataInterface.findById(id);
+        if (retrievedBadge.isPresent())
+        {
+            return retrievedBadge.get();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public Badge  createBadge(Badge badge)
+    { 
+        return badgeDataInterface.save(badge); 
+    }
+    
+    public boolean deleteBadge(Badge badge)
+    {
+        try{
+            badgeDataInterface.delete(badge);
+            return true;
+        }catch(Exception e)
+        {
+            return false;
+        }
+    }
+    
+    public Badge updateBadge(Badge badge)
+    {
+        if(badgeDataInterface.existsById(badge.getId()))
+        {
+            return badgeDataInterface.save(badge);
+        }
+        else
+        {
+           return null;
+        }
+    }
+    
+     
+    public Page<Badge> getAllBadge(Pageable page)
+    {
+       return  badgeDataInterface.findAll(page);
     }
 }
