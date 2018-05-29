@@ -7,9 +7,14 @@ package com.service_exchange.api_services.bussinesslayer;
 
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.api_services.dao.user.UserInterFace;
-import com.service_exchange.entities.Challenge;
+import com.service_exchange.entities.Complaint;
+import com.service_exchange.entities.Education;
+import com.service_exchange.entities.Review;
+import com.service_exchange.entities.Service;
+import com.service_exchange.entities.Skill;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,28 +61,34 @@ public class UserService implements UserInterFace{
    return daoImpl.scerchUserByName(name,start);
     }
 
+
     @Override
-    public Long getDuration() {
+    public Boolean changePic(String url, Integer userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Long getDurtation(UserTable user, long start, long end) {
+    public Boolean addEductaion(Education education, Integer userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<TransactionInfo> getSuccsfullTransaction(UserTable user) {
+    public Boolean removeEductaion(Education education, Integer userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Boolean addChallangeToUser(Integer challangeId,Integer userId) {
-   return daoImpl.addChallangeToUser(challangeId, userId);
+    public Collection<Education> getEducation(Integer userId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-     @Override
-    public Boolean removeChallangeToUser(Integer challangeId,Integer userId) {
-   return daoImpl.removeChallangeToUser(challangeId, userId);
+
+   
+
+    @Override
+    public List<Complaint> getUserComplaints(Integer userId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+  
     
 }

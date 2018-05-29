@@ -27,31 +27,34 @@ public class UserRestController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/getAll",method = RequestMethod.GET,params = "start")
-    private List<UserTable> getAllChanges( Integer start) {
-     
-        return PageToListConverter.convertList(service.getAllUser((start != null)?start:0));
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET, params = "start")
+    private List<UserTable> getAllChanges(Integer start) {
+
+        return PageToListConverter.convertList(service.getAllUser((start != null) ? start : 0));
     }
-    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     private List<UserTable> getAllChanges() {
-        //System.out.println("the right one");
+        
         return service.getAllUser();
     }
-      @RequestMapping(value = "/createUser",method = RequestMethod.POST)
+
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     private UserTable createUser(@RequestBody UserTable user) {
-     
+
         return service.createUser(user);
     }
-     @RequestMapping(value = "/addChallange",method = RequestMethod.POST)
-    private Boolean addChallangeToUser( @RequestBody Map<String, Integer> json) {
-         System.out.println(json);
-        return service.addChallangeToUser( json.get("challangeId"),json.get("userId"));
-    }
-     @RequestMapping(value = "/removeChallange",method = RequestMethod.POST)
-    private Boolean removeChallangeToUser(@RequestBody Map<String, Integer> json) {
-     
-        return service.removeChallangeToUser(json.get("challangeId"),json.get("userId"));
-    }
-    
-    
+
+//    @RequestMapping(value = "/addChallange", method = RequestMethod.POST)
+//    private Boolean addChallangeToUser(@RequestBody Map<String, Integer> json) {
+//        
+//        return service.addChallangeToUser(json.get("challangeId"), json.get("userId"));
+//    }
+//
+//    @RequestMapping(value = "/removeChallange", method = RequestMethod.POST)
+//    private Boolean removeChallangeToUser(@RequestBody Map<String, Integer> json) {
+//
+//        return service.removeChallangeToUser(json.get("challangeId"), json.get("userId"));
+//    }
+
 }
