@@ -5,17 +5,12 @@
  */
 package com.service_exchange.api_services.dao.user;
 
-import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Education;
-import com.service_exchange.entities.Review;
-import com.service_exchange.entities.Service;
-import com.service_exchange.entities.Skill;
-import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import org.springframework.data.domain.Page;
+
 import java.util.Collection;
 import java.util.List;
-import org.springframework.data.domain.Page;
 
 /**
  *
@@ -43,6 +38,6 @@ public interface UserInterFace {
 
     Collection<Education> getEducation(Integer userId);
 
-    List<Complaint> getUserComplaints(Integer userId);
+    List getUserComplaints(Integer userId);
 
 }
