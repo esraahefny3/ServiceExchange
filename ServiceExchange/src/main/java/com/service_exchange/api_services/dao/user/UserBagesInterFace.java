@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.entities;
+package com.service_exchange.api_services.dao.user;
 
 /**
  *
  * @author Altysh
  */
-public interface Clonable<T> {
-    T clone();
+public interface UserBagesInterFace {
+    
 }

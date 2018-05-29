@@ -5,6 +5,7 @@
  */
 package com.service_exchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -51,6 +52,7 @@ public class Review implements Serializable {
     @Column(name = "transaction_id")
     private Integer transactionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
+   
     private Collection<ReviewSkill> reviewSkillCollection;
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne

@@ -61,32 +61,45 @@ public class UserTable implements Serializable {
     private String accountId;
     @Column(name = "account_type")
     private String accountType;
+    @JsonIgnore
     @ManyToMany(mappedBy = "userTableCollection")
     private Collection<Skill> skillCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserEmail> userEmailCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<Education> educationCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserTelephone> userTelephoneCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserNotification> userNotificationCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "receiverId")
     private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "senderId")
+    @JsonIgnore
     private Collection<Message> messageCollection1;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserChallenge> userChallengeCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userTable")
     private UserAuthority userAuthority;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Complaint> complaintCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    @JsonIgnore
     private Collection<UserBadge> userBadgeCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "madeBy")
     private Collection<Review> reviewCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "madeBy")
     private Collection<Service> serviceCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "startedBy")
     private Collection<TransactionInfo> transactionInfoCollection;
 
@@ -323,33 +336,59 @@ public class UserTable implements Serializable {
         }
 //return Boolean.FALSE;
     }
+     
+     public Boolean addSkill(Skill skill){
+         if(!skillCollection.contains(skill)){
+             skillCollection.add(skill);
+             return true;
+         }
+         return false;
+     }
+      public Boolean removeSkill(Skill skill){
+         if(!skillCollection.contains(skill)){
+             skillCollection.remove(skill);
+             return true;
+         }
+         return false;
+     }
+       public Boolean addEducation(Education education){
+         if(!educationCollection.contains(education)){
+             educationCollection.add(education);
+             return true;
+         }
+         return false;
+     }
+      public Boolean removeEducation(Education education){
+         if(!educationCollection.contains(education)){
+             educationCollection.remove(education);
+             return true;
+         }
+         return false;
+     }
+      public Boolean addReview(Review review){
+         if(!reviewCollection.contains(review)){
+             reviewCollection.add(review);
+             return true;
+         }
+         return false;
+     }
+        public Boolean addService(Service service){
+         if(!serviceCollection.contains(service)){
+             serviceCollection.add(service);
+             return true;
+         }
+         return false;
+     }
+      public Boolean removeService(Service service){
+         if(!serviceCollection.contains(service)){
+             serviceCollection.remove(service);
+             return true;
+         }
+         return false;
+     }
+      
 
-    @Override
-    public UserTable clone() {
-        UserTable user = new UserTable();
-        user.setAccountId(accountId);
-        user.setAccountType(accountType);
-        user.setBirthDate(birthDate);
-        user.setComplaintCollection(complaintCollection);
-        user.setEducationCollection(educationCollection);
-        user.setId(id);
-        user.setImage(image);
-        user.setMessageCollection(messageCollection);
-        user.setMessageCollection1(messageCollection1);
-        user.setName(name);
-        user.setUserNotificationCollection(userNotificationCollection);
-        user.setReviewCollection(reviewCollection);
-        user.setServiceCollection(serviceCollection);
-        user.setSkillCollection(skillCollection);
-        user.setStatus(status);
-        user.setTransactionInfoCollection(transactionInfoCollection);
-        user.setUserAuthority(userAuthority);
-      user.setUserBadgeCollection(userBadgeCollection);
-        user.setUserChallengeCollection(userChallengeCollection);
-        user.setUserEmailCollection(userEmailCollection);
-        user.setUserTelephoneCollection(userTelephoneCollection);
-        return user;
-    }
+
 
     private <T> Collection<T> copyArray(Collection<T> list) {
 

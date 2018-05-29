@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author Altysh
  */
 @Component
-public interface UserDataInterFace extends CrudRepository<UserTable,Integer>{
-    Page<UserTable> findAll(Pageable page );
+public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,Integer>{
+   
     Page<UserTable> findByNameContains(String name ,Pageable page );
 }

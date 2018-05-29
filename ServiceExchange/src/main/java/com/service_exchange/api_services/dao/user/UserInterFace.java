@@ -6,8 +6,14 @@
 package com.service_exchange.api_services.dao.user;
 
 import com.service_exchange.entities.Challenge;
+import com.service_exchange.entities.Complaint;
+import com.service_exchange.entities.Education;
+import com.service_exchange.entities.Review;
+import com.service_exchange.entities.Service;
+import com.service_exchange.entities.Skill;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
@@ -15,16 +21,31 @@ import org.springframework.data.domain.Page;
  *
  * @author Altysh
  */
-public interface UserInterFace  {
+public interface UserInterFace {
+
     UserTable createUser(UserTable user);
+
     UserTable updateUser(UserTable user);
+
     Boolean checkEmailAvalible(Integer email);
-     Page<UserTable> getAllUser(int start);
-    Page<UserTable> scerchUserByName(String name,int start);
-    Long getDuration();
-    Long getDurtation(UserTable user,long start,long end);
-    List<TransactionInfo> getSuccsfullTransaction(UserTable user); 
-    Boolean addChallangeToUser(Integer chId,Integer userId);
-   Boolean removeChallangeToUser(Integer chId, Integer userId) ;
+
+    Page<UserTable> getAllUser(int start);
+
+    Page<UserTable> scerchUserByName(String name, int start); 
+
+    Boolean changePic(String url, Integer userId);
+
+    Boolean addEductaion(Education education, Integer userId);
+
+    Boolean removeEductaion(Education education, Integer userId);
+
+    Collection<Education> getEducation(Integer userId);
+
+    List<Complaint> getUserComplaints(Integer userId);
+
     
+
+ 
+    
+
 }
