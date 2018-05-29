@@ -9,6 +9,7 @@ import com.service_exchange.api_services.bussinesslayer.UserService;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.PageToListConverter;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,14 +43,14 @@ public class UserRestController {
         return service.createUser(user);
     }
      @RequestMapping(value = "/addChallange",method = RequestMethod.POST)
-    private Boolean addChallangeToUser(@RequestBody Integer userId,@RequestBody Integer challangeId) {
-     
-        return service.addChallangeToUser(userId, challangeId);
+    private Boolean addChallangeToUser( @RequestBody Map<String, Integer> json) {
+         System.out.println(json);
+        return service.addChallangeToUser( json.get("challangeId"),json.get("userId"));
     }
      @RequestMapping(value = "/removeChallange",method = RequestMethod.POST)
-    private Boolean removeChallangeToUser(@RequestBody Integer userId,@RequestBody Integer challangeId) {
+    private Boolean removeChallangeToUser(@RequestBody Map<String, Integer> json) {
      
-        return service.removeChallangeToUser(userId, challangeId);
+        return service.removeChallangeToUser(json.get("challangeId"),json.get("userId"));
     }
     
     
