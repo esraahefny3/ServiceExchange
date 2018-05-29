@@ -10,6 +10,8 @@ import com.service_exchange.api_services.dao.badge.BadgeDataInterface;
 import com.service_exchange.entities.Badge;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,8 +69,8 @@ public class BadgeService {
     }
     
      
-    public Badge getAllBadge()
+    public Page<Badge> getAllBadge(Pageable page)
     {
-       return (Badge) badgeDataInterface.findAll(); 
+       return  badgeDataInterface.findAll(page);
     }
 }

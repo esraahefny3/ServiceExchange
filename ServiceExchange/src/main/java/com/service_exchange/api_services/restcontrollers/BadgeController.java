@@ -8,6 +8,7 @@ package com.service_exchange.api_services.restcontrollers;
 import com.service_exchange.api_services.bussinesslayer.BadgeService;
 import com.service_exchange.entities.Badge;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,8 @@ public class BadgeController {
     
     @Autowired
     private BadgeService badgeService;
+    
+    private int pageSize=20;
     
     @RequestMapping(value = "/getBadge/{id}", method = RequestMethod.GET)
     public Badge getBadge(@PathVariable("id") int id) {
@@ -89,6 +92,10 @@ public class BadgeController {
         }
     }
     
+    @RequestMapping(value = "/getAllBadges/{pageNum}", method = RequestMethod.GET)
+    public Badge getAllBadges(@PathVariable("num") int pageNum) {
+       return badgeService.getAllBadge(PageRequest.of(pageNum,pageSize));
+    }
     
     @RequestMapping(value = "/hii", method = RequestMethod.GET)
     public String sayHii() {
