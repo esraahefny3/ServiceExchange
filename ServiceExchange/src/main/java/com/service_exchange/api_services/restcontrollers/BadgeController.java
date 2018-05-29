@@ -7,6 +7,8 @@ package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.BadgeService;
 import com.service_exchange.entities.Badge;
+import com.service_exchange.utal.PageToListConverter;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class BadgeController {
     @Autowired
     private BadgeService badgeService;
     
-    private int pageSize=20;
+    private Integer pageSize=20;
     
     @RequestMapping(value = "/getBadge/{id}", method = RequestMethod.GET)
     public Badge getBadge(@PathVariable("id") int id) {
@@ -93,8 +95,8 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/getAllBadges/{pageNum}", method = RequestMethod.GET)
-    public Badge getAllBadges(@PathVariable("num") int pageNum) {
-       return badgeService.getAllBadge(PageRequest.of(pageNum,pageSize));
+    public List<Badge> getAllBadges(@PathVariable("num") Integer pageNum) {
+        return PageToListConverter.convertList(badgeService.getAllBadge(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
     }
     
     @RequestMapping(value = "/hii", method = RequestMethod.GET)
