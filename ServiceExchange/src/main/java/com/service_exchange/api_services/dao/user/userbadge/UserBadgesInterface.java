@@ -17,9 +17,10 @@ import org.springframework.data.domain.Pageable;
  */
 public interface UserBadgesInterface {
     
-    public List<Badge> getAllUserBadge(UserTable userTable,Pageable page);
-    public boolean assignBadgeToUser(UserTable user,UserBadge userBadge);
+   public List<Badge> getAllUserBadge(Integer userId, Pageable page);
+   public boolean assignBadgeToUser(UserTable user,UserBadge userBadge);
    
     //isUserDeserveBadge
+    
     
 }

@@ -11,6 +11,7 @@ import com.service_exchange.entities.UserBadge;
 import com.service_exchange.entities.UserTable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
@@ -21,20 +22,23 @@ import org.springframework.data.domain.Pageable;
 public class UserBadgesImpl implements UserBadgesInterface{
 
     @Autowired
-    private UserDataInterFace dataInterface;
+    private UserDataInterFace userDataInterface;
 
     @Override
-    public List<Badge> getAllUserBadge(UserTable userTable, Pageable page) {
-            List badgesList=new ArrayList();
-          //  List userBadgesLis=userTable.get
-          return badgesList;
+    public List<Badge> getAllUserBadge(Integer userId, Pageable page) {
+//           UserTable user = userDataInterface.findById(userId);
+//        if (user != null) {
+//            return user.getUserChallengeCollection().stream()
+//                    .map((t) -> t.getChallenge()).collect(Collectors.toList());
+//        }
+      return null;
     }
 
     @Override
     public boolean assignBadgeToUser(UserTable user,UserBadge userBadge) {
           try{
               user.addBadge(userBadge);
-              dataInterface.save(user);
+              userDataInterface.save(user);
               return true;
           }
           catch(Exception e)
