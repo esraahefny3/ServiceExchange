@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
  */
 public interface UserInterFace {
 
+    UserTable getUser(Integer userId);
+
     UserTable createUser(UserTable user);
 
     UserTable updateUser(UserTable user);
@@ -31,7 +33,7 @@ public interface UserInterFace {
 
     Page<UserTable> getAllUser(int start);
 
-    Page<UserTable> scerchUserByName(String name, int start); 
+    Page<UserTable> scerchUserByName(String name, int start);
 
     Boolean changePic(String url, Integer userId);
 
@@ -42,10 +44,5 @@ public interface UserInterFace {
     Collection<Education> getEducation(Integer userId);
 
     List<Complaint> getUserComplaints(Integer userId);
-
-    
-
- 
-    
 
 }

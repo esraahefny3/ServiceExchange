@@ -38,10 +38,11 @@ public class UserDaoImpl implements UserInterFace {
 
     @Autowired
     private ChallangeDao challangeDao;
-    
+
     private int pageSize = 20;
 
-    private UserTable getUser(Integer userId) {
+    @Override
+    public UserTable getUser(Integer userId) {
         Optional<UserTable> user = dataInterface.findById(userId);
         if (user.isPresent()) {
             return user.get();
@@ -62,7 +63,7 @@ public class UserDaoImpl implements UserInterFace {
     @Override
     public UserTable createUser(UserTable user) {
         UserTable muser = dataInterface.save(user);
-        
+
         return muser;
     }
 
@@ -80,7 +81,7 @@ public class UserDaoImpl implements UserInterFace {
     @Transactional
     public Page<UserTable> getAllUser(int start) {
 
-        Page<UserTable> us = dataInterface.findAll(PageRequest.of(start,pageSize));
+        Page<UserTable> us = dataInterface.findAll(PageRequest.of(start, pageSize));
 
         return us;
     }
@@ -100,8 +101,6 @@ public class UserDaoImpl implements UserInterFace {
 
     }
 
-   
-    
     public Boolean addChallangeToUser(Integer chId, Integer userId) {
 
         Optional<UserTable> user = dataInterface.findById(userId);
@@ -118,7 +117,6 @@ public class UserDaoImpl implements UserInterFace {
         return false;
     }
 
-   
     public Boolean removeChallangeToUser(Integer chId, Integer userId) {
         Optional<UserTable> user = dataInterface.findById(userId);
         if (user.isPresent()) {
@@ -132,7 +130,6 @@ public class UserDaoImpl implements UserInterFace {
         return false;
     }
 
-  
     public Boolean addSkill(Skill skill, Integer userId) {
         Optional<UserTable> user = dataInterface.findById(userId);
         if (user.isPresent()) {
@@ -198,7 +195,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-    
     public List<Skill> getUserSkill(Integer userId) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -216,7 +212,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-    
     public List<Review> getUserReviews(Integer userId) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -225,7 +220,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-   
     public Boolean addReviewToUser(Integer userId, Review review) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -234,7 +228,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-    
     public List<Service> getUserServices(Integer userId) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -243,7 +236,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-   
     public Boolean addServiceToUser(Integer userId, Service service) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -252,7 +244,6 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
- 
     public Boolean removeServiceForUser(Integer userId, Service service, Boolean forced) {
         UserTable user = getUser(userId);
         if (user != null) {
@@ -260,7 +251,5 @@ public class UserDaoImpl implements UserInterFace {
         }
         return null;
     }
-
-   
 
 }
