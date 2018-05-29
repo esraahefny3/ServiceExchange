@@ -7,10 +7,11 @@ package com.service_exchange.api_services.bussinesslayer;
 
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.UserTable;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class UserService{
     @Autowired
     private UserDaoImpl daoImpl;
+
     public UserTable createUser(UserTable user) {
     return daoImpl.createUser(user);
     }

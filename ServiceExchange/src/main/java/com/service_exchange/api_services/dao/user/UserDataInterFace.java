@@ -6,11 +6,8 @@
 package com.service_exchange.api_services.dao.user;
 
 import com.service_exchange.entities.UserTable;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,Integer>{
-   
-    Page<UserTable> findByNameContains(String name ,Pageable page );
+
+    Page<UserTable> findByNameContains(String name, Pageable page);
 }

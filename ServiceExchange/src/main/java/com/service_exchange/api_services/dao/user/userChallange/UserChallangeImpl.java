@@ -8,14 +8,17 @@ package com.service_exchange.api_services.dao.user.userChallange;
 import com.service_exchange.api_services.dao.user.UserInterFace;
 import com.service_exchange.entities.Challenge;
 import com.service_exchange.entities.UserTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Altysh
  */
+@Component
 public class UserChallangeImpl implements UserChallangeInterFace {
 
     @Autowired

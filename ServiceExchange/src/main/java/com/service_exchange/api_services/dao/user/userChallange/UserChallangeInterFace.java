@@ -6,7 +6,7 @@
 package com.service_exchange.api_services.dao.user.userChallange;
 
 import com.service_exchange.entities.Challenge;
-import com.service_exchange.entities.Service;
+
 import java.util.List;
 
 /**
@@ -14,9 +14,10 @@ import java.util.List;
  * @author Altysh
  */
 public interface UserChallangeInterFace {
-     
+
     List<Challenge> getAllChallangeForUser(Integer userId);
-       Boolean addChallangeToUser(Integer chId, Integer userId);
+
+    Boolean addChallangeToUser(Integer chId, Integer userId);
 
     Boolean removeChallangeToUser(Integer chId, Integer userId);
 }
