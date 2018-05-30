@@ -5,13 +5,16 @@
  */
 package com.service_exchange.api_services.bussinesslayer;
 
+import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesInterface;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
+import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 
 /**
  *
@@ -54,6 +57,50 @@ public class UserService{
    return daoImpl.scerchUserByName(name,start);
     }
 
+
+    //---user badge
+     @Autowired 
+    private UserBadgesInterface userBadgesInterface;
+    
+     private int pageSize=20;
+     
+     
+    public List<Badge> getAllUserBadges(Integer userId)
+    {
+        if(userId!=null)
+        {
+            UserTable userNew=userBadgesInterface.checkIfUserExist(userId);
+            if(userNew!=null)
+            {
+                return userBadgesInterface.getAllUserBadges(userNew);
+            }
+        }
+         return null;
+     
+    }
+   public List<Badge> getAllUserBadges(Integer userId, Integer pageNum){
+       if(userId!=null&& pageNum!=null)
+        {
+            UserTable userNew=userBadgesInterface.checkIfUserExist(userId);
+            if(userNew!=null)
+            {
+                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
+            }
+        }
+         return null;
+   }
+   public boolean assignBadgeToUser(UserTable user,Badge badge){
+       if(user!=null &&user.getId()!=null&&badge!=null&&badge.getId()!=null)
+       {
+           return userBadgesInterface.assignBadgeToUser(user, badge);
+       }
+       else
+       {
+           return false;
+       }
+   }
+   
+    //--user badge
 
 
   

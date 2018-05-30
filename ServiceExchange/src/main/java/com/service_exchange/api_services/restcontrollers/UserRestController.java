@@ -6,11 +6,13 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.UserService;
+import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.PageToListConverter;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,4 +59,29 @@ public class UserRestController {
 //        return service.removeChallangeToUser(json.get("challangeId"), json.get("userId"));
 //    }
 
+     //---userBadge services
+    
+    @RequestMapping(value = "/getAllUserBadges/{userId}", method = RequestMethod.GET)
+    private List<Badge> getAllUserBadges(@PathVariable Integer userId) {
+        
+        return service.getAllUserBadges(userId);
+    }
+    
+    @RequestMapping(value = "/getAllUserBadges/{userId}/{pageNum}", method = RequestMethod.GET)
+    private List<Badge> getAllUserBadges(@PathVariable Integer userId,@PathVariable Integer pageNum) {
+        
+        return service.getAllUserBadges(userId,pageNum);    
+    }
+    
+    @RequestMapping(value = "/assignBadgeToUser", method = RequestMethod.POST)
+    private boolean assignBadgeToUser(@RequestBody Map<String, Object> json) {
+
+        //l hyb3t hyb3t json feh 2 objects wa7ed b asm user wl tany b asm badge
+//        UserTable user= (UserTable) json.get("user");
+//        Badge badge=(Badge) json.get("badge");
+//        return service.assignBadgeToUser(user, badge);
+return false;
+    }
+    
+     //---userBadge services
 }
