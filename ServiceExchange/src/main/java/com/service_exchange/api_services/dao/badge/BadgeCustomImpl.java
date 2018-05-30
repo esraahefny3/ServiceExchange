@@ -7,12 +7,16 @@ package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author esraa
  */
-public interface BadgeCustomInterface {
 
+@Component
+public class BadgeCustomImpl implements BadgeCustomInterface{
+   
 }

@@ -10,6 +10,7 @@ import com.service_exchange.entities.Badge;
 import com.service_exchange.utal.PageToListConverter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class BadgeController {
     private Integer pageSize=20;
     
     @RequestMapping(value = "/getBadge/{id}", method = RequestMethod.GET)
-    public Badge getBadge(@PathVariable("id") int id) {
+    public Badge getBadge(@PathVariable("id") Integer id) {
 
                return badgeService.getBadge(id);
            
@@ -93,8 +94,14 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/getAllBadges/{pageNum}", method = RequestMethod.GET)
-    public List<Badge> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
-        return PageToListConverter.convertList(badgeService.getAllBadge(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
+    public Page<Badge> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
+       // return PageToListConverter.convertPageToList(badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
+        return badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
+    }
+    
+     @RequestMapping(value = "/getAllBadges", method = RequestMethod.GET)
+    public Iterable<Badge> getAllBadges() {
+        return badgeService.getAllBadges();
     }
     
     @RequestMapping(value = "/hii", method = RequestMethod.GET)
