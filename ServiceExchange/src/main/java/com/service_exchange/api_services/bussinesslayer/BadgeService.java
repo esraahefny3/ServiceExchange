@@ -5,7 +5,8 @@
  */
 package com.service_exchange.api_services.bussinesslayer;
 
-import com.service_exchange.api_services.dao.badge.BadgeCustomDAOImpl;
+import com.service_exchange.api_services.bussinessdaodelegates.badgedelegate.BadgeDelegateInterface;
+import com.service_exchange.api_services.dao.badge.BadgeCustomImpl;
 import com.service_exchange.api_services.dao.badge.BadgeDataInterface;
 import com.service_exchange.entities.Badge;
 import java.util.Optional;
@@ -22,35 +23,48 @@ import org.springframework.stereotype.Component;
 public class BadgeService {
     
     @Autowired
-    private BadgeCustomDAOImpl badgeCustomDAOImpl;
+    private BadgeDelegateInterface badgeDelegateInterface;
     
-    @Autowired
-    private BadgeDataInterface badgeDataInterface;
+
     
-    public Badge getBadge(int id)
+    public Badge getBadge(Integer id)
     { 
-        Optional<Badge>retrievedBadge= badgeDataInterface.findById(id);
-        if (retrievedBadge.isPresent())
-        {
-            return retrievedBadge.get();
-        }
-        else
-        {
-            return null;
-        }
+       if(id!=null)
+       {
+           return badgeDelegateInterface.getBadge(id);
+       }
+       else
+       {
+           return null;
+       }
     }
     
     public Badge  createBadge(Badge badge)
     { 
-        return badgeDataInterface.save(badge); 
+        if(badge!=null&&badge.getId()!=null)
+        {
+            if(badgeDelegateInterface.checkIfBadgeExist(badge)==false)
+            {
+                return badgeDelegateInterface.createBadge(badge);
+            }
+            else
+            {
+                return null;
+            }
+        }
+       else
+       {
+           return badgeDelegateInterface.createBadge(badge);
+       }
     }
     
     public boolean deleteBadge(Badge badge)
     {
-        try{
-            badgeDataInterface.delete(badge);
-            return true;
-        }catch(Exception e)
+        if(badge!=null&&badge.getId()!=null)
+        {
+            return badgeDelegateInterface.deleteBadge(badge);
+        }
+        else
         {
             return false;
         }
@@ -58,19 +72,31 @@ public class BadgeService {
     
     public Badge updateBadge(Badge badge)
     {
-        if(badgeDataInterface.existsById(badge.getId()))
+       if(badge!=null&&badge.getId()!=null)
         {
-            return badgeDataInterface.save(badge);
+        return badgeDelegateInterface.updateBadge(badge);
         }
-        else
-        {
+       else
+       {
            return null;
-        }
+       }
     }
     
      
-    public Page<Badge> getAllBadge(Pageable page)
+    public Page<Badge> getAllBadges(Pageable page)
     {
-       return  badgeDataInterface.findAll(page);
+        if(page!=null)
+        {
+            return  badgeDelegateInterface.getAllBadges(page);
+        }
+        else
+        {
+            return null;
+        }
+                
+    }
+    public Iterable<Badge> getAllBadges()
+    {
+         return  badgeDelegateInterface.getAllBadges();
     }
 }
