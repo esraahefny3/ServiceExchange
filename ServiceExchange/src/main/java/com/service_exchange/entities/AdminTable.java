@@ -5,19 +5,13 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
@@ -45,16 +39,22 @@ public class AdminTable implements Serializable {
     private String password;
     @Column(name = "image")
     private String image;
+    @JsonIgnore
     @OneToMany(mappedBy = "addedBy")
     private Collection<Badge> badgeCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "sentBy")
     private Collection<Notification> notificationCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminAuthority> adminAuthorityCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminTelephone> adminTelephoneCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "reviewedBy")
     private Collection<Complaint> complaintCollection;
+    @JsonIgnore
     @OneToMany(mappedBy = "addedBy")
     private Collection<Challenge> challengeCollection;
 
