@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- *
  * @author Altysh
  */
 @Component
@@ -51,6 +50,13 @@ public class UserDaoImpl implements UserInterFace {
 
     @Override
     public UserTable createUser(UserTable user) {
+        if (user.getAccountId() != null) {
+
+            UserTable userTable = dataInterface.findByAccountIdEquals(user.getAccountId());
+
+            if (userTable != null)
+                return userTable;
+        }
 
         return dataInterface.save(user);
     }
@@ -83,7 +89,6 @@ public class UserDaoImpl implements UserInterFace {
         return dataInterface.findByNameContains(name, PageRequest.of(start, start + 20));
 
     }
-
 
 
     @Override

@@ -5,25 +5,13 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
@@ -53,13 +41,16 @@ public class Skill implements Serializable {
     @Column(name = "is_verified")
     private Integer isVerified;
     @ManyToMany(mappedBy = "skillCollection")
+    @JsonIgnore
     private Collection<Service> serviceCollection;
     @JoinTable(name = "user_skill", joinColumns = {
         @JoinColumn(name = "skill_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")})
     @ManyToMany
+    @JsonIgnore
     private Collection<UserTable> userTableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "skill")
+    @JsonIgnore
     private Collection<ReviewSkill> reviewSkillCollection;
     @OneToMany(mappedBy = "parentSkillId")
     private Collection<Skill> skillCollection;

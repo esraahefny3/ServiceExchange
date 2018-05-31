@@ -7,14 +7,13 @@ package com.service_exchange.api_services.dao.badge;
 
 import com.service_exchange.entities.Badge;
 import org.springframework.data.repository.PagingAndSortingRepository;
-
 import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author esraa
  */
-@Repository 
+@Repository
 public interface BadgeDataInterface extends  PagingAndSortingRepository<Badge,Integer>  {
   
 }
