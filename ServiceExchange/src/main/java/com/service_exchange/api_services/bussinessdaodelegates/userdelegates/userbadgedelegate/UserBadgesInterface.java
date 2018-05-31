@@ -10,11 +10,13 @@ import com.service_exchange.entities.UserBadge;
 import com.service_exchange.entities.UserTable;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Altysh
  */
+
 public interface UserBadgesInterface {
    public UserTable checkIfUserExist(Integer userId); 
     public List<Badge> getAllUserBadges(UserTable user);
