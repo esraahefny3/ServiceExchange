@@ -5,7 +5,6 @@
  */
 package com.service_exchange.api_services.bussinesslayer;
 
-import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesInterface;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
 
 /**
  *
@@ -60,7 +60,7 @@ public class UserService{
 
     //---user badge
     // @Autowired
-    private UserBadgesInterface userBadgesInterface;
+    private UserBadgesSelegateInterface userBadgesInterface;
     
      private int pageSize=20;
      

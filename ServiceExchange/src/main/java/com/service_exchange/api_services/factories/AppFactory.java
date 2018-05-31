@@ -5,6 +5,9 @@
  */
 package com.service_exchange.api_services.factories;
 
+import com.service_exchange.entities.AdminTable;
+import com.service_exchange.entities.Complaint;
+import com.service_exchange.entities.UserTable;
 import javax.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +31,20 @@ public class AppFactory {
    public static <T,M> M mapToDto(T t,Class<M> m)
    {
        return (M)appFactory.modelMapper.map(t, m);
+   }
+   
+   public static Complaint getComplaintInstance()
+   {
+       return new Complaint();
+   }
+   
+   public static UserTable getUserTableInstance()
+   {
+       return new UserTable();
+   }
+   
+   public static AdminTable getAdminTableInstance()
+   {
+       return new AdminTable();
    }
 }

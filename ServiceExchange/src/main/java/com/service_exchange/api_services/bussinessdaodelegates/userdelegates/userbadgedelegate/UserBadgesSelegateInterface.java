@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author Altysh
  */
 
-public interface UserBadgesInterface {
+public interface UserBadgesSelegateInterface {
    public UserTable checkIfUserExist(Integer userId); 
     public List<Badge> getAllUserBadges(UserTable user);
    public List<Badge> getAllUserBadges(UserTable user, Pageable page);

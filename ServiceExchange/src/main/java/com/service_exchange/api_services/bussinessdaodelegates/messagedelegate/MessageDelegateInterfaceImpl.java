@@ -5,10 +5,16 @@
  */
 package com.service_exchange.api_services.bussinessdaodelegates.messagedelegate;
 
+import com.service_exchange.api_services.dao.complaint.ComplaintDaoInterface;
 import com.service_exchange.api_services.dao.message.MessageInterface;
+import com.service_exchange.api_services.dao.message.messagedtos.MessageComplaintDto;
 import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
+import com.service_exchange.api_services.dao.message.messagedtos.MessageTransactionDto;
+import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
+import com.service_exchange.entities.AdminTable;
+import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
 import com.service_exchange.entities.UserTable;
 import java.util.List;
@@ -28,9 +34,13 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     
     @Autowired 
     private UserDataInterFace userDataInterface;
+//    
+//    @Autowired
+//    private ComplaintDaoInterface complaintDaoInterfaceImpl;
+//    
+//    @Autowired
+//    private TransactionDaoInterface transactionDaoInterfaceImpl;
     
-    @Autowired
-    private ModelMapper modelMapper;
 //    public Message returnMessage(Integer messageId){
 //        
 //        return messageInterface.findById(messageId).get();
@@ -63,33 +73,57 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     }
 
     @Override
-    public List<Message> getAllPrivateChatMessages(Integer user1Id, Integer user2Id, Integer pageNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<MessagePrivateDto> getAllPrivateChatMessages(Integer user1Id, Integer user2Id, Integer pageNum) {
+   
+        try{
+       return messageInterface.findAllPrivateChatMessages(user1Id, user2Id, pageNum);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public Message userSendComplaintMessage(Integer senderId, Integer ComplaintId, Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer complaintId, Message message) {
+       // Complaint complaint=
+//       Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
+//       message.setComplaintId(complaint);
+//       
+//       UserTable sender=AppFactory.getUserTableInstance();
+//       sender.setId(senderId);
+//       message.setSenderId(sender);
+//       
+//       AdminTable receiver=AppFactory.getAdminTableInstance();
+//       receiver.setEmail(complaint.getReviewedBy().getEmail());
+//       message.setr
+       
+       return AppFactory.mapToDto(message, MessageComplaintDto.class);
     }
 
     @Override
-    public Message adminSendComplaintMessage(Integer adminId, Integer ComplaintId, Message message) {
+    public MessageComplaintDto adminSendComplaintMessage(Integer adminId, Integer ComplaintId, Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //lsaaaa lma a3ml l complaint dao
+    
     }
 
     @Override
-    public List<Message> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
+     return messageInterface.getAllComplaintMessages(complaintId, pageNum);
     }
 
     @Override
-    public Message sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
+   
+     //lsaaaa lma a3ml l complaint dao
+    return null;
     }
 
     @Override
-    public List<Message> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
+        return messageInterface.getAllTransactionMessages(transactionId, pageNum);
+    
     }
     
 }

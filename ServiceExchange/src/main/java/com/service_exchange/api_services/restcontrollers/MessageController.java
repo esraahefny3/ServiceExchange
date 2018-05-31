@@ -12,6 +12,7 @@ import com.service_exchange.api_services.bussinesslayer.messagebussiness.Message
 import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.Message;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,41 +29,36 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class MessageController {
-   
-    
+
     @Autowired
     private MessageServiceInterface messageServiceInterfaceImpl;
-    
-    private Integer pageSize=20;
-    
-//    @RequestMapping(value = "/getMessage/{id}", method = RequestMethod.GET)
-//   public Message getBadge(@PathVariable("id") Integer id) {
-//
-//               return messageDelegateInterface.returnMessage(id);
-//           
-//    }
-    
-    
-    @RequestMapping(value = "/sendPrivateMessage", method = RequestMethod.POST)
-    public MessagePrivateDto sendPrivateMessage(@RequestBody Map<String,Object> dataMap) {
 
-        if(dataMap !=null)
-        {
-           Integer senderId=(Integer) dataMap.get("senderId");
-           Integer recieverId=(Integer) dataMap.get("recieverId"); 
-           
-           //b7wl l obj fl map lno3o
-           ObjectMapper mapper = new ObjectMapper();
-           Message message=mapper.convertValue(dataMap.get("message"), Message.class) ;
-           if(senderId!=null&&recieverId!=null&&message!=null)
-           {
-               return messageServiceInterfaceImpl.sendPrivateMessage(senderId, recieverId, message);
-           }
+    private Integer pageSize = 20;
+
+    @RequestMapping(value = "/sendPrivateMessage", method = RequestMethod.POST)
+    public MessagePrivateDto sendPrivateMessage(@RequestBody Map<String, Object> dataMap) {
+
+        if (dataMap != null) {
+            Integer senderId = (Integer) dataMap.get("senderId");
+            Integer recieverId = (Integer) dataMap.get("recieverId");
+
+            //b7wl l obj fl map lno3o
+            ObjectMapper mapper = new ObjectMapper();
+            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+            if (senderId != null && recieverId != null && message != null) {
+                return messageServiceInterfaceImpl.sendPrivateMessage(senderId, recieverId, message);
+            }
         }
-        
-            return null;
+
+        return null;
     }
-    
-    
+
+    @RequestMapping(value = "/getAllPrivateChatMessages/{user1Id}/{user2Id}/{pageNum}", method = RequestMethod.GET)
+    public List<MessagePrivateDto> getAllPrivateChatMessages(@PathVariable("user1Id") Integer user1Id, @PathVariable("user2Id") Integer user2Id, @PathVariable("pageNum") Integer pageNum) {
+        if (user1Id != null && user2Id != null && pageNum != null) {
+            return messageServiceInterfaceImpl.getAllPrivateChatMessages(user1Id, user2Id, pageNum);
+        }
+        return null;
+    }
 
 }

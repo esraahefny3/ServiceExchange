@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author esraa
  */
 @Component
-public class UserBadgesImpl implements UserBadgesInterface {
+public class UserBadgesDelegateImpl implements UserBadgesSelegateInterface {
 
     @Autowired
     private UserDataInterFace userDataInterface;
