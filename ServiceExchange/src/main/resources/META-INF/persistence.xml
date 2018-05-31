@@ -6,12 +6,12 @@
     <class>com.service_exchange.entities.UserEmail</class>
     <class>com.service_exchange.entities.Education</class>
     <class>com.service_exchange.entities.ReviewSkill</class>
-    <class>com.service_exchange.entities.Transaction</class>
+    <class>com.service_exchange.entities.TransactionInfo</class>
     <class>com.service_exchange.entities.Complaint</class>
     <class>com.service_exchange.entities.Badge</class>
     <class>com.service_exchange.entities.AdminAuthority</class>
     <class>com.service_exchange.entities.UserAuthority</class>
-    <class>com.service_exchange.entities.User</class>
+    <class>com.service_exchange.entities.UserTable</class>
     <class>com.service_exchange.entities.AdminTelephone</class>
     <class>com.service_exchange.entities.UserTelephone</class>
     <class>com.service_exchange.entities.Challenge</class>
@@ -19,7 +19,7 @@
     <class>com.service_exchange.entities.Review</class>
     <class>com.service_exchange.entities.Service</class>
     <class>com.service_exchange.entities.Notification</class>
-    <class>com.service_exchange.entities.Admin</class>
+    <class>com.service_exchange.entities.AdminTable</class>
     <class>com.service_exchange.entities.UserBadge</class>
     <class>com.service_exchange.entities.Message</class>
     <class>com.service_exchange.entities.UserNotification</class>

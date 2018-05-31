@@ -20,7 +20,7 @@ import java.util.List;
  * @author esraa
  */
 @Component
-public class UserBadgesImpl implements UserBadgesInterface{
+public class User_Badges_Impl_Mubarak implements UserBadgesInterface {
 
     @Autowired
     private UserDataInterFace userDataInterface;
