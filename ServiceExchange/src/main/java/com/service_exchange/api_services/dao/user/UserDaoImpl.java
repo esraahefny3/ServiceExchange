@@ -74,7 +74,6 @@ public class UserDaoImpl implements UserInterFace {
 
     public List<UserTable> getAllUser() {
         List<UserTable> list = new LinkedList<>();
-        // System.out.println(t.getComplaintCollection());
         dataInterface.findAll().forEach(list::add);
         return list;
     }

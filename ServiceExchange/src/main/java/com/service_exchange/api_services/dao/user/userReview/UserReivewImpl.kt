@@ -22,7 +22,7 @@ class UserReivewImpl : UserReviewInterFace {
     lateinit var userInterface: UserInterFace;
 
     override fun addReviewToUser(userId: Int?, review: Review?): Boolean? {
-        return userInterface.getUser(userId).addReview(review)
+        return userInterface.getUser(userId)?.addReview(review)
     }
 
 
