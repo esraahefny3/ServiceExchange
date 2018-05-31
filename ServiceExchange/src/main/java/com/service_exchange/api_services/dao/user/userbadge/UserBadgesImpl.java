@@ -9,16 +9,17 @@ import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserBadge;
 import com.service_exchange.entities.UserTable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *
  * @author esraa
  */
+@Component
 public class UserBadgesImpl implements UserBadgesInterface{
 
     @Autowired

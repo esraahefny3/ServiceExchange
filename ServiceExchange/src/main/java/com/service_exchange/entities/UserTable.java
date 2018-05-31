@@ -6,24 +6,13 @@
 package com.service_exchange.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -313,9 +302,17 @@ public class UserTable implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserTable[ id=" + id + " ]";
+        return "UserTable{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", status='" + status + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", accountType='" + accountType + '\'' +
+                '}';
     }
-        
+
     public Boolean addChallange(Integer ch) {
         UserChallenge uc = new UserChallenge(id, ch);
         if (!userChallengeCollection.contains(uc)) {

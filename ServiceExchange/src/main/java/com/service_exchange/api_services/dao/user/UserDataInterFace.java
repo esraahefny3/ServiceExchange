@@ -9,14 +9,16 @@ import com.service_exchange.entities.UserTable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Altysh
  */
-@Component
+@Repository
 public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,Integer>{
 
     Page<UserTable> findByNameContains(String name, Pageable page);
+
+    UserTable findByAccountIdEquals(String accountId);
 }

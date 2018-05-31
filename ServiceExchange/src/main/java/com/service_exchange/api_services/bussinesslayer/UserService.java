@@ -11,10 +11,10 @@ import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import org.springframework.data.domain.PageRequest;
 
 /**
  *
@@ -59,7 +59,7 @@ public class UserService{
 
 
     //---user badge
-     @Autowired 
+    // @Autowired
     private UserBadgesInterface userBadgesInterface;
     
      private int pageSize=20;
