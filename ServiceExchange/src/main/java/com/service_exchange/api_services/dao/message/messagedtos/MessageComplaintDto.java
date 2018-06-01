@@ -19,7 +19,7 @@ public class MessageComplaintDto {
     private String text;
     private String attachment;
     private Date date;
-    private Complaint complaintId;
+    private Integer complaintId;
     private Integer receiverId;
     private Integer senderId;
 
@@ -55,11 +55,11 @@ public class MessageComplaintDto {
         this.date = date;
     }
 
-    public Complaint getComplaintId() {
+    public Integer getComplaintId() {
         return complaintId;
     }
 
-    public void setComplaintId(Complaint complaintId) {
+    public void setComplaintId(Integer complaintId) {
         this.complaintId = complaintId;
     }
 
@@ -79,6 +79,7 @@ public class MessageComplaintDto {
         this.senderId = senderId;
     }
 
+  
  
     
 }

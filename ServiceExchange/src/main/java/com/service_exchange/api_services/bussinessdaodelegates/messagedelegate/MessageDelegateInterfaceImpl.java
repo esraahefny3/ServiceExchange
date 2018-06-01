@@ -16,6 +16,7 @@ import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
+import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -35,11 +36,11 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     @Autowired 
     private UserDataInterFace userDataInterface;
 //    
-//    @Autowired
-//    private ComplaintDaoInterface complaintDaoInterfaceImpl;
-//    
-//    @Autowired
-//    private TransactionDaoInterface transactionDaoInterfaceImpl;
+    @Autowired
+    private ComplaintDaoInterface complaintDaoInterfaceImpl;
+    
+    @Autowired
+    private TransactionDaoInterface transactionDaoInterfaceImpl;
     
 //    public Message returnMessage(Integer messageId){
 //        
@@ -86,38 +87,81 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
 
     @Override
     public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer complaintId, Message message) {
-       // Complaint complaint=
-//       Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
-//       message.setComplaintId(complaint);
-//       
-//       UserTable sender=AppFactory.getUserTableInstance();
-//       sender.setId(senderId);
-//       message.setSenderId(sender);
-//       
-//       AdminTable receiver=AppFactory.getAdminTableInstance();
-//       receiver.setEmail(complaint.getReviewedBy().getEmail());
-//       message.setr
-       
-       return AppFactory.mapToDto(message, MessageComplaintDto.class);
+       try{System.err.println("hna");
+           Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
+           UserTable sender=userDataInterface.findById(senderId).get();
+       if(complaint!=null&&sender!=null&&senderId==complaint.getUserId().getId())
+       {System.err.println("hna1");
+           message.setSenderId(sender);
+           message.setComplaintId(complaint);
+           Message messageTemp=messageInterface.save(message);
+           MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(messageTemp, MessageComplaintDto.class);
+           messageComplaintDto.setComplaintId(complaintId);
+           messageComplaintDto.setSenderId(senderId);
+           return messageComplaintDto;
+       }
+         return null;
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
 
     @Override
-    public MessageComplaintDto adminSendComplaintMessage(Integer adminId, Integer ComplaintId, Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //lsaaaa lma a3ml l complaint dao
-    
+    public MessageComplaintDto adminSendComplaintMessage(Integer complaintId, Message message) {
+         try{
+           Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
+      if(complaint!=null)
+       {
+           message.setComplaintId(complaint);
+           message=messageInterface.save(message);
+           MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(message, MessageComplaintDto.class);
+           messageComplaintDto.setComplaintId(complaintId);
+           return messageComplaintDto;
+       }
+         return null;
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
 
     @Override
     public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
-     return messageInterface.getAllComplaintMessages(complaintId, pageNum);
+         return messageInterface.getAllComplaintMessages(complaintId, pageNum);
     }
 
     @Override
-    public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
+    public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer transactionId) {
    
-     //lsaaaa lma a3ml l complaint dao
-    return null;
+        try{
+        TransactionInfo transactionInfo=transactionDaoInterfaceImpl.findById(transactionId).get();
+        UserTable sender=userDataInterface.findById(senderId).get();
+        UserTable receiver=userDataInterface.findById(recieverId).get();
+        if(sender!=null &&receiver!=null&&transactionInfo!=null
+                &&checkUsersInTransaction(senderId,recieverId,transactionInfo)==true)
+        {
+            message.setSenderId(sender);
+            message.setReceiverId(receiver);
+            message.setTransactionId(transactionInfo);
+            message=messageInterface.save(message);
+            MessageTransactionDto messageTransactionDto=AppFactory.mapToDto(message, MessageTransactionDto.class);
+            messageTransactionDto.setSenderId(senderId);
+            messageTransactionDto.setReceiverId(recieverId);
+            messageTransactionDto.setTransactionId(transactionId);
+            return messageTransactionDto;
+        }
+        return null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -126,4 +170,13 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     
     }
     
+    private boolean checkUsersInTransaction(Integer senderId,Integer receiverId,TransactionInfo transactionInfo)
+    {
+        if((senderId!=receiverId)&&(transactionInfo.getStartedBy().getId()==senderId||transactionInfo.getStartedBy().getId()==receiverId)
+                && (transactionInfo.getServiceId().getMadeBy().getId()==senderId||transactionInfo.getServiceId().getMadeBy().getId()==receiverId))
+        {
+            return true;
+        }
+        return false;
+    }
 }

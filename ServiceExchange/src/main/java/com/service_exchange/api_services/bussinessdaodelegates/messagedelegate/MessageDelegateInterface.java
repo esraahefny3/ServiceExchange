@@ -21,7 +21,7 @@ public interface MessageDelegateInterface {
     public List <MessagePrivateDto>getAllPrivateChatMessages(Integer user1Id,Integer user2Id,Integer pageNum);
     
     public MessageComplaintDto userSendComplaintMessage(Integer senderId,Integer ComplaintId,Message message);
-    public MessageComplaintDto adminSendComplaintMessage(Integer adminId,Integer ComplaintId,Message message);
+    public MessageComplaintDto adminSendComplaintMessage(Integer complaintId, Message message);
     public List <MessageComplaintDto>getAllComplaintMessages(Integer complaintId,Integer pageNum);
   
     public MessageTransactionDto sendTransactionMessage(Integer senderId ,Integer recieverId,Message message,Integer TransactionId);

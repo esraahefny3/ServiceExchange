@@ -36,27 +36,27 @@ public class MessagService implements MessageServiceInterface{
 
     @Override
     public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer ComplaintId, Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return messageDelegateInterface.userSendComplaintMessage(senderId, ComplaintId, message);
     }
 
     @Override
-    public MessageComplaintDto adminSendComplaintMessage(Integer adminId, Integer ComplaintId, Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MessageComplaintDto adminSendComplaintMessage( Integer ComplaintId, Message message) {
+       return messageDelegateInterface.adminSendComplaintMessage(ComplaintId, message);
     }
 
     @Override
     public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return messageDelegateInterface.getAllComplaintMessages(complaintId, pageNum);
     }
 
     @Override
     public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
     }
 
     @Override
     public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum);
     }
      
 }
