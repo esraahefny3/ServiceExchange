@@ -10,6 +10,7 @@ import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Education;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,16 +50,21 @@ public class UserDaoImpl implements UserInterFace {
     }
 
     @Override
-    public UserTable createUser(UserTable user) {
-        if (user.getAccountId() != null) {
+    public UserTable createUser(@Nullable UserTable user) {
+        if (user != null && user.getAccountId() != null) {
 
             UserTable userTable = dataInterface.findByAccountIdEquals(user.getAccountId());
 
-            if (userTable != null)
+            if (userTable != null) {
+                userTable.setFrist(false);
                 return userTable;
+            }
+            userTable = dataInterface.save(user);
+            userTable.setFrist(true);
+            return userTable;
         }
 
-        return dataInterface.save(user);
+        return null;
     }
 
     @Override

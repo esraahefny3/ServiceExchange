@@ -5,6 +5,7 @@ import com.service_exchange.entities.EducationPK
 import com.service_exchange.entities.UserTable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -17,6 +18,7 @@ interface UserEducationInterface {
     fun getEducation(educationId: Int, userId: Int): Education?
 }
 
+@Component
 private class UserEducationImpl : UserEducationInterface {
 
     @Autowired
