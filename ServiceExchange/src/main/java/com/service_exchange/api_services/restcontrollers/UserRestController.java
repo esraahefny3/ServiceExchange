@@ -132,10 +132,10 @@ return false;
         return service.removeEmail(email, userId);
     }
 
-    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
-    private Boolean removeSkill(@RequestBody Integer skillId, @RequestBody Integer userId) {
-        return service.removeSkill(skillId, userId);
-    }
+//    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+//    private Boolean removeSkill(@RequestBody Integer skillId, @RequestBody Integer userId) {
+//        return service.removeSkill(skillId, userId);
+//    }
 
     @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
     private Boolean removeService(@RequestBody Integer serviceId, @RequestBody Integer userId, @RequestBody Boolean forced) {
