@@ -11,6 +11,7 @@ import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.api_services.dao.dto.SkillDTO;
 import com.service_exchange.api_services.dao.dto.UserDTO;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
+import com.service_exchange.api_services.delegte.UserDataDelete;
 import com.service_exchange.api_services.delegte.UserDataGet;
 import com.service_exchange.api_services.delegte.UserDataSet;
 import com.service_exchange.entities.Badge;
@@ -69,8 +70,7 @@ public class UserService{
     private UserBadgesSelegateInterface userBadgesInterface;
 
     private int pageSize=20;
-    @Autowired
-    private UserDataSet userDataSet;
+
    public List<Badge> getAllUserBadges(Integer userId, Integer pageNum){
        if(userId!=null&& pageNum!=null)
         {
@@ -109,6 +109,11 @@ public class UserService{
 
     }
 
+    //mubarak//
+    @Autowired
+    private UserDataSet userDataSet;
+    @Autowired
+    private UserDataDelete userDataDelete;
     public UserDTO logInORSignUp(UserDTO userDTO) {
         return userDataGet.loginOrSignUp(userDTO);
     }
@@ -136,6 +141,22 @@ public class UserService{
 
     public Boolean addTelephone(String telephone, Integer userId) {
         return userDataSet.addTelephonToUser(telephone, userId);
+    }
+
+    public Boolean removeTelephone(String telephone, Integer userId) {
+        return userDataDelete.removeTelePhoneFormUser(telephone, userId);
+    }
+
+    public Boolean removeEmail(String email, Integer userId) {
+        return userDataDelete.removeEmailFormUser(email, userId);
+    }
+
+    public Boolean removeSkill(Integer skillId, Integer userId) {
+        return userDataDelete.removeSkillFormUser(skillId, userId);
+    }
+
+    public Boolean removeService(Integer service, Integer userId, Boolean forced) {
+        return userDataDelete.removeServiceToUser(userId, service, forced);
     }
 
 

@@ -92,7 +92,6 @@ return false;
 
         return service.logInORSignUp(user);
     }
-
     @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
     private List<ServiceDTO> getUserServices(@RequestParam Integer userId) {
         return service.getUserService(userId);
@@ -106,6 +105,41 @@ return false;
     @RequestMapping(value = "/getUserEducation", method = RequestMethod.GET)
     private List<EdcationDTO> getUserEducation(@RequestParam Integer userId) {
         return service.getUserEdcation(userId);
+    }
+
+    @RequestMapping(value = "/addEmail", method = RequestMethod.POST)
+    private Boolean addEmail(@RequestBody Integer userId, @RequestBody String email) {
+        return service.addEmail(email, userId);
+    }
+
+    @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
+    private Boolean addSkill(@RequestBody Integer userId, @RequestBody SkillDTO skillDTO) {
+        return service.addSkill(skillDTO, userId);
+    }
+
+    @RequestMapping(value = "/addTelephone", method = RequestMethod.POST)
+    private Boolean addTelephone(@RequestBody Integer userId, @RequestBody String telephone) {
+        return service.addTelephone(telephone, userId);
+    }
+
+    @RequestMapping(value = "/removeTelephone", method = RequestMethod.POST)
+    private Boolean removeTelephone(@RequestBody String telephone, @RequestBody Integer userId) {
+        return service.removeTelephone(telephone, userId);
+    }
+
+    @RequestMapping(value = "/removeEmail", method = RequestMethod.POST)
+    private Boolean removeEmail(@RequestBody String email, @RequestBody Integer userId) {
+        return service.removeEmail(email, userId);
+    }
+
+    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+    private Boolean removeSkill(@RequestBody Integer skillId, @RequestBody Integer userId) {
+        return service.removeSkill(skillId, userId);
+    }
+
+    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+    private Boolean removeService(@RequestBody Integer serviceId, @RequestBody Integer userId, @RequestBody Boolean forced) {
+        return service.removeService(serviceId, userId, forced);
     }
 
     //mubarak//
