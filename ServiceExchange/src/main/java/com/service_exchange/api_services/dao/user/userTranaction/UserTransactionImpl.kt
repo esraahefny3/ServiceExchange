@@ -13,8 +13,8 @@ class UserTransactionImpl : UserTransactionInterFace {
     lateinit var userInterface: UserInterFace;
 
     override fun getSuccsfullTransaction(userId: Int?): MutableList<TransactionInfo> =
-            userInterface.getUser(userId).transactionInfoCollection.stream().filter(Predicate { t -> t.state == onSuccess })
-                    .collect(Collectors.toList())
+            userInterface.getUser(userId)?.transactionInfoCollection?.stream()?.filter(Predicate { t -> t.state == onSuccess })
+                    ?.collect(Collectors.toList()) ?: mutableListOf()
 
     override fun getWorkingDuration(userId: Int?): Long? =
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()
