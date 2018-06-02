@@ -8,10 +8,13 @@ package com.service_exchange.api_services.factories;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.UserTable;
-import javax.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  *
@@ -23,8 +26,16 @@ public class AppFactory {
    private static AppFactory appFactory;
    @Autowired
     private  ModelMapper modelMapper;
-   
-   @PostConstruct
+
+    public ModelMapper getModelMapper() {
+        return modelMapper;
+    }
+
+    public <T, S> List<T> mapList(List<S> list, Type type) {
+        return modelMapper.map(list, type);
+    }
+
+    @PostConstruct
     public void registerInstance() {
         this.appFactory = this;
     }

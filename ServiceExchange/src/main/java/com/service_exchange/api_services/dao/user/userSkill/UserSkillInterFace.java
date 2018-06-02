@@ -6,6 +6,7 @@
 package com.service_exchange.api_services.dao.user.userSkill;
 
 import com.service_exchange.entities.Skill;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -16,7 +17,8 @@ import java.util.List;
 public interface UserSkillInterFace {
      Boolean addSkill(Skill skill, Integer userId);
 
-    Boolean deleteSkill(Skill skill, Integer userId);
-    
-       List<Skill> getUserSkill(Integer userId);
+    Boolean deleteSkill(Integer skillId, Integer userId);
+
+    @Nullable
+    List<Skill> getUserSkill(Integer userId);
 }

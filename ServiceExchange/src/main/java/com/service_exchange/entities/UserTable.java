@@ -92,6 +92,16 @@ public class UserTable implements Serializable {
     @OneToMany(mappedBy = "startedBy")
     private Collection<TransactionInfo> transactionInfoCollection;
 
+    @Transient
+    private Boolean isFrist = Boolean.TRUE;
+
+    public Boolean getFrist() {
+        return isFrist;
+    }
+
+    public void setFrist(Boolean frist) {
+        isFrist = frist;
+    }
     public UserTable() {
     }
 

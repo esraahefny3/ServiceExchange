@@ -6,17 +6,18 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.UserService;
+import com.service_exchange.api_services.dao.dto.EdcationDTO;
+import com.service_exchange.api_services.dao.dto.ServiceDTO;
+import com.service_exchange.api_services.dao.dto.SkillDTO;
+import com.service_exchange.api_services.dao.dto.UserDTO;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.PageToListConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -84,4 +85,62 @@ return false;
     }
     
      //---userBadge services
+
+    //mubarak//
+    @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
+    private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
+
+        return service.logInORSignUp(user);
+    }
+    @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
+    private List<ServiceDTO> getUserServices(@RequestParam Integer userId) {
+        return service.getUserService(userId);
+    }
+
+    @RequestMapping(value = "/getUserSkills", method = RequestMethod.GET)
+    private List<SkillDTO> getUserSkills(@RequestParam Integer userId) {
+        return service.getUserSkill(userId);
+    }
+
+    @RequestMapping(value = "/getUserEducation", method = RequestMethod.GET)
+    private List<EdcationDTO> getUserEducation(@RequestParam Integer userId) {
+        return service.getUserEdcation(userId);
+    }
+
+    @RequestMapping(value = "/addEmail", method = RequestMethod.POST)
+    private Boolean addEmail(@RequestBody Integer userId, @RequestBody String email) {
+        return service.addEmail(email, userId);
+    }
+
+    @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
+    private Boolean addSkill(@RequestBody Integer userId, @RequestBody SkillDTO skillDTO) {
+        return service.addSkill(skillDTO, userId);
+    }
+
+    @RequestMapping(value = "/addTelephone", method = RequestMethod.POST)
+    private Boolean addTelephone(@RequestBody Integer userId, @RequestBody String telephone) {
+        return service.addTelephone(telephone, userId);
+    }
+
+    @RequestMapping(value = "/removeTelephone", method = RequestMethod.POST)
+    private Boolean removeTelephone(@RequestBody String telephone, @RequestBody Integer userId) {
+        return service.removeTelephone(telephone, userId);
+    }
+
+    @RequestMapping(value = "/removeEmail", method = RequestMethod.POST)
+    private Boolean removeEmail(@RequestBody String email, @RequestBody Integer userId) {
+        return service.removeEmail(email, userId);
+    }
+
+//    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+//    private Boolean removeSkill(@RequestBody Integer skillId, @RequestBody Integer userId) {
+//        return service.removeSkill(skillId, userId);
+//    }
+
+    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+    private Boolean removeService(@RequestBody Integer serviceId, @RequestBody Integer userId, @RequestBody Boolean forced) {
+        return service.removeService(serviceId, userId, forced);
+    }
+
+    //mubarak//
 }

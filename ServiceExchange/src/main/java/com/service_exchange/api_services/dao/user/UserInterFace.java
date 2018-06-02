@@ -7,6 +7,7 @@ package com.service_exchange.api_services.dao.user;
 
 import com.service_exchange.entities.Education;
 import com.service_exchange.entities.UserTable;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -18,10 +19,13 @@ import java.util.List;
  */
 public interface UserInterFace {
 
+    @Nullable
     UserTable getUser(Integer userId);
 
+    @Nullable
     UserTable createUser(UserTable user);
 
+    @Nullable
     UserTable updateUser(UserTable user);
 
     Boolean checkEmailAvalible(Integer email);
@@ -36,6 +40,7 @@ public interface UserInterFace {
 
     Boolean removeEductaion(Education education, Integer userId);
 
+    @Nullable
     Collection<Education> getEducation(Integer userId);
 
     List getUserComplaints(Integer userId);
