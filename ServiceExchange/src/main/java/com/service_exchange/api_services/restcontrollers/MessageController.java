@@ -124,7 +124,7 @@ public class MessageController {
         return null;
     }
     
-     @RequestMapping(value = "/getAllTransactionMessages/{transactionId}/{pageNum}", method = RequestMethod.GET)
+     @RequestMapping(value = "/getAllTransactionMessages/{transactio nId}/{pageNum}", method = RequestMethod.GET)
     public List<MessageTransactionDto> getAllTransactionMessages(@PathVariable("transactionId") Integer transactionId, @PathVariable("pageNum") Integer pageNum) {
         if (transactionId != null && pageNum != null) {
             return messageServiceInterfaceImpl.getAllTransactionMessages(transactionId, pageNum);

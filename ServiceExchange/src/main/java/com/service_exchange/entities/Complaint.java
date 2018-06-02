@@ -5,6 +5,7 @@
  */
 package com.service_exchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -54,6 +55,7 @@ public class Complaint implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @OneToMany(mappedBy = "complaintId")
+    @JsonIgnore
     private Collection<Message> messageCollection;
     @JoinColumn(name = "reviewed_by", referencedColumnName = "email")
     @ManyToOne
