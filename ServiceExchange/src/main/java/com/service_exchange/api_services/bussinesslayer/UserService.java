@@ -7,13 +7,13 @@ package com.service_exchange.api_services.bussinesslayer;
 
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
 import com.service_exchange.api_services.dao.dto.EdcationDTO;
-import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.api_services.dao.dto.SkillDTO;
 import com.service_exchange.api_services.dao.dto.UserDTO;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.api_services.delegte.UserDataDelete;
 import com.service_exchange.api_services.delegte.UserDataGet;
 import com.service_exchange.api_services.delegte.UserDataSet;
+import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
