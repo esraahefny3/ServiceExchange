@@ -135,15 +135,21 @@ return false;
         return service.removeEmail((String) map.get("email"), (Integer) map.get("userId"));
     }
 
-//    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
-//    private Boolean removeSkill(@RequestBody  Map<String,Object> map) {
-//        return service.removeSkill((Integer) map.get("skillId"),(Integer)map.get("userId"));
-//    }
-
     @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
+    private Boolean removeSkill(@RequestBody Map<String, Object> map) {
+        return service.removeSkill((Integer) map.get("skillId"), (Integer) map.get("userId"));
+    }
+
+    @RequestMapping(value = "/removeService", method = RequestMethod.POST)
     private Boolean removeService(@RequestBody Map<String, Object> map) {
         return service.removeService((Integer) map.get("serviceId"), (Integer) map.get("userId"), (Boolean) map.get("forced"));
     }
+
+    @RequestMapping(value = "/addService", method = RequestMethod.POST)
+    private Boolean addService(@RequestBody Map<String, Object> map) {
+        return service.addService((ServiceDTO) map.get("service"));
+    }
+
 
     //mubarak//
 }

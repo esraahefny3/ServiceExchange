@@ -62,6 +62,10 @@ public class Service implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "serviceId")
     private Collection<TransactionInfo> transactionInfoCollection;
+    @Transient
+    public static final String OFFERED = "offered";
+    @Transient
+    public static final String REQUSETED = "requested";
 
     public Service() {
     }
