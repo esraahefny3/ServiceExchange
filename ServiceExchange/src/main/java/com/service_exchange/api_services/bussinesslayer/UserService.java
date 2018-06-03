@@ -7,19 +7,19 @@ package com.service_exchange.api_services.bussinesslayer;
 
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
 import com.service_exchange.api_services.dao.dto.EdcationDTO;
+import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.api_services.dao.dto.SkillDTO;
 import com.service_exchange.api_services.dao.dto.UserDTO;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.api_services.delegte.UserDataDelete;
 import com.service_exchange.api_services.delegte.UserDataGet;
 import com.service_exchange.api_services.delegte.UserDataSet;
-import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author Altysh
  */
-@Component
+@Service
 public class UserService{
     @Autowired
     private UserDaoImpl daoImpl;
@@ -114,6 +114,8 @@ public class UserService{
     private UserDataSet userDataSet;
     @Autowired
     private UserDataDelete userDataDelete;
+
+
     public UserDTO logInORSignUp(UserDTO userDTO) {
         return userDataGet.loginOrSignUp(userDTO);
     }

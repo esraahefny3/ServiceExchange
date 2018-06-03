@@ -23,6 +23,7 @@ private class UserEmailImpl : UserEmailInterface {
     @Autowired
     lateinit var userEmailData: UserEmailData
 
+
     override fun addEmail(email: String?, userId: Int?): Boolean {
         return if (userId != null) {
             val user: UserTable? = userInterFace.getUser(userId)
@@ -34,6 +35,7 @@ private class UserEmailImpl : UserEmailInterface {
                 newEmail.userTable = user
                 newEmail.userEmailPK = emailPK
                 userEmailData.save(newEmail)
+
                 return true
             }
             false

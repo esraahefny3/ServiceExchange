@@ -5,10 +5,12 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
+import org.jetbrains.annotations.Nullable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
@@ -16,7 +18,7 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class UserTelephonePK implements Serializable {
-
+    @Nullable
     @Basic(optional = false)
     @Column(name = "user_id")
     private int userId;

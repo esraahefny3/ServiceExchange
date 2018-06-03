@@ -5,15 +5,9 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
@@ -42,8 +36,9 @@ public class UserTelephone implements Serializable {
         this.userTelephonePK = userTelephonePK;
     }
 
-    public UserTelephone(int userId, String telephone) {
+    public UserTelephone(int userId, String telephone, UserTable userTable) {
         this.userTelephonePK = new UserTelephonePK(userId, telephone);
+        this.userTable = userTable;
     }
 
     public UserTelephonePK getUserTelephonePK() {

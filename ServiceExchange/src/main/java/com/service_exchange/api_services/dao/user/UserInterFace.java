@@ -25,6 +25,8 @@ public interface UserInterFace {
     @Nullable
     UserTable createUser(UserTable user);
 
+    void refresh(UserTable user);
+
     @Nullable
     UserTable updateUser(UserTable user);
 

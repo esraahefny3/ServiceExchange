@@ -18,6 +18,8 @@ import com.service_exchange.entities.UserTable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 
 interface UserDataGet {
@@ -28,23 +30,41 @@ interface UserDataGet {
 
 }
 
-@Component
-private class UserDataGetImpl : UserDataGet {
+@org.springframework.stereotype.Service
+private open class UserDataGetImpl : UserDataGet {
     @Autowired
     lateinit var userInterface: UserInterFace
     @Autowired
     lateinit var userSkillInterFace: UserSkillInterFace
     @Autowired
     lateinit var userService: UserServicesInterFace
+    @Autowired
+    lateinit var userEmail: UserEmailInterface
+    @Autowired
+    lateinit var userTelephoneInterface: UserTelephoneInterface
+
+    @PersistenceContext
+    private val entityManager: EntityManager? = null
+
+
 
     override fun loginOrSignUp(user: UserDTO?): UserDTO? =
             if (user != null) {
                 val userDTO = AppFactory.mapToDto(user, UserTable::class.java)
-                val retVal = userInterface.createUser(userDTO)
+                userDTO.userEmailCollection = mutableListOf()
+                userDTO.userTelephoneCollection = mutableListOf()
+
+                var retVal = userInterface.createUser(userDTO)
                 if (retVal != null) {
+                    if (retVal.frist) {
+                        user.userEmailCollection?.forEach { retVal?.addEmail(retVal?.id, it) }
+                        user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
+                        retVal = userInterface.updateUser(retVal);
+
+                    }
                     val userdto = AppFactory.mapToDto(retVal, UserDTO::class.java)
-                    userdto.userEmailCollection = retVal.userEmailCollection.stream().map { it.userEmailPK.email }.collect(Collectors.toList())
-                    userdto.UserTelephone = retVal.userTelephoneCollection.stream().map { it.userTelephonePK.telephone }.collect(Collectors.toList())
+                    userdto.userEmailCollection = retVal?.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
+                    userdto.UserTelephone = retVal?.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
                     userdto
                 } else null
 
