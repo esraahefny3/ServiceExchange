@@ -116,7 +116,7 @@ return false;
     @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
     private Boolean addSkill(@RequestBody Map<String, Object> map) {
         ObjectMapper mapper = new ObjectMapper();
-        SkillDTO skillDTO1 = mapper.convertValue(map.get("message"), SkillDTO.class);
+        SkillDTO skillDTO1 = mapper.convertValue(map.get("skillDto"), SkillDTO.class);
         return service.addSkill(skillDTO1, (Integer) map.get("userId"));
     }
 
@@ -146,8 +146,8 @@ return false;
     }
 
     @RequestMapping(value = "/addService", method = RequestMethod.POST)
-    private Boolean addService(@RequestBody Map<String, Object> map) {
-        return service.addService((ServiceDTO) map.get("service"));
+    private Boolean addService(@RequestBody ServiceDTO serviceDTO) {
+        return service.addService(serviceDTO);
     }
 
 

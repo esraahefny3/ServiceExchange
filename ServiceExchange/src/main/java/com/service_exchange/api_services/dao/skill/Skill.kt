@@ -4,6 +4,8 @@ import com.service_exchange.entities.Service
 import com.service_exchange.entities.Skill
 import com.service_exchange.entities.UserTable
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
@@ -11,7 +13,8 @@ import java.util.stream.Collectors
 @Component
 interface SkillData : PagingAndSortingRepository<Skill, Int> {
     fun findByParentSkillId(skill: Skill? = null): List<Skill>
-    fun findByIsVerified(isVrified: Int): List<Skill>
+    fun findByIsVerified(isVerified: Int, page: Pageable): Page<Skill>
+    fun findByIsVerified(isVerified: Int): List<Skill>
     fun findByUserTableCollectionContains(skills: List<Skill>?): List<UserTable>
     fun findByServiceCollectionContains(skills: List<Skill>?): List<Service>
 
