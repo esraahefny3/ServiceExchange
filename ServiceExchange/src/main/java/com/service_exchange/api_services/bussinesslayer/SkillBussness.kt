@@ -16,14 +16,19 @@ interface SkillBussness {
     fun getUsersWithSkill(skillId: Int?): List<UserDTO>
     fun approveSkill(skillId: Int?): Boolean
     fun updateSkill(skillId: SkillDTO?): Boolean
+    fun getTopSkills(size: Int): List<SkillDTO>
 }
 
 @Component
 private class SkillBussnessImpl : SkillBussness {
+
+
     @Autowired
     lateinit var skillGettable: SkillGettable
     @Autowired
     lateinit var skillModifing: SkillModifing
+
+    override fun getTopSkills(size: Int): List<SkillDTO> = skillGettable.getTopCatagorys(size)
 
     override fun getAllSkills(): List<SkillDTO> =
             skillGettable.getAllSkills()
