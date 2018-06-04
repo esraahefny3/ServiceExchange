@@ -15,6 +15,7 @@ import com.service_exchange.entities.Complaint;
 public interface ComplaintServiceInterface {
     public ComplaintDto userMakeComplaintOnTransaction(Integer userId ,Integer transactionId ,Complaint complaint);
     public ComplaintDto userMakeComplaintGeneral(Integer userId ,Complaint complaint);
-    public boolean adminApproveComplaint(String adminEmail,Integer complaintId);
+    public boolean adminAcceptComplaint(String adminEmail,Integer complaintId);
     public boolean adminRejectComplaint(String adminEmail,Integer complaintId);
+    public boolean adminReviewComplaint(String adminEmail,Integer complaintId);
 }

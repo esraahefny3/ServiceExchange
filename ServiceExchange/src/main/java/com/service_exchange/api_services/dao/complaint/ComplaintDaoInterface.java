@@ -9,11 +9,14 @@ import com.service_exchange.entities.Complaint;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  *
  * @author esraa
  */
 @Repository
 public interface ComplaintDaoInterface extends  PagingAndSortingRepository<Complaint,Integer>{
-    
+
+    List<Complaint>findComplaintByTransactionId(Integer transactionId);
 }

@@ -43,6 +43,10 @@ public class AppFactory {
    {
        return (M)appFactory.modelMapper.map(t, m);
    }
+    public static <T,M> M mapToEntity(T t,Class<M> m)
+    {
+        return (M)appFactory.modelMapper.map(t, m);
+    }
    
    public static Complaint getComplaintInstance()
    {

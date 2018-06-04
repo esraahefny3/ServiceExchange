@@ -15,5 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AdminDaoInterface extends  PagingAndSortingRepository<AdminTable, Integer>{
-    
+
+    public AdminTable findAdminTableByEmail(String adminEmail);
 }

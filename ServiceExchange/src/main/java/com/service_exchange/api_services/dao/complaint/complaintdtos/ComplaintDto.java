@@ -15,7 +15,7 @@ public class ComplaintDto {
     private Integer id; 
     private String state;
     private String description;
-    private Date date;
+    private Long date;
     private String reviewedByAdmin;
     private Integer transactionId;
     private Integer userId;
@@ -44,11 +44,11 @@ public class ComplaintDto {
         this.description = description;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 
