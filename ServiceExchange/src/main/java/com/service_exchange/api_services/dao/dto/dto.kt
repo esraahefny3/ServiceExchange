@@ -282,6 +282,7 @@ class SkillDTO {
     var isVerified: Int? = null
 
     var reivewsList: List<ReViewDTO>? = null
+    var parentId: Int? = null
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

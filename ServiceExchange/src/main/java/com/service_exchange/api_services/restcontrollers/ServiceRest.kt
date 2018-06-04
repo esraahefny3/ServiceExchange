@@ -29,5 +29,4 @@ class ServiceRestfull {
     fun getServiceWithSkills(page: Int, skills: List<Int>): List<ServiceDTO> =
             serviceBussness.getServiceWithSkills(page, skills)
 
-
 }
