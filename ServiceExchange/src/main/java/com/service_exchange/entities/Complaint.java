@@ -9,20 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -66,6 +53,15 @@ public class Complaint implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     private UserTable userId;
+
+    @Transient
+    public final static String NOT_REVIEWED_STATE="Not_Reviewed";
+    @Transient
+    public final static String ON_REVIEW_STATE="On_Review";
+    @Transient
+    public final static String ACCEPTED_STATE="Accepted";
+    @Transient
+    public final static String REJECTED_STATE="Rejected";
 
     public Complaint() {
     }

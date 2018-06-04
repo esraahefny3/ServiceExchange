@@ -20,6 +20,6 @@ public interface ComplaintDelegateInterface {
     public UserTable checkUserExistById(Integer userId);
     public TransactionInfo checkTransactionExistById(Integer transactionId);
     public Complaint checkComplaintExsistById(Integer complaintId);
-    public AdminTable checkAdminExistById(Integer adminId);
-    
+    public AdminTable checkAdminExistById(String adminEmail);
+    public boolean checkUserMadeComplaintIntTransaction(Integer userId,Integer transactionId);
 }

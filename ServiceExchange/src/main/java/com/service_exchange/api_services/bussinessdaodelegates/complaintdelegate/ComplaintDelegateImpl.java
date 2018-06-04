@@ -6,6 +6,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.complaintdelegate;
 
 import com.service_exchange.api_services.dao.admin.AdminDaoInterface;
+import com.service_exchange.api_services.dao.admin.AdminDataInterface;
 import com.service_exchange.api_services.dao.complaint.ComplaintDaoInterface;
 import com.service_exchange.api_services.dao.complaint.complaintdtos.ComplaintDto;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
@@ -16,11 +17,15 @@ import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *
  * @author esraa
  */
+@Component
 public class ComplaintDelegateImpl implements ComplaintDelegateInterface{
 
     @Autowired
@@ -34,39 +39,87 @@ public class ComplaintDelegateImpl implements ComplaintDelegateInterface{
     
     @Autowired
     private AdminDaoInterface adminDataInterfaceImpl;
-    
+//
+//    @Autowired
+//    private AdminDataInterface adminDataInterface;
+//
     @Override
     public ComplaintDto saveComplaint(Complaint complaint) {
         
         try{
             Complaint complaintTemp= complaintDaoInterfaceImpl.save(complaint);
-            return AppFactory.mapToDto(complaintTemp, ComplaintDto.class);
+            ComplaintDto complaintDto= AppFactory.mapToDto(complaintTemp, ComplaintDto.class);
+            complaintDto.setDate(complaintTemp.getDate().getTime());
+            return complaintDto;
         }
         catch(Exception e)
         {
+            e.printStackTrace();
             return null;
         }
     
     }
 
     @Override
-    public UserTable checkUserExistById(Integer userId) {
-        return userDataInterFaceImpl.findById(userId).get();
+    public UserTable checkUserExistById(Integer userId)
+    {
+        try {
+            return userDataInterFaceImpl.findById(userId).get();
+        }catch (Exception e)
+        {
+            return  null;
+        }
+
     }
 
     @Override
     public TransactionInfo checkTransactionExistById(Integer transactionId) {
-        return transactionDaoInterfaceImpl.findById(transactionId).get();
+        try {
+            return transactionDaoInterfaceImpl.findById(transactionId).get();
+        }catch (Exception e)
+        {
+            return  null;
+        }
     }
 
     @Override
     public Complaint checkComplaintExsistById(Integer complaintId) {
-        return complaintDaoInterfaceImpl.findById(complaintId).get();
+        try {
+            return complaintDaoInterfaceImpl.findById(complaintId).get();
+        }
+        catch (Exception e)
+        {
+            return  null;
+        }
+    }
+
+//here
+    @Override
+    public AdminTable checkAdminExistById(String adminEmail) {
+        try{
+             return adminDataInterfaceImpl.findAdminTableByEmail(adminEmail);
+        }catch (Exception e)
+        {
+            return  null;
+        }
     }
 
     @Override
-    public AdminTable checkAdminExistById(Integer adminId) {
-       return adminDataInterfaceImpl.findById(adminId).get();
+    public boolean checkUserMadeComplaintIntTransaction(Integer userId, Integer transactionId) {
+
+      boolean retVal=true;
+     try {
+         List<Complaint> complaintList = complaintDaoInterfaceImpl.findComplaintByTransactionId(transactionId);
+         for (Complaint complaint : complaintList) {
+             if (complaint.getUserId().getId() == userId) {
+                 retVal = false;
+             }
+         }
+     }catch (Exception e)
+     {
+         return  false;
+     }
+        return retVal;
     }
-    
+
 }
