@@ -6,7 +6,7 @@
 package com.service_exchange.api_services.bussinesslayer.complaint;
 
 import com.service_exchange.api_services.bussinessdaodelegates.complaintdelegate.ComplaintDelegateInterface;
-import com.service_exchange.api_services.dao.complaint.complaintdtos.ComplaintDto;
+import com.service_exchange.api_services.dao.dto.ComplaintDto;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.TransactionInfo;

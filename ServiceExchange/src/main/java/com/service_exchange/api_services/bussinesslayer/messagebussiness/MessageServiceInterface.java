@@ -5,12 +5,11 @@
  */
 package com.service_exchange.api_services.bussinesslayer.messagebussiness;
 
-import com.service_exchange.api_services.dao.message.messagedtos.MessageComplaintDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessageTransactionDto;
+import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
+import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.entities.Message;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -19,13 +18,13 @@ import org.springframework.stereotype.Component;
 
 public interface MessageServiceInterface {
     public MessagePrivateDto sendPrivateMessage(Integer senderId,Integer recieverId,Message message);
-    public List <MessagePrivateDto>getAllPrivateChatMessages(Integer user1Id,Integer user2Id,Integer pageNum);
+    public List <MessagePrivateDto>getAllPrivateChatMessages(Integer user1Id, Integer user2Id, Integer pageNum);
     
-    public MessageComplaintDto userSendComplaintMessage(Integer senderId,Integer ComplaintId,Message message);
+    public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer ComplaintId, Message message);
     public MessageComplaintDto adminSendComplaintMessage(Integer ComplaintId,Message message);
     public List <MessageComplaintDto>getAllComplaintMessages(Integer complaintId,Integer pageNum);
   
-    public MessageTransactionDto sendTransactionMessage(Integer senderId ,Integer recieverId,Message message,Integer TransactionId);
+    public MessageTransactionDto sendTransactionMessage(Integer senderId , Integer recieverId, Message message, Integer TransactionId);
     public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId,Integer pageNum);
     
    
