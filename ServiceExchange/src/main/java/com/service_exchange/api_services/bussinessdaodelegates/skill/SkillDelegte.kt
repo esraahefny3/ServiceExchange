@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component
 import java.util.stream.Collectors
 
 fun Skill.convertSkillAlone(): SkillDTO {
+
     val skill = AppFactory.mapToDto(this, SkillDTO::class.java)
-    skill.parentId = parentSkillId.id
+    if (parentSkillId != null)
+        skill.psId = parentSkillId.id
     return skill
 }
 

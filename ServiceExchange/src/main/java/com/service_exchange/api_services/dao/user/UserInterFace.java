@@ -23,6 +23,9 @@ public interface UserInterFace {
     UserTable getUser(Integer userId);
 
     @Nullable
+    UserTable getUserByEmail(String email);
+
+    @Nullable
     UserTable createUser(UserTable user);
 
     void refresh(UserTable user);
