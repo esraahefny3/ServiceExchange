@@ -6,7 +6,7 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.BadgeService;
-import com.service_exchange.api_services.dao.badge.BadgeDto;
+import com.service_exchange.api_services.dao.dto.BadgeDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Badge;
@@ -15,7 +15,6 @@ import com.service_exchange.utal.PageToListConverter;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

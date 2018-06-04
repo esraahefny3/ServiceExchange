@@ -1,7 +1,7 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.complaint.ComplaintServiceInterface;
-import com.service_exchange.api_services.dao.complaint.complaintdtos.ComplaintDto;
+import com.service_exchange.api_services.dao.dto.ComplaintDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Complaint;
 import org.springframework.beans.factory.annotation.Autowired;

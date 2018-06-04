@@ -6,14 +6,13 @@
 package com.service_exchange.api_services.bussinessdaodelegates.messagedelegate;
 
 import com.service_exchange.api_services.dao.complaint.ComplaintDaoInterface;
+import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
+import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.dao.message.MessageInterface;
-import com.service_exchange.api_services.dao.message.messagedtos.MessageComplaintDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessageTransactionDto;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
-import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
 import com.service_exchange.entities.TransactionInfo;
@@ -21,7 +20,7 @@ import com.service_exchange.entities.UserTable;
 
 import java.util.Date;
 import java.util.List;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

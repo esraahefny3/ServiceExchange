@@ -5,9 +5,9 @@
  */
 package com.service_exchange.api_services.dao.message;
 
-import com.service_exchange.api_services.dao.message.messagedtos.MessageComplaintDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
-import com.service_exchange.api_services.dao.message.messagedtos.MessageTransactionDto;
+import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
+import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Message;
 import java.util.ArrayList;

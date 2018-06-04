@@ -377,4 +377,58 @@ class EdcationDTO {
         return result
     }
 
+
+
+
+}
+
+class BadgeDto{
+     var id: Int? = null
+     var name: String? = null
+     var image: String? = null
+     var description: String? = null
+     var timeNeeded: String? = null
+     var type: String? = null
+     var addedByAdminEmail: String? = null
+}
+
+class ComplaintDto{
+     var id: Int? = null
+     var state: String? = null
+     var description: String? = null
+     var date: Long? = null
+     var reviewedByAdmin: String? = null
+     var transactionId: Int? = null
+     var userId: Int? = null
+}
+
+class MessageComplaintDto {
+
+     var id: Int? = null
+     var text: String? = null
+     var attachment: String? = null
+     var date: Long? = null
+     var complaintId: Int? = null
+     var receiverId: Int? = null
+     var senderId: Int? = null
+}
+
+class MessagePrivateDto {
+
+     var id: Int? = null
+     var text: String? = null
+     var attachment: String? = null
+     var date: Long? = null
+     var receiverId: Int? = null
+     var senderId: Int? = null
+}
+
+class MessageTransactionDto {
+     var id: Int? = null
+     var text: String? = null
+     var attachment: String? = null
+     var date: Long? = null
+     var transactionId: Int? = null
+     var receiverId: Int? = null
+     var senderId: Int? = null
 }

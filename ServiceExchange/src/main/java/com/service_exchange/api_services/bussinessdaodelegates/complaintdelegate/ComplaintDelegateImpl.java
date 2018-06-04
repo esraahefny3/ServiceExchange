@@ -5,10 +5,9 @@
  */
 package com.service_exchange.api_services.bussinessdaodelegates.complaintdelegate;
 
-import com.service_exchange.api_services.dao.admin.AdminDaoInterface;
 import com.service_exchange.api_services.dao.admin.AdminDataInterface;
 import com.service_exchange.api_services.dao.complaint.ComplaintDaoInterface;
-import com.service_exchange.api_services.dao.complaint.complaintdtos.ComplaintDto;
+import com.service_exchange.api_services.dao.dto.ComplaintDto;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
@@ -38,7 +37,7 @@ public class ComplaintDelegateImpl implements ComplaintDelegateInterface{
     private TransactionDaoInterface transactionDaoInterfaceImpl;
     
     @Autowired
-    private AdminDaoInterface adminDataInterfaceImpl;
+    private AdminDataInterface adminDataInterfaceImpl;
 //
 //    @Autowired
 //    private AdminDataInterface adminDataInterface;
