@@ -21,5 +21,7 @@ public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,
     Page<UserTable> findByNameContains(String name, Pageable page);
 
     UserTable findByAccountIdEquals(String accountId);
+
+
 }
 

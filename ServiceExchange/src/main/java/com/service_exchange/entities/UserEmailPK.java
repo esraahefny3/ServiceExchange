@@ -5,10 +5,10 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
@@ -26,6 +26,7 @@ public class UserEmailPK implements Serializable {
 
     public UserEmailPK() {
     }
+
 
     public UserEmailPK(int userId, String email) {
         this.userId = userId;

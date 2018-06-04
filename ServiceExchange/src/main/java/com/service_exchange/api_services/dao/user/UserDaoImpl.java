@@ -34,8 +34,10 @@ public class UserDaoImpl implements UserInterFace {
     private int pageSize = 20;
 
     @Override
+    @Transactional
     public UserTable getUser(Integer userId) {
         Optional<UserTable> user = dataInterface.findById(userId);
+
         return user.orElse(null);
     }
 
@@ -59,12 +61,19 @@ public class UserDaoImpl implements UserInterFace {
                 userTable.setFrist(false);
                 return userTable;
             }
+
             userTable = dataInterface.save(user);
             userTable.setFrist(true);
             return userTable;
         }
 
         return null;
+    }
+
+    @Override
+    public void refresh(UserTable user) {
+
+
     }
 
     @Override

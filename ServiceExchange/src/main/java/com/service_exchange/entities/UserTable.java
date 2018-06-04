@@ -6,6 +6,7 @@
 package com.service_exchange.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -36,6 +38,7 @@ public class UserTable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Nullable
     @Column(name = "id")
     private Integer id;
     @Column(name = "name")
@@ -54,7 +57,7 @@ public class UserTable implements Serializable {
     @ManyToMany(mappedBy = "userTableCollection")
     private Collection<Skill> skillCollection;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
     private Collection<UserEmail> userEmailCollection;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
@@ -310,6 +313,7 @@ public class UserTable implements Serializable {
         return true;
     }
 
+
     @Override
     public String toString() {
         return "UserTable{" +
@@ -320,6 +324,21 @@ public class UserTable implements Serializable {
                 ", birthDate='" + birthDate + '\'' +
                 ", accountId='" + accountId + '\'' +
                 ", accountType='" + accountType + '\'' +
+                ", skillCollection=" + skillCollection +
+                ", userEmailCollection=" + userEmailCollection +
+                ", educationCollection=" + educationCollection +
+                ", userTelephoneCollection=" + userTelephoneCollection +
+                ", userNotificationCollection=" + userNotificationCollection +
+                ", messageCollection=" + messageCollection +
+                ", messageCollection1=" + messageCollection1 +
+                ", userChallengeCollection=" + userChallengeCollection +
+                ", userAuthority=" + userAuthority +
+                ", complaintCollection=" + complaintCollection +
+                ", userBadgeCollection=" + userBadgeCollection +
+                ", reviewCollection=" + reviewCollection +
+                ", serviceCollection=" + serviceCollection +
+                ", transactionInfoCollection=" + transactionInfoCollection +
+                ", isFrist=" + isFrist +
                 '}';
     }
 
@@ -351,6 +370,46 @@ public class UserTable implements Serializable {
          }
          return false;
      }
+
+    public Boolean addEmail(Integer userId, String email) {
+        UserEmail userEmail = new UserEmail(userId, email, this);
+        if (!userEmailCollection.contains(userEmail)) {
+            userEmailCollection.add(userEmail);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean RemoveEmail(String email) {
+        AtomicReference<Boolean> bool = new AtomicReference<>(false);
+        userEmailCollection.stream().filter(userEmail -> userEmail.userEmailPK.getEmail().equals(email)).
+                findFirst().ifPresent(userEmail -> {
+            userEmailCollection.remove(userEmail);
+            bool.set(true);
+        });
+
+        return bool.get();
+    }
+
+    public Boolean addTelephone(Integer userId, String telephone) {
+        UserTelephone userTelephone = new UserTelephone(userId, telephone, this);
+        if (!userTelephoneCollection.contains(userTelephone)) {
+            userTelephoneCollection.add(userTelephone);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean RemoveTelephone(String telephone) {
+        AtomicReference<Boolean> bool = new AtomicReference<>(false);
+        userTelephoneCollection.stream().filter(userTelephone -> userTelephone.userTelephonePK.getTelephone().equals(telephone)).
+                findFirst().ifPresent(userTelephone -> {
+            userTelephoneCollection.remove(userTelephone);
+            bool.set(true);
+        });
+
+        return bool.get();
+    }
       public Boolean removeSkill(Skill skill){
          if(!skillCollection.contains(skill)){
              skillCollection.remove(skill);
@@ -358,7 +417,8 @@ public class UserTable implements Serializable {
          }
          return false;
      }
-       public Boolean addEducation(Education education){
+
+    public Boolean addEducation(Education education){
          if(!educationCollection.contains(education)){
              educationCollection.add(education);
              return true;

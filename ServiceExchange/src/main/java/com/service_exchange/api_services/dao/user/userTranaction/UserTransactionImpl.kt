@@ -16,6 +16,7 @@ class UserTransactionImpl : UserTransactionInterFace {
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()?.filter(Predicate { t -> t.state == onSuccess })
                     ?.collect(Collectors.toList()) ?: mutableListOf()
 
+
     override fun getWorkingDuration(userId: Int?): Long? =
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()
                     ?.mapToLong { t -> t.endDate.time - t.startDate.time }?.sum()

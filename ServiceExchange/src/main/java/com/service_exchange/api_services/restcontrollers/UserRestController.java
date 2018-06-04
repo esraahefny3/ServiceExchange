@@ -5,6 +5,7 @@
  */
 package com.service_exchange.api_services.restcontrollers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.UserService;
 import com.service_exchange.api_services.dao.dto.EdcationDTO;
 import com.service_exchange.api_services.dao.dto.ServiceDTO;
@@ -108,39 +109,47 @@ return false;
     }
 
     @RequestMapping(value = "/addEmail", method = RequestMethod.POST)
-    private Boolean addEmail(@RequestBody Integer userId, @RequestBody String email) {
-        return service.addEmail(email, userId);
+    private Boolean addEmail(@RequestBody Map<String, Object> map) {
+        return service.addEmail((String) map.get("email"), (Integer) map.get("userId"));
     }
 
     @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
-    private Boolean addSkill(@RequestBody Integer userId, @RequestBody SkillDTO skillDTO) {
-        return service.addSkill(skillDTO, userId);
+    private Boolean addSkill(@RequestBody Map<String, Object> map) {
+        ObjectMapper mapper = new ObjectMapper();
+        SkillDTO skillDTO1 = mapper.convertValue(map.get("message"), SkillDTO.class);
+        return service.addSkill(skillDTO1, (Integer) map.get("userId"));
     }
 
     @RequestMapping(value = "/addTelephone", method = RequestMethod.POST)
-    private Boolean addTelephone(@RequestBody Integer userId, @RequestBody String telephone) {
-        return service.addTelephone(telephone, userId);
+    private Boolean addTelephone(@RequestBody Map<String, Object> map) {
+        return service.addTelephone((String) map.get("telephone"), (Integer) map.get("userId"));
     }
 
     @RequestMapping(value = "/removeTelephone", method = RequestMethod.POST)
-    private Boolean removeTelephone(@RequestBody String telephone, @RequestBody Integer userId) {
-        return service.removeTelephone(telephone, userId);
+    private Boolean removeTelephone(@RequestBody Map<String, Object> map) {
+        return service.removeTelephone((String) map.get("telephone"), (Integer) map.get("userId"));
     }
 
     @RequestMapping(value = "/removeEmail", method = RequestMethod.POST)
-    private Boolean removeEmail(@RequestBody String email, @RequestBody Integer userId) {
-        return service.removeEmail(email, userId);
+    private Boolean removeEmail(@RequestBody Map<String, Object> map) {
+        return service.removeEmail((String) map.get("email"), (Integer) map.get("userId"));
     }
-
-//    @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
-//    private Boolean removeSkill(@RequestBody Integer skillId, @RequestBody Integer userId) {
-//        return service.removeSkill(skillId, userId);
-//    }
 
     @RequestMapping(value = "/removeSkill", method = RequestMethod.POST)
-    private Boolean removeService(@RequestBody Integer serviceId, @RequestBody Integer userId, @RequestBody Boolean forced) {
-        return service.removeService(serviceId, userId, forced);
+    private Boolean removeSkill(@RequestBody Map<String, Object> map) {
+        return service.removeSkill((Integer) map.get("skillId"), (Integer) map.get("userId"));
     }
+
+    @RequestMapping(value = "/removeService", method = RequestMethod.POST)
+    private Boolean removeService(@RequestBody Map<String, Object> map) {
+        return service.removeService((Integer) map.get("serviceId"), (Integer) map.get("userId"), (Boolean) map.get("forced"));
+    }
+
+    @RequestMapping(value = "/addService", method = RequestMethod.POST)
+    private Boolean addService(@RequestBody Map<String, Object> map) {
+        return service.addService((ServiceDTO) map.get("service"));
+    }
+
 
     //mubarak//
 }

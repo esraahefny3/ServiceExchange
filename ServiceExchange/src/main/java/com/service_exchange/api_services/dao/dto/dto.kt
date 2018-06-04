@@ -237,7 +237,7 @@ class ServiceDTO {
 
     var isAvailable: Int? = null
 
-    var skillList: List<SkillDTO>? = null
+    var skillList: List<Int>? = null
 
     var userIdOwner: Int? = null
     override fun equals(other: Any?): Boolean {
@@ -281,7 +281,7 @@ class SkillDTO {
 
     var isVerified: Int? = null
 
-    var reviews: List<ReViewDTO>? = null
+    var reivewsList: List<ReViewDTO>? = null
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -292,7 +292,7 @@ class SkillDTO {
         if (name != other.name) return false
         if (description != other.description) return false
         if (isVerified != other.isVerified) return false
-        if (reviews != other.reviews) return false
+        if (reivewsList != other.reivewsList) return false
 
         return true
     }
@@ -302,7 +302,7 @@ class SkillDTO {
         result = 31 * result + (name?.hashCode() ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
         result = 31 * result + (isVerified ?: 0)
-        result = 31 * result + (reviews?.hashCode() ?: 0)
+        result = 31 * result + (reivewsList?.hashCode() ?: 0)
         return result
     }
 

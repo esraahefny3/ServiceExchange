@@ -4,8 +4,8 @@ import com.service_exchange.entities.UserTelephone
 import com.service_exchange.entities.UserTelephonePK
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
 @Repository
 interface UserTelephoneData : PagingAndSortingRepository<UserTelephone, UserTelephonePK>
@@ -15,12 +15,13 @@ interface UserTelephoneInterface {
     fun removeTelephoneFromUser(telephone: String?, userId: Int?): Boolean
 }
 
-@Component
-private class UserTelephoneImpl : UserTelephoneInterface {
+@Service
+private open class UserTelephoneImpl : UserTelephoneInterface {
     @Autowired
     lateinit var userInterFace: UserInterFace
     @Autowired
     lateinit var userTelephoneData: UserTelephoneData
+
 
     override fun addTelephoneToUser(telephone: String?, userId: Int?): Boolean {
         return if (telephone != null && userId != null) {
@@ -33,9 +34,10 @@ private class UserTelephoneImpl : UserTelephoneInterface {
                 pk.userId = userId
                 newTelephone.userTelephonePK = pk
                 userTelephoneData.save(newTelephone)
+
                 true
-            }
-            false
+            } else
+                false
         } else
             false
     }

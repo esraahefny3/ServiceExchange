@@ -1,4 +1,4 @@
-package com.service_exchange.api_services.delegte
+package com.service_exchange.api_services.bussinessdaodelegates.user
 
 import com.service_exchange.api_services.dao.dto.EdcationDTO
 import com.service_exchange.api_services.dao.dto.ServiceDTO
@@ -24,28 +24,59 @@ interface UserDataGet {
     fun loginOrSignUp(user: UserDTO?): UserDTO?
     fun getUserSkill(userId: Int?): List<SkillDTO>
     fun getUserEdcation(userId: Int?): List<EdcationDTO>
-    fun getUserServices(UserId: Int?): List<ServiceDTO>
+    fun getUserServices(userId: Int?): List<ServiceDTO>
+    fun getAllUser(start: Int): List<UserDTO>
 
 }
 
-@Component
-private class UserDataGetImpl : UserDataGet {
+fun UserTable.convertUser(): UserDTO {
+    val userdto = AppFactory.mapToDto(this, UserDTO::class.java)
+    userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
+    userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
+    return userdto
+}
+
+@org.springframework.stereotype.Service
+private open class UserDataGetImpl : UserDataGet {
+
+
     @Autowired
     lateinit var userInterface: UserInterFace
     @Autowired
     lateinit var userSkillInterFace: UserSkillInterFace
     @Autowired
     lateinit var userService: UserServicesInterFace
+    @Autowired
+    lateinit var userEmail: UserEmailInterface
+    @Autowired
+    lateinit var userTelephoneInterface: UserTelephoneInterface
+
+
+    override fun getAllUser(start: Int): List<UserDTO> {
+        return userInterface.getAllUser(start).stream().map { it.convertUser() }.collect(Collectors.toList())
+                ?: emptyList<UserDTO>()
+    }
+
 
     override fun loginOrSignUp(user: UserDTO?): UserDTO? =
             if (user != null) {
                 val userDTO = AppFactory.mapToDto(user, UserTable::class.java)
-                val retVal = userInterface.createUser(userDTO)
+                userDTO.userEmailCollection = mutableListOf()
+                userDTO.userTelephoneCollection = mutableListOf()
+
+                var retVal = userInterface.createUser(userDTO)
                 if (retVal != null) {
-                    val userdto = AppFactory.mapToDto(retVal, UserDTO::class.java)
-                    userdto.userEmailCollection = retVal.userEmailCollection.stream().map { it.userEmailPK.email }.collect(Collectors.toList())
-                    userdto.UserTelephone = retVal.userTelephoneCollection.stream().map { it.userTelephonePK.telephone }.collect(Collectors.toList())
-                    userdto
+                    if (retVal.frist) {
+                        user.userEmailCollection?.forEach { retVal?.addEmail(retVal?.id, it) }
+                        user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
+                        retVal = userInterface.updateUser(retVal);
+
+                    }
+                    if (retVal != null)
+                        retVal.convertUser()
+                    else null
+
+
                 } else null
 
             } else null
@@ -128,7 +159,7 @@ private class UserDataSetImol : UserDataSet {
     }
 
     override fun addServiceToUser(serviceDTO: ServiceDTO?): Boolean {
-        return if (serviceDTO != null) {
+        return if (serviceDTO != null && serviceDTO.userIdOwner != null) {
             val service = AppFactory.mapToDto(serviceDTO, Service::class.java)
             userService.addServiceToUser(serviceDTO.userIdOwner, service)
         } else false
