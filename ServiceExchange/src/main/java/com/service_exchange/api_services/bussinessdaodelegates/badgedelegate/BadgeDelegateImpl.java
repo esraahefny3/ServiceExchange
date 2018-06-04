@@ -70,17 +70,20 @@ public class BadgeDelegateImpl implements BadgeDelegateInterface{
 
     @Override
     public boolean checkIfBadgeExist(Badge badge) {
-        
-       
-            Optional<Badge>retrievedBadge= badgeDataInterface.findById(badge.getId().intValue());
-            if (retrievedBadge.isPresent())
-            {
+
+        try {
+
+            Optional<Badge> retrievedBadge = badgeDataInterface.findById(badge.getId().intValue());
+            if (retrievedBadge.isPresent()) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     
     }
 }

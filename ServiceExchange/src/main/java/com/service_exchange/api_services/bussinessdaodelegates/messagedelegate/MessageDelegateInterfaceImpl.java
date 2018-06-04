@@ -18,6 +18,8 @@ import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+
+import java.util.Date;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +59,13 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
         {
             message.setSenderId(sender);
             message.setReceiverId(reciever);
+            message.setDate(new Date());
             Message messageTemp=messageInterface.save(message);
            // MessagePrivateDto messagePrivateDto=modelMapper.map(messageTemp, MessagePrivateDto.class);
             MessagePrivateDto messagePrivateDto=AppFactory.mapToDto(messageTemp, MessagePrivateDto.class);
             messagePrivateDto.setSenderId(senderId);
-            messagePrivateDto.setReceiverId(recieverId);  
+            messagePrivateDto.setReceiverId(recieverId);
+            messagePrivateDto.setDate(messageTemp.getDate().getTime());
             return messagePrivateDto;
         }
         return null;
@@ -87,17 +91,19 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
 
     @Override
     public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer complaintId, Message message) {
-       try{System.err.println("hna");
+       try{
            Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
            UserTable sender=userDataInterface.findById(senderId).get();
        if(complaint!=null&&sender!=null&&senderId==complaint.getUserId().getId())
-       {System.err.println("hna1");
+       {
            message.setSenderId(sender);
            message.setComplaintId(complaint);
+           message.setDate(new Date());
            Message messageTemp=messageInterface.save(message);
            MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(messageTemp, MessageComplaintDto.class);
            messageComplaintDto.setComplaintId(complaintId);
            messageComplaintDto.setSenderId(senderId);
+           messageComplaintDto.setDate(messageTemp.getDate().getTime());
            return messageComplaintDto;
        }
          return null;
@@ -116,9 +122,11 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
       if(complaint!=null)
        {
            message.setComplaintId(complaint);
+           message.setDate(new Date());
            message=messageInterface.save(message);
            MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(message, MessageComplaintDto.class);
            messageComplaintDto.setComplaintId(complaintId);
+           messageComplaintDto.setDate(message.getDate().getTime());
            return messageComplaintDto;
        }
          return null;
@@ -148,11 +156,13 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
             message.setSenderId(sender);
             message.setReceiverId(receiver);
             message.setTransactionId(transactionInfo);
+            message.setDate(new Date());
             message=messageInterface.save(message);
             MessageTransactionDto messageTransactionDto=AppFactory.mapToDto(message, MessageTransactionDto.class);
             messageTransactionDto.setSenderId(senderId);
             messageTransactionDto.setReceiverId(recieverId);
             messageTransactionDto.setTransactionId(transactionId);
+            messageTransactionDto.setDate(message.getDate().getTime());
             return messageTransactionDto;
         }
         return null;

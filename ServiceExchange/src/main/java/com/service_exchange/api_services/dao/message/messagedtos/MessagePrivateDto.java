@@ -16,7 +16,7 @@ public class MessagePrivateDto {
     private Integer id;
     private String text;
     private String attachment;
-    private Date date;
+    private Long date;
     private Integer receiverId;
     private Integer senderId;
 
@@ -44,12 +44,11 @@ public class MessagePrivateDto {
         this.attachment = attachment;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        
+    public void setDate(Long date) {
         this.date = date;
     }
 

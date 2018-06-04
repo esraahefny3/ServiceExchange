@@ -12,6 +12,7 @@ import com.service_exchange.api_services.bussinesslayer.messagebussiness.Message
 import com.service_exchange.api_services.dao.message.messagedtos.MessageComplaintDto;
 import com.service_exchange.api_services.dao.message.messagedtos.MessagePrivateDto;
 import com.service_exchange.api_services.dao.message.messagedtos.MessageTransactionDto;
+import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.Message;
 import java.util.List;
@@ -38,15 +39,16 @@ public class MessageController {
     private Integer pageSize = 20;
 
     @RequestMapping(value = "/sendPrivateMessage", method = RequestMethod.POST)
-    public MessagePrivateDto sendPrivateMessage(@RequestBody Map<String, Object> dataMap) {
+    public MessagePrivateDto sendPrivateMessage(@RequestBody MessagePrivateDto messagePrivateDto) {
 
-        if (dataMap != null) {
-            Integer senderId = (Integer) dataMap.get("senderId");
-            Integer recieverId = (Integer) dataMap.get("recieverId");
+        if (messagePrivateDto != null) {
+            Integer senderId = (Integer) messagePrivateDto.getSenderId();
+            Integer recieverId = (Integer) messagePrivateDto.getReceiverId();
 
             //b7wl l obj fl map lno3o
-            ObjectMapper mapper = new ObjectMapper();
-            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+//            ObjectMapper mapper = new ObjectMapper();
+//            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+            Message message=AppFactory.mapToEntity(messagePrivateDto,Message.class);
             if (senderId != null && recieverId != null && message != null) {
                 return messageServiceInterfaceImpl.sendPrivateMessage(senderId, recieverId, message);
             }
@@ -64,15 +66,18 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/userSendComplaintMessage", method = RequestMethod.POST)
-    public MessageComplaintDto userSendComplaintMessage(@RequestBody Map<String, Object> dataMap) {
+    public MessageComplaintDto userSendComplaintMessage(@RequestBody MessageComplaintDto messageComplaintDto ) {
 
-        if (dataMap != null) {
-            Integer senderId = (Integer) dataMap.get("senderId");
-            Integer complaintId = (Integer) dataMap.get("complaintId");
-
-            //b7wl l obj fl map lno3o
-            ObjectMapper mapper = new ObjectMapper();
-            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+        if (messageComplaintDto != null) {
+//            Integer senderId = (Integer) dataMap.get("senderId");
+//            Integer complaintId = (Integer) dataMap.get("complaintId");
+//
+//            //b7wl l obj fl map lno3o
+//            ObjectMapper mapper = new ObjectMapper();
+//            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+            Integer senderId = (Integer) messageComplaintDto.getSenderId();
+            Integer complaintId = (Integer) messageComplaintDto.getComplaintId();
+            Message message=AppFactory.mapToEntity(messageComplaintDto,Message.class);
             if (senderId != null && complaintId != null && message != null) {
                 return messageServiceInterfaceImpl.userSendComplaintMessage(senderId, complaintId, message);
             }
@@ -82,14 +87,15 @@ public class MessageController {
     }
     
      @RequestMapping(value = "/adminSendComplaintMessage", method = RequestMethod.POST)
-    public MessageComplaintDto adminSendComplaintMessage(@RequestBody Map<String, Object> dataMap) {
+    public MessageComplaintDto adminSendComplaintMessage(@RequestBody MessageComplaintDto messageComplaintDto) {
 
-        if (dataMap != null) {
-            Integer complaintId = (Integer) dataMap.get("complaintId");
+        if (messageComplaintDto != null) {
+            Integer complaintId = (Integer) messageComplaintDto.getComplaintId();
 
             //b7wl l obj fl map lno3o
-            ObjectMapper mapper = new ObjectMapper();
-            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+//            ObjectMapper mapper = new ObjectMapper();
+//            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+              Message message=AppFactory.mapToEntity(messageComplaintDto,Message.class);
             if ( complaintId != null && message != null) {
                 return messageServiceInterfaceImpl.adminSendComplaintMessage(complaintId, message);
             }
@@ -106,16 +112,17 @@ public class MessageController {
         return null;
     }
     @RequestMapping(value = "/sendTransactionMessage", method = RequestMethod.POST)
-    public MessageTransactionDto sendTransactionMessage(@RequestBody Map<String, Object> dataMap) {
+    public MessageTransactionDto sendTransactionMessage(@RequestBody MessageTransactionDto messageTransactionDto) {
 
-        if (dataMap != null) {
-            Integer senderId = (Integer) dataMap.get("senderId");
-            Integer receiverId = (Integer) dataMap.get("receiverId");
-            Integer transactionId = (Integer) dataMap.get("transactionId");
+        if (messageTransactionDto != null) {
+            Integer senderId = (Integer) messageTransactionDto.getSenderId();
+            Integer receiverId = (Integer) messageTransactionDto.getReceiverId();
+            Integer transactionId = (Integer) messageTransactionDto.getTransactionId();
 
-            //b7wl l obj fl map lno3o
-            ObjectMapper mapper = new ObjectMapper();
-            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+//            //b7wl l obj fl map lno3o
+//            ObjectMapper mapper = new ObjectMapper();
+//            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+            Message message=AppFactory.mapToEntity(messageTransactionDto,Message.class);
             if ( senderId != null && receiverId != null && transactionId != null && message != null) {
                 return messageServiceInterfaceImpl.sendTransactionMessage(senderId, receiverId, message, transactionId);
             }

@@ -22,4 +22,12 @@ public class PageToListConverter {
        // System.out.println(newList);
         return newList;
     }
+    public static <T > List<T> convertIterableToList(Iterable<T> list){
+        List<T> newList = new LinkedList<>();
+
+        list.forEach(e->newList.add(e));
+        System.out.println(newList);
+        // System.out.println(newList);
+        return newList;
+    }
 }

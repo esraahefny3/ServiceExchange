@@ -18,7 +18,7 @@ public class MessageComplaintDto {
     private Integer id;
     private String text;
     private String attachment;
-    private Date date;
+    private Long date;
     private Integer complaintId;
     private Integer receiverId;
     private Integer senderId;
@@ -47,11 +47,11 @@ public class MessageComplaintDto {
         this.attachment = attachment;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 

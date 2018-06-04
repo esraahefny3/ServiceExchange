@@ -6,8 +6,13 @@
 package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.BadgeService;
+import com.service_exchange.api_services.dao.badge.BadgeDto;
+import com.service_exchange.api_services.factories.AppFactory;
+import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.utal.PageToListConverter;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,10 +44,14 @@ public class BadgeController {
     
     
     @RequestMapping(value = "/createBadge", method = RequestMethod.POST)
-    public Badge createBadge(@RequestBody Badge badge) {
+    public Badge createBadge(@RequestBody BadgeDto badgeDto) {
 
-        if(badge !=null)
+        if(badgeDto !=null)
         {
+            Badge badge=AppFactory.mapToEntity(badgeDto,Badge.class);
+            AdminTable admin=AppFactory.getAdminTableInstance();
+            admin.setEmail(badgeDto.getAddedByAdminEmail());
+            badge.setAddedBy(admin);
            return badgeService.createBadge(badge);
         }
         else
@@ -52,11 +61,16 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/deleteBadge", method = RequestMethod.POST)
-    public boolean deleteBadge(@RequestBody Badge badge) {
-       if(badge!=null)
-       {
-           if(badge.getId()!=null)
+    public boolean deleteBadge(@RequestBody BadgeDto badgeDto) {
+        if(badgeDto !=null)
+        {
+           if(badgeDto.getId()!=null)
            {
+               Badge badge=AppFactory.mapToEntity(badgeDto,Badge.class);
+               AdminTable admin=AppFactory.getAdminTableInstance();
+               admin.setEmail(badgeDto.getAddedByAdminEmail());
+               badge.setAddedBy(admin);
+
                return badgeService.deleteBadge(badge);
            }
            else
@@ -73,13 +87,17 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/updateBadge", method = RequestMethod.POST)
-    public Badge updateBadge(@RequestBody Badge badge) {
+    public Badge updateBadge(@RequestBody BadgeDto badgeDto) {
         
-        if(badge!=null)
+        if(badgeDto!=null)
         { 
-            if(badge.getId()!=null)
+            if(badgeDto.getId()!=null)
             {
-                System.err.println(badge.getId());
+                Badge badge=AppFactory.mapToEntity(badgeDto,Badge.class);
+                AdminTable admin=AppFactory.getAdminTableInstance();
+                admin.setEmail(badgeDto.getAddedByAdminEmail());
+                badge.setAddedBy(admin);
+
                 return badgeService.updateBadge(badge);
             }
             else
@@ -94,18 +112,22 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/getAllBadges/{pageNum}", method = RequestMethod.GET)
-    public Page<Badge> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
-       // return PageToListConverter.convertPageToList(badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
-        return badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
+    public List<BadgeDto> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
+       List<Badge>badgeList= PageToListConverter.convertList(badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
+       List<BadgeDto>badgeDtoList=new ArrayList<>();
+       badgeList.forEach(badge -> badgeDtoList.add(AppFactory.mapToDto(badge,BadgeDto.class)));
+       return badgeDtoList;
+       // return badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
     }
     
      @RequestMapping(value = "/getAllBadges", method = RequestMethod.GET)
-    public Iterable<Badge> getAllBadges() {
-        return badgeService.getAllBadges();
-    }
-    
-    @RequestMapping(value = "/hii", method = RequestMethod.GET)
-    public String sayHii() {
-        return "Hii";
-    }
+    public Iterable<BadgeDto> getAllBadges() {
+       List<Badge>badgeList=  PageToListConverter.convertIterableToList(badgeService.getAllBadges());
+         List<BadgeDto>badgeDtoList=new ArrayList<>();
+         badgeList.forEach(badge -> badgeDtoList.add(AppFactory.mapToDto(badge,BadgeDto.class)));
+         return badgeDtoList;
+
+
+     }
+
 }
