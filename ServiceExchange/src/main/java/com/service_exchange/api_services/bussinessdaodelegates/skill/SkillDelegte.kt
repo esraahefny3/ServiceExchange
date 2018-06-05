@@ -13,15 +13,17 @@ import org.springframework.stereotype.Component
 import java.util.stream.Collectors
 
 fun Skill.convertSkillAlone(): SkillDTO {
+
     val skill = AppFactory.mapToDto(this, SkillDTO::class.java)
-    skill.parentId = parentSkillId.id
+    if (parentSkillId != null)
+        skill.psId = parentSkillId.id
     return skill
 }
 
 interface SkillGettable {
     fun getMainSkills(): List<SkillDTO>
     fun getSkillChlidren(skillId: Int): List<SkillDTO>
-    fun getTopCatagorys(): List<SkillDTO>
+    fun getTopCatagorys(size: Int): List<SkillDTO>
     fun getAllSkills(): List<SkillDTO>
     fun getAllUnApprovedSkills(): List<SkillDTO>
     fun getServiceUnderSkill(skillId: Int): List<ServiceDTO>
@@ -42,9 +44,9 @@ private class SkillGettableImpl : SkillGettable {
             skillInterface.getSkillChild(skillId)?.stream()?.map { it.convertSkillAlone() }?.collect(Collectors.toList())
                     ?: emptyList()
 
-    override fun getTopCatagorys(): List<SkillDTO> =
+    override fun getTopCatagorys(size: Int): List<SkillDTO> =
             skillInterface.getApprovedSkills()?.stream()?.sorted(compareBy { it.serviceCollection.size })?.map { it.convertSkillAlone() }
-                    ?.collect(Collectors.toList()) ?: emptyList()
+                    ?.collect(Collectors.toList())?.subList(0, size) ?: emptyList()
 
 
     override fun getAllSkills(): List<SkillDTO> =

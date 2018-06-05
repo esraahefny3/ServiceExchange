@@ -6,6 +6,7 @@
 package com.service_exchange.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -54,6 +55,7 @@ public class Skill implements Serializable {
     private Collection<ReviewSkill> reviewSkillCollection;
     @OneToMany(mappedBy = "parentSkillId")
     private Collection<Skill> skillCollection;
+    @Nullable
     @JoinColumn(name = "parent_skill_id", referencedColumnName = "id")
     @ManyToOne
     private Skill parentSkillId;
@@ -163,7 +165,11 @@ public class Skill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Skill[ id=" + id + " ]";
+        return "Skill{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", isVerified=" + isVerified +
+                '}';
     }
-    
 }

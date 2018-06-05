@@ -35,5 +35,9 @@ class SkillRestfull {
     fun getSkillUser(skillId: Int): List<UserDTO> =
             skillussnes.getUsersWithSkill(skillId)
 
+    @RequestMapping(value = ["/getTop"], method = arrayOf(RequestMethod.GET))
+    fun getSkillsMostImplemented(size: Int): List<SkillDTO> =
+            skillussnes.getTopSkills(size)
+
 
 }

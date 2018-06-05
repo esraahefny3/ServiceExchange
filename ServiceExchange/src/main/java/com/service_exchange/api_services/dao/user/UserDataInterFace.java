@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 /**
  *
  * @author Altysh
@@ -21,6 +23,8 @@ public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,
     Page<UserTable> findByNameContains(String name, Pageable page);
 
     UserTable findByAccountIdEquals(String accountId);
+
+    UserTable findByUserEmailCollectionContaining(Collection<String> email);
 
 
 }

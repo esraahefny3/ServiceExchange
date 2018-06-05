@@ -41,6 +41,12 @@ public class UserDaoImpl implements UserInterFace {
         return user.orElse(null);
     }
 
+    @Nullable
+    @Override
+    public UserTable getUserByEmail(String email) {
+        return dataInterface.findByUserEmailCollectionContaining(Arrays.asList(email));
+    }
+
     private <T> List convertList(Collection<T> coll) {
         List list;
         if (coll instanceof List) {

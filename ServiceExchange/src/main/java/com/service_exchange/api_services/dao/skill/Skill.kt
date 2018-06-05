@@ -44,7 +44,7 @@ private class SkillImpl : SkillInterface {
     @Autowired
     lateinit var skilldata: SkillData
 
-    override fun getApprovedSkills(): List<Skill>? = skilldata.findByIsVerified(VERIFIED)
+    override fun getApprovedSkills(): List<Skill>? = skilldata.findAll().map { it }.toList()
 
     override fun createSkill(skill: Skill?): Skill? = if (skill != null) skilldata.save(skill) else null
 
