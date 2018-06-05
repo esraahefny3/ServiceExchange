@@ -146,7 +146,7 @@ return false;
     }
 
     @RequestMapping(value = "/addService", method = RequestMethod.POST)
-    private Boolean addService(@RequestBody ServiceDTO serviceDTO) {
+    private ServiceDTO addService(@RequestBody ServiceDTO serviceDTO) {
         return service.addService(serviceDTO);
     }
 

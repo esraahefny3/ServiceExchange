@@ -45,8 +45,8 @@ private class SkillGettableImpl : SkillGettable {
                     ?: emptyList()
 
     override fun getTopCatagorys(size: Int): List<SkillDTO> =
-            skillInterface.getApprovedSkills()?.stream()?.sorted(compareBy { it.serviceCollection.size })?.map { it.convertSkillAlone() }
-                    ?.collect(Collectors.toList())?.subList(0, size) ?: emptyList()
+            skillInterface.getMainSkills()?.stream()?.sorted(compareBy { it.serviceCollection.size })?.map { it.convertSkillAlone() }
+                    ?.collect(Collectors.toList())?.take(size) ?: emptyList()
 
 
     override fun getAllSkills(): List<SkillDTO> =

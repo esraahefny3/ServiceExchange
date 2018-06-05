@@ -111,7 +111,7 @@ interface UserDataSet {
     fun addEdcationToUser(edcationDTO: EdcationDTO?, userId: Int?): Boolean
     fun addSkillToUser(skillDTO: SkillDTO?, userId: Int?): Boolean
     fun addTelephonToUser(telephone: String?, userId: Int?): Boolean
-    fun addServiceToUser(serviceDTO: ServiceDTO?): Boolean
+    fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO?
 }
 
 @Component
@@ -158,11 +158,11 @@ private class UserDataSetImol : UserDataSet {
         return userTelephone.addTelephoneToUser(telephone, userId)
     }
 
-    override fun addServiceToUser(serviceDTO: ServiceDTO?): Boolean {
+    override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
         return if (serviceDTO != null && serviceDTO.userIdOwner != null) {
             val service = AppFactory.mapToDto(serviceDTO, Service::class.java)
-            userService.addServiceToUser(serviceDTO.userIdOwner, service)
-        } else false
+            userService.addServiceToUser(serviceDTO.userIdOwner, service)?.let { AppFactory.mapToDto(this, ServiceDTO::class.java) }
+        } else null
 
     }
 

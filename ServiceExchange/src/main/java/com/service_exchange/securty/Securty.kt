@@ -6,10 +6,13 @@
 //import org.springframework.context.annotation.Bean
 //import org.springframework.context.annotation.ComponentScan
 //import org.springframework.context.annotation.Configuration
+//import org.springframework.scheduling.annotation.EnableScheduling
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+//import org.springframework.security.config.http.SessionCreationPolicy
 //import org.springframework.security.core.GrantedAuthority
 //import org.springframework.security.core.authority.AuthorityUtils
 //import org.springframework.security.core.userdetails.UserDetails
@@ -64,6 +67,8 @@
 //@Configuration
 //@EnableWebSecurity
 //@ComponentScan(basePackageClasses = arrayOf(CustomUserDetail::class))
+//@EnableScheduling
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 //open class WebSecurtiy : WebSecurityConfigurerAdapter() {
 //    @Autowired
 //    lateinit var customUserDetail: CustomUserDetail
@@ -74,10 +79,18 @@
 //    }
 //
 //    override fun configure(http: HttpSecurity?) {
-////        http?.authorizeRequests()?.antMatchers("/hello")?.hasRole("user")
-////                ?.anyRequest()?.permitAll();
-//        http?.authorizeRequests()?.antMatchers("/")?.permitAll()
+//        http?.
+//                csrf()?.disable()?.
+//                sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.
+//                and()?.
+//                authorizeRequests()?.
+//                antMatchers("/hello")?.hasRole("user")?.
+//                anyRequest()?.permitAll()
+//        http?.authorizeRequests()?.antMatchers("/hello")?.hasRole("user")
+//                ?.anyRequest()?.permitAll()
+//       // http?.authorizeRequests()?.antMatchers("/")?.permitAll()
 //    }
+//
 //
 //    @Bean("passwordEncoder")
 //    open fun getPasswordEndcoder(): PasswordEncoder =
