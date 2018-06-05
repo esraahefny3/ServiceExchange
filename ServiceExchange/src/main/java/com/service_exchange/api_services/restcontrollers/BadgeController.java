@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author esraa
  */
 @RestController
+@RequestMapping("/badge")
 public class BadgeController {
     
     @Autowired
@@ -35,15 +36,17 @@ public class BadgeController {
     private Integer pageSize=20;
     
     @RequestMapping(value = "/getBadge/{id}", method = RequestMethod.GET)
-    public Badge getBadge(@PathVariable("id") Integer id) {
+    public BadgeDto getBadge(@PathVariable("id") Integer id) {
 
-               return badgeService.getBadge(id);
-           
+               Badge badgeTemp= badgeService.getBadge(id);
+               BadgeDto badgeDto=AppFactory.mapToDto(badgeTemp,BadgeDto.class);
+               badgeDto.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
+               return badgeDto;
     }
     
     
     @RequestMapping(value = "/createBadge", method = RequestMethod.POST)
-    public Badge createBadge(@RequestBody BadgeDto badgeDto) {
+    public BadgeDto createBadge(@RequestBody BadgeDto badgeDto) {
 
         if(badgeDto !=null)
         {
@@ -51,7 +54,10 @@ public class BadgeController {
             AdminTable admin=AppFactory.getAdminTableInstance();
             admin.setEmail(badgeDto.getAddedByAdminEmail());
             badge.setAddedBy(admin);
-           return badgeService.createBadge(badge);
+           Badge badgeTemp= badgeService.createBadge(badge);
+            BadgeDto badgeDto2=AppFactory.mapToDto(badgeTemp,BadgeDto.class);
+            badgeDto2.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
+            return badgeDto2;
         }
         else
         {
@@ -86,7 +92,7 @@ public class BadgeController {
     }
     
     @RequestMapping(value = "/updateBadge", method = RequestMethod.POST)
-    public Badge updateBadge(@RequestBody BadgeDto badgeDto) {
+    public BadgeDto updateBadge(@RequestBody BadgeDto badgeDto) {
         
         if(badgeDto!=null)
         { 
@@ -97,7 +103,11 @@ public class BadgeController {
                 admin.setEmail(badgeDto.getAddedByAdminEmail());
                 badge.setAddedBy(admin);
 
-                return badgeService.updateBadge(badge);
+                 Badge badge2=badgeService.updateBadge(badge);
+                BadgeDto badgeDto2=AppFactory.mapToDto(badge2,BadgeDto.class);
+                badgeDto2.setAddedByAdminEmail(badge2.getAddedBy().getEmail());
+                return badgeDto2;
+                
             }
             else
             {
@@ -114,7 +124,15 @@ public class BadgeController {
     public List<BadgeDto> getAllBadges(@PathVariable("pageNum") Integer pageNum) {
        List<Badge>badgeList= PageToListConverter.convertList(badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize)));
        List<BadgeDto>badgeDtoList=new ArrayList<>();
-       badgeList.forEach(badge -> badgeDtoList.add(AppFactory.mapToDto(badge,BadgeDto.class)));
+     //  badgeList.forEach(badge -> badgeDtoList.add(AppFactory.mapToDto(badge,BadgeDto.class)));
+        for (Badge badge:badgeList)
+        {
+            BadgeDto badgeDto=AppFactory.mapToDto(badge,BadgeDto.class);
+            badgeDto.setAddedByAdminEmail(badge.getAddedBy().getEmail());
+            badgeDtoList.add(badgeDto);
+        }
+       
+       
        return badgeDtoList;
        // return badgeService.getAllBadges(PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
     }
@@ -123,7 +141,12 @@ public class BadgeController {
     public Iterable<BadgeDto> getAllBadges() {
        List<Badge>badgeList=  PageToListConverter.convertIterableToList(badgeService.getAllBadges());
          List<BadgeDto>badgeDtoList=new ArrayList<>();
-         badgeList.forEach(badge -> badgeDtoList.add(AppFactory.mapToDto(badge,BadgeDto.class)));
+         for (Badge badge:badgeList)
+         {
+             BadgeDto badgeDto=AppFactory.mapToDto(badge,BadgeDto.class);
+             badgeDto.setAddedByAdminEmail(badge.getAddedBy().getEmail());
+             badgeDtoList.add(badgeDto);
+         }
          return badgeDtoList;
 
 
