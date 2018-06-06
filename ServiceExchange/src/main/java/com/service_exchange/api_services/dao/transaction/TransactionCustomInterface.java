@@ -1,6 +1,6 @@
-package com.service_exchange.api_services.restcontrollers;
+package com.service_exchange.api_services.dao.transaction;
 
-public class TransactionController {
+public interface TransactionCustomInterface {
 
     ////////////////////////////Nouran////////////////////////////
 
