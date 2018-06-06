@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -175,7 +176,7 @@ public class AdminTable implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.AdminTable[ email=" + email + " ]";
+        return "com.service_exchange.AdminTable[ email=" + email + " ]";
     }
 
 }

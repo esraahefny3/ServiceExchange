@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -132,7 +133,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Review[ id=" + id + " ]";
+        return "com.service_exchange.Review[ id=" + id + " ]";
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -115,7 +116,7 @@ public class Notification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Notification[ id=" + id + " ]";
+        return "com.service_exchange.Notification[ id=" + id + " ]";
     }
 
 }

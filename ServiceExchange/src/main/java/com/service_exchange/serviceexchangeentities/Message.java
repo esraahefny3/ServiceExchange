@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -166,7 +167,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Message[ id=" + id + " ]";
+        return "com.service_exchange.Message[ id=" + id + " ]";
     }
 
 }

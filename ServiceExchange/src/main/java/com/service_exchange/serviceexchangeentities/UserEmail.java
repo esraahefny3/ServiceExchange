@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -77,7 +78,7 @@ public class UserEmail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserEmail[ userEmailPK=" + userEmailPK + " ]";
+        return "com.service_exchange.UserEmail[ userEmailPK=" + userEmailPK + " ]";
     }
 
 }

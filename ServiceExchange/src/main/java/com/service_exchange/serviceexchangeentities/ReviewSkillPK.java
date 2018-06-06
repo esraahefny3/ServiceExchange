@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Embeddable
@@ -73,7 +74,7 @@ public class ReviewSkillPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
+        return "com.service_exchange.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
     }
 
 }

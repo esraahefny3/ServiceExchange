@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -99,7 +100,7 @@ public class UserNotification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
+        return "com.service_exchange.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
     }
 
 }

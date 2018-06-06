@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -124,7 +125,7 @@ public class UserChallenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
+        return "com.service_exchange.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
     }
 
 }

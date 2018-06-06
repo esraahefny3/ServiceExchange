@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -99,7 +100,7 @@ public class ReviewSkill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
+        return "com.service_exchange.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
     }
 
 }

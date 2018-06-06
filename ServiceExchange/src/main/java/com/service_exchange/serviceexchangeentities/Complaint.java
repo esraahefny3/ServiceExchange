@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -145,7 +146,7 @@ public class Complaint implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Complaint[ id=" + id + " ]";
+        return "com.service_exchange.Complaint[ id=" + id + " ]";
     }
 
 }

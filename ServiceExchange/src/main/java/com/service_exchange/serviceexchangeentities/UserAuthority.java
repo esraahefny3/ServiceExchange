@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -85,7 +86,7 @@ public class UserAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserAuthority[ userId=" + userId + " ]";
+        return "com.service_exchange.UserAuthority[ userId=" + userId + " ]";
     }
 
 }

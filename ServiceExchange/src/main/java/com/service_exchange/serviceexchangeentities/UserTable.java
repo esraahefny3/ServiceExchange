@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -53,8 +54,6 @@ public class UserTable implements Serializable {
     private Short isEnabled;
     @ManyToMany(mappedBy = "userTableCollection")
     private Collection<Skill> skillCollection;
-    @ManyToMany(mappedBy = "userTableCollection")
-    private Collection<Badge> badgeCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserEmail> userEmailCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
@@ -73,6 +72,8 @@ public class UserTable implements Serializable {
     private UserAuthority userAuthority;
     @OneToMany(mappedBy = "userId")
     private Collection<Complaint> complaintCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    private Collection<UserBadge> userBadgeCollection;
     @OneToMany(mappedBy = "madeBy")
     private Collection<Review> reviewCollection;
     @OneToMany(mappedBy = "madeBy")
@@ -161,15 +162,6 @@ public class UserTable implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Badge> getBadgeCollection() {
-        return badgeCollection;
-    }
-
-    public void setBadgeCollection(Collection<Badge> badgeCollection) {
-        this.badgeCollection = badgeCollection;
-    }
-
-    @XmlTransient
     public Collection<UserEmail> getUserEmailCollection() {
         return userEmailCollection;
     }
@@ -250,6 +242,15 @@ public class UserTable implements Serializable {
     }
 
     @XmlTransient
+    public Collection<UserBadge> getUserBadgeCollection() {
+        return userBadgeCollection;
+    }
+
+    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
+        this.userBadgeCollection = userBadgeCollection;
+    }
+
+    @XmlTransient
     public Collection<Review> getReviewCollection() {
         return reviewCollection;
     }
@@ -298,7 +299,7 @@ public class UserTable implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserTable[ id=" + id + " ]";
+        return "com.service_exchange.UserTable[ id=" + id + " ]";
     }
 
 }

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -178,7 +179,7 @@ public class Service implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Service[ id=" + id + " ]";
+        return "com.service_exchange.Service[ id=" + id + " ]";
     }
 
 }

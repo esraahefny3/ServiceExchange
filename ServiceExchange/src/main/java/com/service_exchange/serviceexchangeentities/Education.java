@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -135,7 +136,7 @@ public class Education implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Education[ educationPK=" + educationPK + " ]";
+        return "com.service_exchange.Education[ educationPK=" + educationPK + " ]";
     }
 
 }

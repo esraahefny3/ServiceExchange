@@ -11,25 +11,24 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
- *
  * @author Nouran
  */
 @Embeddable
-public class UserTelephonePK implements Serializable {
+public class UserBadgePK implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "user_id")
     private int userId;
     @Basic(optional = false)
-    @Column(name = "telephone")
-    private String telephone;
+    @Column(name = "badge_id")
+    private int badgeId;
 
-    public UserTelephonePK() {
+    public UserBadgePK() {
     }
 
-    public UserTelephonePK(int userId, String telephone) {
+    public UserBadgePK(int userId, int badgeId) {
         this.userId = userId;
-        this.telephone = telephone;
+        this.badgeId = badgeId;
     }
 
     public int getUserId() {
@@ -40,33 +39,33 @@ public class UserTelephonePK implements Serializable {
         this.userId = userId;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public int getBadgeId() {
+        return badgeId;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setBadgeId(int badgeId) {
+        this.badgeId = badgeId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) userId;
-        hash += (telephone != null ? telephone.hashCode() : 0);
+        hash += (int) badgeId;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserTelephonePK)) {
+        if (!(object instanceof UserBadgePK)) {
             return false;
         }
-        UserTelephonePK other = (UserTelephonePK) object;
+        UserBadgePK other = (UserBadgePK) object;
         if (this.userId != other.userId) {
             return false;
         }
-        if ((this.telephone == null && other.telephone != null) || (this.telephone != null && !this.telephone.equals(other.telephone))) {
+        if (this.badgeId != other.badgeId) {
             return false;
         }
         return true;
@@ -74,7 +73,7 @@ public class UserTelephonePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.UserTelephonePK[ userId=" + userId + ", telephone=" + telephone + " ]";
+        return "com.service_exchange.UserBadgePK[ userId=" + userId + ", badgeId=" + badgeId + " ]";
     }
 
 }

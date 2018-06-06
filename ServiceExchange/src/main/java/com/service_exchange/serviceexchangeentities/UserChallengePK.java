@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Embeddable
@@ -73,7 +74,7 @@ public class UserChallengePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.UserChallengePK[ userId=" + userId + ", challengeId=" + challengeId + " ]";
+        return "com.service_exchange.UserChallengePK[ userId=" + userId + ", challengeId=" + challengeId + " ]";
     }
 
 }

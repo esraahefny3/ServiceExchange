@@ -13,6 +13,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -133,7 +134,7 @@ public class Challenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Challenge[ id=" + id + " ]";
+        return "com.service_exchange.Challenge[ id=" + id + " ]";
     }
 
 }

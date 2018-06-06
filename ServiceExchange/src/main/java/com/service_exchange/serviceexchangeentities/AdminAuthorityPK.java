@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
+ *
  * @author Nouran
  */
 @Embeddable
@@ -73,7 +74,7 @@ public class AdminAuthorityPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
+        return "com.service_exchange.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
     }
 
 }

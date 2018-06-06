@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -168,7 +169,7 @@ public class Skill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Skill[ id=" + id + " ]";
+        return "com.service_exchange.Skill[ id=" + id + " ]";
     }
 
 }

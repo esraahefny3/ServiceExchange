@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -213,7 +214,7 @@ public class TransactionInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.TransactionInfo[ id=" + id + " ]";
+        return "com.service_exchange.TransactionInfo[ id=" + id + " ]";
     }
 
 }

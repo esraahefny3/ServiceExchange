@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ *
  * @author Nouran
  */
 @Entity
@@ -46,14 +47,11 @@ public class Badge implements Serializable {
     private String type;
     @Column(name = "is_deleted")
     private Short isDeleted;
-    @JoinTable(name = "user_badge", joinColumns = {
-            @JoinColumn(name = "badge_id", referencedColumnName = "id")}, inverseJoinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<UserTable> userTableCollection;
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable addedBy;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "badge")
+    private Collection<UserBadge> userBadgeCollection;
 
     public Badge() {
     }
@@ -118,21 +116,21 @@ public class Badge implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    @XmlTransient
-    public Collection<UserTable> getUserTableCollection() {
-        return userTableCollection;
-    }
-
-    public void setUserTableCollection(Collection<UserTable> userTableCollection) {
-        this.userTableCollection = userTableCollection;
-    }
-
     public AdminTable getAddedBy() {
         return addedBy;
     }
 
     public void setAddedBy(AdminTable addedBy) {
         this.addedBy = addedBy;
+    }
+
+    @XmlTransient
+    public Collection<UserBadge> getUserBadgeCollection() {
+        return userBadgeCollection;
+    }
+
+    public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
+        this.userBadgeCollection = userBadgeCollection;
     }
 
     @Override
@@ -157,7 +155,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.iti.serviceexchange.Badge[ id=" + id + " ]";
+        return "com.service_exchange.Badge[ id=" + id + " ]";
     }
 
 }
