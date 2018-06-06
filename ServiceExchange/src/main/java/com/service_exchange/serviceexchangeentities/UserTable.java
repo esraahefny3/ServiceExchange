@@ -302,4 +302,17 @@ public class UserTable implements Serializable {
         return "com.service_exchange.UserTable[ id=" + id + " ]";
     }
 
+
+    //---------esraa------
+    public Boolean addBadge(UserBadge userBadge){
+        if(!userBadgeCollection.contains(userBadge)){
+            userBadgeCollection.add(userBadge);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    //-------esraaa--------------
 }

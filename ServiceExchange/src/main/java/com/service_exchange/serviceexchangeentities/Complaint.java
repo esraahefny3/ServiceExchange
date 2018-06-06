@@ -5,6 +5,8 @@
  */
 package com.service_exchange.serviceexchangeentities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,6 +43,7 @@ public class Complaint implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @OneToMany(mappedBy = "complaintId")
+    @JsonIgnore
     private Collection<Message> messageCollection;
     @JoinColumn(name = "reviewed_by", referencedColumnName = "email")
     @ManyToOne
@@ -52,6 +55,14 @@ public class Complaint implements Serializable {
     @ManyToOne
     private UserTable userId;
 
+    @Transient
+    public final static String NOT_REVIEWED_STATE="Not_Reviewed";
+    @Transient
+    public final static String ON_REVIEW_STATE="On_Review";
+    @Transient
+    public final static String ACCEPTED_STATE="Accepted";
+    @Transient
+    public final static String REJECTED_STATE="Rejected";
     public Complaint() {
     }
 
