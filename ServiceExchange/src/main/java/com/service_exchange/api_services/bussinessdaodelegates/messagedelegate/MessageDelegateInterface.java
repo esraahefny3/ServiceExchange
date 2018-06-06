@@ -26,6 +26,7 @@ public interface MessageDelegateInterface {
   
     public MessageTransactionDto sendTransactionMessage(Integer senderId , Integer recieverId, Message message, Integer TransactionId);
     public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId,Integer pageNum);
-    
+    public List<Integer>getUserTransactionIdsList(Integer userId,Integer pageNum);
+
   //  public Message returnMessage(Integer messageId);
 }

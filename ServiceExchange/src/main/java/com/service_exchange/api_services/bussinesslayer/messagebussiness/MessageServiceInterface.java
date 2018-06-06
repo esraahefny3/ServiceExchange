@@ -8,6 +8,7 @@ package com.service_exchange.api_services.bussinesslayer.messagebussiness;
 import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
+import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.entities.Message;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface MessageServiceInterface {
   
     public MessageTransactionDto sendTransactionMessage(Integer senderId , Integer recieverId, Message message, Integer TransactionId);
     public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId,Integer pageNum);
-    
+
+    public List<TransactionChatDto>getAllUserTransactionChats(Integer userId,Integer pageNum);
    
 }

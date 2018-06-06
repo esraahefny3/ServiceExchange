@@ -18,10 +18,13 @@ import com.service_exchange.entities.Message;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +34,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
 
+    private int pageSize=20;
     @Autowired         
     private MessageInterface messageInterface;
     
@@ -178,7 +182,32 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
         return messageInterface.getAllTransactionMessages(transactionId, pageNum);
     
     }
-    
+
+    @Override
+    public List<Integer> getUserTransactionIdsList(Integer userId, Integer pageNum) {
+        List<Integer>transactionIdsList=null;
+        Optional<UserTable>userTableOptional=userDataInterface.findById(userId);
+        if(userTableOptional.isPresent()==true)
+        {
+            UserTable user=userTableOptional.get();
+            List<TransactionInfo>userTransactionsList= transactionDaoInterfaceImpl.findAllUserTransactions(user,PageRequest.of(pageNum,pageSize));
+            System.out.println(userTransactionsList);
+            for (TransactionInfo transactionInfo:userTransactionsList )
+            {
+                if(transactionIdsList==null)
+                {
+                    transactionIdsList=new ArrayList<>();
+                    transactionIdsList.add(transactionInfo.getId());
+                }
+                else
+                {
+                    transactionIdsList.add(transactionInfo.getId());
+                }
+            }
+        }
+        return transactionIdsList;
+    }
+
     private boolean checkUsersInTransaction(Integer senderId,Integer receiverId,TransactionInfo transactionInfo)
     {
         if((senderId!=receiverId)&&(transactionInfo.getStartedBy().getId()==senderId||transactionInfo.getStartedBy().getId()==receiverId)

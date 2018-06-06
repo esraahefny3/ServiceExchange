@@ -410,3 +410,8 @@ class MessageTransactionDto {
      var receiverId: Int? = null
      var senderId: Int? = null
 }
+
+class TransactionChatDto {
+     var transactionId: Int? = null
+     var transactionChatMessagesList: List<MessageTransactionDto>? = null
+}

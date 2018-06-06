@@ -9,6 +9,7 @@ import com.service_exchange.api_services.bussinesslayer.messagebussiness.Message
 import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
+import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Message;
 
@@ -132,6 +133,14 @@ public class MessageController {
     public List<MessageTransactionDto> getAllTransactionMessages(@PathVariable("transactionId") Integer transactionId, @PathVariable("pageNum") Integer pageNum) {
         if (transactionId != null && pageNum != null) {
             return messageServiceInterfaceImpl.getAllTransactionMessages(transactionId, pageNum);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/getAllUserTransactionChats/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionChatDto>  getAllUserTransactionChats(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+        if (userId != null && pageNum != null) {
+            return messageServiceInterfaceImpl.getAllUserTransactionChats(userId,pageNum);
         }
         return null;
     }

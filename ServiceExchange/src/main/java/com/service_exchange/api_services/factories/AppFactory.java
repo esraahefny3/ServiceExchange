@@ -5,6 +5,7 @@
  */
 package com.service_exchange.api_services.factories;
 
+import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.UserTable;
@@ -62,4 +63,9 @@ public class AppFactory {
    {
        return new AdminTable();
    }
+
+   public static TransactionChatDto getTransactionChatDtoInstance()
+    {
+        return new TransactionChatDto();
+    }
 }

@@ -9,7 +9,11 @@ import com.service_exchange.api_services.bussinessdaodelegates.messagedelegate.M
 import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
+import com.service_exchange.api_services.dao.dto.TransactionChatDto;
+import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Message;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,5 +62,29 @@ public class MessagService implements MessageServiceInterface{
     public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
             return messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum);
     }
-     
+
+    @Override
+    public List<TransactionChatDto> getAllUserTransactionChats(Integer userId,Integer pageNum) {
+        List<Integer>userTransactionIdsList=messageDelegateInterface.getUserTransactionIdsList(userId,pageNum);
+        List<TransactionChatDto>transactionChatDtosList=null;
+        for (Integer transactionId:userTransactionIdsList ) {
+            if(transactionChatDtosList==null)
+            {
+                transactionChatDtosList=new ArrayList<>();
+                TransactionChatDto transactionChatDto=AppFactory.getTransactionChatDtoInstance();
+                transactionChatDto.setTransactionId(transactionId);
+                transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
+                transactionChatDtosList.add(transactionChatDto);
+            }
+            else
+            {
+                TransactionChatDto transactionChatDto=AppFactory.getTransactionChatDtoInstance();
+                transactionChatDto.setTransactionId(transactionId);
+                transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
+                transactionChatDtosList.add(transactionChatDto);
+            }
+        }
+        return transactionChatDtosList;
+    }
+
 }
