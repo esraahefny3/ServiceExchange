@@ -9,29 +9,7 @@ class AdminMain {
     var password: String? = null
     var image: String? = null
     var telephones: List<String>? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as AdminMain
-
-        if (name != other.name) return false
-        if (email != other.email) return false
-        if (password != other.password) return false
-        if (image != other.image) return false
-        if (telephones != other.telephones) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name?.hashCode() ?: 0
-        result = 31 * result + (email?.hashCode() ?: 0)
-        result = 31 * result + (password?.hashCode() ?: 0)
-        result = 31 * result + (image?.hashCode() ?: 0)
-        result = 31 * result + (telephones?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
@@ -42,50 +20,13 @@ class AdminChallange {
     var reward: Int? = null
     var period: Int? = null
     val userInChallange: List<AdminUserId>? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as AdminChallange
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (description != other.description) return false
-        if (reward != other.reward) return false
-        if (period != other.period) return false
-        if (userInChallange != other.userInChallange) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + (reward ?: 0)
-        result = 31 * result + (period ?: 0)
-        result = 31 * result + (userInChallange?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
 class AdminUserId {
     var id: Int? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as AdminUserId
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id ?: 0
-    }
 
 }
 

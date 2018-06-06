@@ -26,9 +26,10 @@ class UserServiceImpl : UserServicesInterFace {
     @Autowired
     lateinit var serviceInterFace: ServiceInterface
 
-    override fun addServiceToUser(userId: Int?, service: Service?): Boolean? {
+    override fun addServiceToUser(userId: Int?, service: Service?): Service? {
         var user: UserTable? = userInterface.getUser(userId);
-        val bool = user?.addService(service)
+        service?.madeBy = user
+        val bool = serviceInterFace.createService(service)
         userInterface.updateUser(user)
         return bool
     }

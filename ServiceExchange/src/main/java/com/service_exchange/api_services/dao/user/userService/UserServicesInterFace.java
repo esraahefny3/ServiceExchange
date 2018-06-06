@@ -17,7 +17,7 @@ public interface UserServicesInterFace {
     @Nullable
     List<Service> getUserServices(Integer userId);
 
-    Boolean addServiceToUser(Integer userId, Service service);
+    Service addServiceToUser(Integer userId, Service service);
 
     Boolean removeServiceForUser(Integer userId, Integer serviceId, Boolean forced);
 

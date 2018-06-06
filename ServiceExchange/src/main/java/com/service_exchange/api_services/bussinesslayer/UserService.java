@@ -141,7 +141,7 @@ public class UserService{
         return userDataSet.addSkillToUser(skillDTO, userId);
     }
 
-    public Boolean addService(ServiceDTO serviceDTO) {
+    public ServiceDTO addService(ServiceDTO serviceDTO) {
         return userDataSet.addServiceToUser(serviceDTO);
     }
 
