@@ -5,39 +5,30 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "badge")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Badge.findAll", query = "SELECT b FROM Badge b")
-    , @NamedQuery(name = "Badge.findById", query = "SELECT b FROM Badge b WHERE b.id = :id")
-    , @NamedQuery(name = "Badge.findByName", query = "SELECT b FROM Badge b WHERE b.name = :name")
-    , @NamedQuery(name = "Badge.findByImage", query = "SELECT b FROM Badge b WHERE b.image = :image")
-    , @NamedQuery(name = "Badge.findByDescription", query = "SELECT b FROM Badge b WHERE b.description = :description")
-    , @NamedQuery(name = "Badge.findByTimeNeeded", query = "SELECT b FROM Badge b WHERE b.timeNeeded = :timeNeeded")
-    , @NamedQuery(name = "Badge.findByType", query = "SELECT b FROM Badge b WHERE b.type = :type")})
+        @NamedQuery(name = "Badge.findAll", query = "SELECT b FROM Badge b")
+        , @NamedQuery(name = "Badge.findById", query = "SELECT b FROM Badge b WHERE b.id = :id")
+        , @NamedQuery(name = "Badge.findByName", query = "SELECT b FROM Badge b WHERE b.name = :name")
+        , @NamedQuery(name = "Badge.findByImage", query = "SELECT b FROM Badge b WHERE b.image = :image")
+        , @NamedQuery(name = "Badge.findByDescription", query = "SELECT b FROM Badge b WHERE b.description = :description")
+        , @NamedQuery(name = "Badge.findByTimeNeeded", query = "SELECT b FROM Badge b WHERE b.timeNeeded = :timeNeeded")
+        , @NamedQuery(name = "Badge.findByType", query = "SELECT b FROM Badge b WHERE b.type = :type")
+        , @NamedQuery(name = "Badge.findByIsDeleted", query = "SELECT b FROM Badge b WHERE b.isDeleted = :isDeleted")})
 public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +47,8 @@ public class Badge implements Serializable {
     private String timeNeeded;
     @Column(name = "type")
     private String type;
+    @Column(name = "is_deleted")
+    private Short isDeleted;
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable addedBy;
@@ -117,6 +110,14 @@ public class Badge implements Serializable {
         this.type = type;
     }
 
+    public Short getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Short isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     public AdminTable getAddedBy() {
         return addedBy;
     }
@@ -156,7 +157,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Badge[ id=" + id + " ]";
+        return "com.service_exchange.Badge[ id=" + id + " ]";
     }
-    
+
 }

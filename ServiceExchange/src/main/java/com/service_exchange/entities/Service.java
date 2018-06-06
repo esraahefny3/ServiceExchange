@@ -5,7 +5,7 @@
  */
 package com.service_exchange.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,20 +15,20 @@ import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "service")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s")
-    , @NamedQuery(name = "Service.findById", query = "SELECT s FROM Service s WHERE s.id = :id")
-    , @NamedQuery(name = "Service.findByName", query = "SELECT s FROM Service s WHERE s.name = :name")
-    , @NamedQuery(name = "Service.findByImage", query = "SELECT s FROM Service s WHERE s.image = :image")
-    , @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price")
-    , @NamedQuery(name = "Service.findByType", query = "SELECT s FROM Service s WHERE s.type = :type")
-    , @NamedQuery(name = "Service.findByDescription", query = "SELECT s FROM Service s WHERE s.description = :description")
-    , @NamedQuery(name = "Service.findByIsAvailable", query = "SELECT s FROM Service s WHERE s.isAvailable = :isAvailable")})
+        @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s")
+        , @NamedQuery(name = "Service.findById", query = "SELECT s FROM Service s WHERE s.id = :id")
+        , @NamedQuery(name = "Service.findByName", query = "SELECT s FROM Service s WHERE s.name = :name")
+        , @NamedQuery(name = "Service.findByImage", query = "SELECT s FROM Service s WHERE s.image = :image")
+        , @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price")
+        , @NamedQuery(name = "Service.findByType", query = "SELECT s FROM Service s WHERE s.type = :type")
+        , @NamedQuery(name = "Service.findByDescription", query = "SELECT s FROM Service s WHERE s.description = :description")
+        , @NamedQuery(name = "Service.findByIsAvailable", query = "SELECT s FROM Service s WHERE s.isAvailable = :isAvailable")})
 public class Service implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,22 +48,21 @@ public class Service implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "is_available")
-    private Integer isAvailable;
+    private String isAvailable;
     @JoinTable(name = "service_skill", joinColumns = {
-        @JoinColumn(name = "service_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "skill_id", referencedColumnName = "id")})
+            @JoinColumn(name = "service_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "skill_id", referencedColumnName = "id")})
     @ManyToMany
-    @JsonIgnore
     private Collection<Skill> skillCollection;
-    @JsonIgnore
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
     private UserTable madeBy;
-    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
+    private TransactionInfo transactionInfo;
     @OneToMany(mappedBy = "serviceId")
     private Collection<TransactionInfo> transactionInfoCollection;
     @Transient
-    public static final String OFFERED = "offered";
+    public static final String OFFERED = "offerd";
     @Transient
     public static final String REQUSETED = "requested";
 
@@ -122,11 +121,11 @@ public class Service implements Serializable {
         this.description = description;
     }
 
-    public Integer getIsAvailable() {
+    public String getIsAvailable() {
         return isAvailable;
     }
 
-    public void setIsAvailable(Integer isAvailable) {
+    public void setIsAvailable(String isAvailable) {
         this.isAvailable = isAvailable;
     }
 
@@ -145,6 +144,14 @@ public class Service implements Serializable {
 
     public void setMadeBy(UserTable madeBy) {
         this.madeBy = madeBy;
+    }
+
+    public TransactionInfo getTransactionInfo() {
+        return transactionInfo;
+    }
+
+    public void setTransactionInfo(TransactionInfo transactionInfo) {
+        this.transactionInfo = transactionInfo;
     }
 
     @XmlTransient
@@ -178,8 +185,7 @@ public class Service implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Service[ id=" + id + " ]";
+        return "com.service_exchange.Service[ id=" + id + " ]";
     }
-    
-}
 
+}

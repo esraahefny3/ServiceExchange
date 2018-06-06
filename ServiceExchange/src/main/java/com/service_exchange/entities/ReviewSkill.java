@@ -5,29 +5,23 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "review_skill")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ReviewSkill.findAll", query = "SELECT r FROM ReviewSkill r")
-    , @NamedQuery(name = "ReviewSkill.findByReviewId", query = "SELECT r FROM ReviewSkill r WHERE r.reviewSkillPK.reviewId = :reviewId")
-    , @NamedQuery(name = "ReviewSkill.findBySkillId", query = "SELECT r FROM ReviewSkill r WHERE r.reviewSkillPK.skillId = :skillId")
-    , @NamedQuery(name = "ReviewSkill.findByRating", query = "SELECT r FROM ReviewSkill r WHERE r.rating = :rating")})
+        @NamedQuery(name = "ReviewSkill.findAll", query = "SELECT r FROM ReviewSkill r")
+        , @NamedQuery(name = "ReviewSkill.findByReviewId", query = "SELECT r FROM ReviewSkill r WHERE r.reviewSkillPK.reviewId = :reviewId")
+        , @NamedQuery(name = "ReviewSkill.findBySkillId", query = "SELECT r FROM ReviewSkill r WHERE r.reviewSkillPK.skillId = :skillId")
+        , @NamedQuery(name = "ReviewSkill.findByRating", query = "SELECT r FROM ReviewSkill r WHERE r.rating = :rating")})
 public class ReviewSkill implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -107,7 +101,7 @@ public class ReviewSkill implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
+        return "com.service_exchange.ReviewSkill[ reviewSkillPK=" + reviewSkillPK + " ]";
     }
-    
+
 }

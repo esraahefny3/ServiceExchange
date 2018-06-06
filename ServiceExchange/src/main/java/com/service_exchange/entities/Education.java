@@ -5,36 +5,28 @@
  */
 package com.service_exchange.entities;
 
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "education")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Education.findAll", query = "SELECT e FROM Education e")
-    , @NamedQuery(name = "Education.findById", query = "SELECT e FROM Education e WHERE e.educationPK.id = :id")
-    , @NamedQuery(name = "Education.findByUserId", query = "SELECT e FROM Education e WHERE e.educationPK.userId = :userId")
-    , @NamedQuery(name = "Education.findByDegree", query = "SELECT e FROM Education e WHERE e.degree = :degree")
-    , @NamedQuery(name = "Education.findByMajor", query = "SELECT e FROM Education e WHERE e.major = :major")
-    , @NamedQuery(name = "Education.findByGrade", query = "SELECT e FROM Education e WHERE e.grade = :grade")
-    , @NamedQuery(name = "Education.findByStartDate", query = "SELECT e FROM Education e WHERE e.startDate = :startDate")
-    , @NamedQuery(name = "Education.findByEndDate", query = "SELECT e FROM Education e WHERE e.endDate = :endDate")})
+        @NamedQuery(name = "Education.findAll", query = "SELECT e FROM Education e")
+        , @NamedQuery(name = "Education.findById", query = "SELECT e FROM Education e WHERE e.educationPK.id = :id")
+        , @NamedQuery(name = "Education.findByUserId", query = "SELECT e FROM Education e WHERE e.educationPK.userId = :userId")
+        , @NamedQuery(name = "Education.findByDegree", query = "SELECT e FROM Education e WHERE e.degree = :degree")
+        , @NamedQuery(name = "Education.findByMajor", query = "SELECT e FROM Education e WHERE e.major = :major")
+        , @NamedQuery(name = "Education.findByGrade", query = "SELECT e FROM Education e WHERE e.grade = :grade")
+        , @NamedQuery(name = "Education.findByStartDate", query = "SELECT e FROM Education e WHERE e.startDate = :startDate")
+        , @NamedQuery(name = "Education.findByEndDate", query = "SELECT e FROM Education e WHERE e.endDate = :endDate")})
 public class Education implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -145,7 +137,7 @@ public class Education implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Education[ educationPK=" + educationPK + " ]";
+        return "com.service_exchange.Education[ educationPK=" + educationPK + " ]";
     }
-    
+
 }

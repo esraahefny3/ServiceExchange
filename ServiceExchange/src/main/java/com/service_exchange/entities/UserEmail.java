@@ -11,15 +11,15 @@ import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_email")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserEmail.findAll", query = "SELECT u FROM UserEmail u")
-    , @NamedQuery(name = "UserEmail.findByUserId", query = "SELECT u FROM UserEmail u WHERE u.userEmailPK.userId = :userId")
-    , @NamedQuery(name = "UserEmail.findByEmail", query = "SELECT u FROM UserEmail u WHERE u.userEmailPK.email = :email")})
+        @NamedQuery(name = "UserEmail.findAll", query = "SELECT u FROM UserEmail u")
+        , @NamedQuery(name = "UserEmail.findByUserId", query = "SELECT u FROM UserEmail u WHERE u.userEmailPK.userId = :userId")
+        , @NamedQuery(name = "UserEmail.findByEmail", query = "SELECT u FROM UserEmail u WHERE u.userEmailPK.email = :email")})
 public class UserEmail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,18 +32,17 @@ public class UserEmail implements Serializable {
     public UserEmail() {
     }
 
-    public UserEmail(Integer userId, String email, UserTable userTable) {
-        userEmailPK = new UserEmailPK(userId, email);
-        this.userTable = userTable;
-    }
-
-
     public UserEmail(UserEmailPK userEmailPK) {
         this.userEmailPK = userEmailPK;
     }
 
     public UserEmail(int userId, String email) {
         this.userEmailPK = new UserEmailPK(userId, email);
+    }
+
+    public UserEmail(int userId, String email, UserTable userTable) {
+        this.userEmailPK = new UserEmailPK(userId, email);
+        this.userTable = userTable;
     }
 
     public UserEmailPK getUserEmailPK() {
@@ -84,7 +83,7 @@ public class UserEmail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserEmail[ userEmailPK=" + userEmailPK + " ]";
+        return "com.service_exchange.UserEmail[ userEmailPK=" + userEmailPK + " ]";
     }
-    
+
 }

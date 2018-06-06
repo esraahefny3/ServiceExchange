@@ -5,14 +5,13 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
- *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class UserBadgePK implements Serializable {
@@ -74,7 +73,7 @@ public class UserBadgePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserBadgePK[ userId=" + userId + ", badgeId=" + badgeId + " ]";
+        return "com.service_exchange.UserBadgePK[ userId=" + userId + ", badgeId=" + badgeId + " ]";
     }
-    
+
 }

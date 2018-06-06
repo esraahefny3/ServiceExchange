@@ -5,8 +5,6 @@
  */
 package com.service_exchange.entities;
 
-import org.jetbrains.annotations.Nullable;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,11 +12,11 @@ import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class UserTelephonePK implements Serializable {
-    @Nullable
+
     @Basic(optional = false)
     @Column(name = "user_id")
     private int userId;
@@ -76,7 +74,7 @@ public class UserTelephonePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserTelephonePK[ userId=" + userId + ", telephone=" + telephone + " ]";
+        return "com.service_exchange.UserTelephonePK[ userId=" + userId + ", telephone=" + telephone + " ]";
     }
-    
+
 }

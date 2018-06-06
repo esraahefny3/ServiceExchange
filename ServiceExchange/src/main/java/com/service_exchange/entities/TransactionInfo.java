@@ -5,42 +5,33 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "transaction_info")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TransactionInfo.findAll", query = "SELECT t FROM TransactionInfo t")
-    , @NamedQuery(name = "TransactionInfo.findById", query = "SELECT t FROM TransactionInfo t WHERE t.id = :id")
-    , @NamedQuery(name = "TransactionInfo.findByType", query = "SELECT t FROM TransactionInfo t WHERE t.type = :type")
-    , @NamedQuery(name = "TransactionInfo.findByState", query = "SELECT t FROM TransactionInfo t WHERE t.state = :state")
-    , @NamedQuery(name = "TransactionInfo.findByStartDate", query = "SELECT t FROM TransactionInfo t WHERE t.startDate = :startDate")
-    , @NamedQuery(name = "TransactionInfo.findByEndDate", query = "SELECT t FROM TransactionInfo t WHERE t.endDate = :endDate")
-    , @NamedQuery(name = "TransactionInfo.findByDuration", query = "SELECT t FROM TransactionInfo t WHERE t.duration = :duration")
-    , @NamedQuery(name = "TransactionInfo.findByPrice", query = "SELECT t FROM TransactionInfo t WHERE t.price = :price")})
+        @NamedQuery(name = "TransactionInfo.findAll", query = "SELECT t FROM TransactionInfo t")
+        , @NamedQuery(name = "TransactionInfo.findById", query = "SELECT t FROM TransactionInfo t WHERE t.id = :id")
+        , @NamedQuery(name = "TransactionInfo.findByType", query = "SELECT t FROM TransactionInfo t WHERE t.type = :type")
+        , @NamedQuery(name = "TransactionInfo.findByState", query = "SELECT t FROM TransactionInfo t WHERE t.state = :state")
+        , @NamedQuery(name = "TransactionInfo.findByStartDate", query = "SELECT t FROM TransactionInfo t WHERE t.startDate = :startDate")
+        , @NamedQuery(name = "TransactionInfo.findByEndDate", query = "SELECT t FROM TransactionInfo t WHERE t.endDate = :endDate")
+        , @NamedQuery(name = "TransactionInfo.findByDuration", query = "SELECT t FROM TransactionInfo t WHERE t.duration = :duration")
+        , @NamedQuery(name = "TransactionInfo.findByPrice", query = "SELECT t FROM TransactionInfo t WHERE t.price = :price")
+        , @NamedQuery(name = "TransactionInfo.findByServiceExchanged", query = "SELECT t FROM TransactionInfo t WHERE t.serviceExchanged = :serviceExchanged")
+        , @NamedQuery(name = "TransactionInfo.findByTypeOfPayment", query = "SELECT t FROM TransactionInfo t WHERE t.typeOfPayment = :typeOfPayment")})
 public class TransactionInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,13 +51,20 @@ public class TransactionInfo implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
     @Column(name = "duration")
-    private Integer duration;
+    private BigInteger duration;
     @Column(name = "price")
     private Integer price;
+    @Column(name = "service_exchanged")
+    private String serviceExchanged;
+    @Column(name = "type_of_payment")
+    private String typeOfPayment;
     @OneToMany(mappedBy = "transactionId")
     private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "transactionId")
     private Collection<Complaint> complaintCollection;
+    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private Service service;
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     @ManyToOne
     private Service serviceId;
@@ -121,11 +119,11 @@ public class TransactionInfo implements Serializable {
         this.endDate = endDate;
     }
 
-    public Integer getDuration() {
+    public BigInteger getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(BigInteger duration) {
         this.duration = duration;
     }
 
@@ -135,6 +133,22 @@ public class TransactionInfo implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getServiceExchanged() {
+        return serviceExchanged;
+    }
+
+    public void setServiceExchanged(String serviceExchanged) {
+        this.serviceExchanged = serviceExchanged;
+    }
+
+    public String getTypeOfPayment() {
+        return typeOfPayment;
+    }
+
+    public void setTypeOfPayment(String typeOfPayment) {
+        this.typeOfPayment = typeOfPayment;
     }
 
     @XmlTransient
@@ -153,6 +167,14 @@ public class TransactionInfo implements Serializable {
 
     public void setComplaintCollection(Collection<Complaint> complaintCollection) {
         this.complaintCollection = complaintCollection;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public Service getServiceId() {
@@ -193,7 +215,7 @@ public class TransactionInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.TransactionInfo[ id=" + id + " ]";
+        return "com.service_exchange.TransactionInfo[ id=" + id + " ]";
     }
-    
+
 }

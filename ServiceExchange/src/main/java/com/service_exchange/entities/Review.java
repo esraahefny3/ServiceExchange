@@ -5,38 +5,29 @@
  */
 package com.service_exchange.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "review")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r")
-    , @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id")
-    , @NamedQuery(name = "Review.findByComment", query = "SELECT r FROM Review r WHERE r.comment = :comment")
-    , @NamedQuery(name = "Review.findByRating", query = "SELECT r FROM Review r WHERE r.rating = :rating")
-    , @NamedQuery(name = "Review.findByTransactionId", query = "SELECT r FROM Review r WHERE r.transactionId = :transactionId")})
+        @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r")
+        , @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id")
+        , @NamedQuery(name = "Review.findByComment", query = "SELECT r FROM Review r WHERE r.comment = :comment")
+        , @NamedQuery(name = "Review.findByRating", query = "SELECT r FROM Review r WHERE r.rating = :rating")
+        , @NamedQuery(name = "Review.findByTransactionId", query = "SELECT r FROM Review r WHERE r.transactionId = :transactionId")
+        , @NamedQuery(name = "Review.findByIsDeleted", query = "SELECT r FROM Review r WHERE r.isDeleted = :isDeleted")})
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,8 +42,10 @@ public class Review implements Serializable {
     private Integer rating;
     @Column(name = "transaction_id")
     private Integer transactionId;
+    @Column(name = "is_deleted")
+    private Short isDeleted;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
-   
     private Collection<ReviewSkill> reviewSkillCollection;
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
@@ -97,6 +90,14 @@ public class Review implements Serializable {
         this.transactionId = transactionId;
     }
 
+    public Short getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Short isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @XmlTransient
     public Collection<ReviewSkill> getReviewSkillCollection() {
         return reviewSkillCollection;
@@ -136,7 +137,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Review[ id=" + id + " ]";
+        return "com.service_exchange.Review[ id=" + id + " ]";
     }
-    
+
 }

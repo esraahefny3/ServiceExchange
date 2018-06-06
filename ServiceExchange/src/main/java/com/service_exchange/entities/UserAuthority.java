@@ -5,29 +5,22 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_authority")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserAuthority.findAll", query = "SELECT u FROM UserAuthority u")
-    , @NamedQuery(name = "UserAuthority.findByUserId", query = "SELECT u FROM UserAuthority u WHERE u.userId = :userId")
-    , @NamedQuery(name = "UserAuthority.findByAuthority", query = "SELECT u FROM UserAuthority u WHERE u.authority = :authority")})
+        @NamedQuery(name = "UserAuthority.findAll", query = "SELECT u FROM UserAuthority u")
+        , @NamedQuery(name = "UserAuthority.findByUserId", query = "SELECT u FROM UserAuthority u WHERE u.userId = :userId")
+        , @NamedQuery(name = "UserAuthority.findByAuthority", query = "SELECT u FROM UserAuthority u WHERE u.authority = :authority")})
 public class UserAuthority implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -94,7 +87,7 @@ public class UserAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserAuthority[ userId=" + userId + " ]";
+        return "com.service_exchange.UserAuthority[ userId=" + userId + " ]";
     }
-    
+
 }

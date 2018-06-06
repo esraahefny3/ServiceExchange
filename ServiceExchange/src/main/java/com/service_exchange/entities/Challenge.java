@@ -5,28 +5,30 @@
  */
 package com.service_exchange.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "challenge")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Challenge.findAll", query = "SELECT c FROM Challenge c")
-    , @NamedQuery(name = "Challenge.findById", query = "SELECT c FROM Challenge c WHERE c.id = :id")
-    , @NamedQuery(name = "Challenge.findByName", query = "SELECT c FROM Challenge c WHERE c.name = :name")
-    , @NamedQuery(name = "Challenge.findByDescription", query = "SELECT c FROM Challenge c WHERE c.description = :description")
-    , @NamedQuery(name = "Challenge.findByReward", query = "SELECT c FROM Challenge c WHERE c.reward = :reward")
-    , @NamedQuery(name = "Challenge.findByPeriod", query = "SELECT c FROM Challenge c WHERE c.period = :period")})
+        @NamedQuery(name = "Challenge.findAll", query = "SELECT c FROM Challenge c")
+        , @NamedQuery(name = "Challenge.findById", query = "SELECT c FROM Challenge c WHERE c.id = :id")
+        , @NamedQuery(name = "Challenge.findByName", query = "SELECT c FROM Challenge c WHERE c.name = :name")
+        , @NamedQuery(name = "Challenge.findByDescription", query = "SELECT c FROM Challenge c WHERE c.description = :description")
+        , @NamedQuery(name = "Challenge.findByReward", query = "SELECT c FROM Challenge c WHERE c.reward = :reward")
+        , @NamedQuery(name = "Challenge.findByPeriod", query = "SELECT c FROM Challenge c WHERE c.period = :period")})
 public class Challenge implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,11 +44,10 @@ public class Challenge implements Serializable {
     @Column(name = "reward")
     private Integer reward;
     @Column(name = "period")
-    private Integer period;
+    private BigInteger period;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "challenge")
     private Collection<UserChallenge> userChallengeCollection;
-    @JsonIgnore
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable addedBy;
@@ -90,14 +91,14 @@ public class Challenge implements Serializable {
         this.reward = reward;
     }
 
-    public Integer getPeriod() {
+    public BigInteger getPeriod() {
         return period;
     }
 
-    public void setPeriod(Integer period) {
+    public void setPeriod(BigInteger period) {
         this.period = period;
     }
-    @JsonIgnore
+
     @XmlTransient
     public Collection<UserChallenge> getUserChallengeCollection() {
         return userChallengeCollection;
@@ -137,7 +138,7 @@ public class Challenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Challenge[ id=" + id + " ]";
+        return "com.service_exchange.Challenge[ id=" + id + " ]";
     }
-   
+
 }

@@ -5,13 +5,13 @@
  */
 package com.service_exchange.api_services.bussinessdaodelegates.complaintdelegate;
 
-import com.service_exchange.api_services.dao.dto.ComplaintDto;
-import com.service_exchange.entities.AdminTable;
-import com.service_exchange.entities.Complaint;
-import com.service_exchange.entities.TransactionInfo;
-import com.service_exchange.entities.UserTable;
+ import com.service_exchange.api_services.dao.dto.ComplaintDto;
+ import com.service_exchange.entities.AdminTable;
+ import com.service_exchange.entities.Complaint;
+ import com.service_exchange.entities.TransactionInfo;
+ import com.service_exchange.entities.UserTable;
 
-/**
+ /**
  *
  * @author esraa
  */

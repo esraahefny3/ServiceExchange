@@ -5,14 +5,14 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class AdminAuthorityPK implements Serializable {
@@ -74,7 +74,7 @@ public class AdminAuthorityPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
+        return "com.service_exchange.AdminAuthorityPK[ adminEmail=" + adminEmail + ", authority=" + authority + " ]";
     }
-    
+
 }

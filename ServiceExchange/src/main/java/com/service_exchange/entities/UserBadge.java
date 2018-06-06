@@ -5,35 +5,28 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
- *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_badge")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserBadge.findAll", query = "SELECT u FROM UserBadge u")
-    , @NamedQuery(name = "UserBadge.findByUserId", query = "SELECT u FROM UserBadge u WHERE u.userBadgePK.userId = :userId")
-    , @NamedQuery(name = "UserBadge.findByBadgeId", query = "SELECT u FROM UserBadge u WHERE u.userBadgePK.badgeId = :badgeId")
-    , @NamedQuery(name = "UserBadge.findByProgress", query = "SELECT u FROM UserBadge u WHERE u.progress = :progress")})
+        @NamedQuery(name = "UserBadge.findAll", query = "SELECT u FROM UserBadge u")
+        , @NamedQuery(name = "UserBadge.findByUserId", query = "SELECT u FROM UserBadge u WHERE u.userBadgePK.userId = :userId")
+        , @NamedQuery(name = "UserBadge.findByBadgeId", query = "SELECT u FROM UserBadge u WHERE u.userBadgePK.badgeId = :badgeId")
+        , @NamedQuery(name = "UserBadge.findByProgress", query = "SELECT u FROM UserBadge u WHERE u.progress = :progress")})
 public class UserBadge implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserBadgePK userBadgePK;
-    @Column(name = "progress",unique=true)
+    @Column(name = "progress")
     private Integer progress;
     @JoinColumn(name = "badge_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
@@ -107,7 +100,7 @@ public class UserBadge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserBadge[ userBadgePK=" + userBadgePK + " ]";
+        return "com.service_exchange.UserBadge[ userBadgePK=" + userBadgePK + " ]";
     }
-    
+
 }

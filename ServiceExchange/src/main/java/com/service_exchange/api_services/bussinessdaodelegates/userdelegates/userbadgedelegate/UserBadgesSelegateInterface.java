@@ -6,11 +6,10 @@
 package com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate;
 
 import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.UserBadge;
 import com.service_exchange.entities.UserTable;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 
 public interface UserBadgesSelegateInterface {
-   public UserTable checkIfUserExist(Integer userId); 
+    public UserTable checkIfUserExist(Integer userId);
     public List<Badge> getAllUserBadges(UserTable user);
    public List<Badge> getAllUserBadges(UserTable user, Pageable page);
    public boolean assignBadgeToUser(UserTable user,Badge Badge);

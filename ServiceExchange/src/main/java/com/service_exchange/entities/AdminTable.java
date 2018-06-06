@@ -5,7 +5,7 @@
  */
 package com.service_exchange.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,17 +15,18 @@ import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "admin_table")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AdminTable.findAll", query = "SELECT a FROM AdminTable a")
-    , @NamedQuery(name = "AdminTable.findByEmail", query = "SELECT a FROM AdminTable a WHERE a.email = :email")
-    , @NamedQuery(name = "AdminTable.findByName", query = "SELECT a FROM AdminTable a WHERE a.name = :name")
-    , @NamedQuery(name = "AdminTable.findByPassword", query = "SELECT a FROM AdminTable a WHERE a.password = :password")
-    , @NamedQuery(name = "AdminTable.findByImage", query = "SELECT a FROM AdminTable a WHERE a.image = :image")})
+        @NamedQuery(name = "AdminTable.findAll", query = "SELECT a FROM AdminTable a")
+        , @NamedQuery(name = "AdminTable.findByEmail", query = "SELECT a FROM AdminTable a WHERE a.email = :email")
+        , @NamedQuery(name = "AdminTable.findByName", query = "SELECT a FROM AdminTable a WHERE a.name = :name")
+        , @NamedQuery(name = "AdminTable.findByPassword", query = "SELECT a FROM AdminTable a WHERE a.password = :password")
+        , @NamedQuery(name = "AdminTable.findByImage", query = "SELECT a FROM AdminTable a WHERE a.image = :image")
+        , @NamedQuery(name = "AdminTable.findByIsEnabled", query = "SELECT a FROM AdminTable a WHERE a.isEnabled = :isEnabled")})
 public class AdminTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,22 +40,18 @@ public class AdminTable implements Serializable {
     private String password;
     @Column(name = "image")
     private String image;
-    @JsonIgnore
+    @Column(name = "is_enabled")
+    private Short isEnabled;
     @OneToMany(mappedBy = "addedBy")
     private Collection<Badge> badgeCollection;
-    @JsonIgnore
     @OneToMany(mappedBy = "sentBy")
     private Collection<Notification> notificationCollection;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminAuthority> adminAuthorityCollection;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminTable")
     private Collection<AdminTelephone> adminTelephoneCollection;
-    @JsonIgnore
     @OneToMany(mappedBy = "reviewedBy")
     private Collection<Complaint> complaintCollection;
-    @JsonIgnore
     @OneToMany(mappedBy = "addedBy")
     private Collection<Challenge> challengeCollection;
 
@@ -95,6 +92,14 @@ public class AdminTable implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Short getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Short isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     @XmlTransient
@@ -173,7 +178,7 @@ public class AdminTable implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.AdminTable[ email=" + email + " ]";
+        return "com.service_exchange.AdminTable[ email=" + email + " ]";
     }
-    
+
 }

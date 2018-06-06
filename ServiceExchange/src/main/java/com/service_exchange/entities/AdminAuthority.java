@@ -5,27 +5,22 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "admin_authority")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AdminAuthority.findAll", query = "SELECT a FROM AdminAuthority a")
-    , @NamedQuery(name = "AdminAuthority.findByAdminEmail", query = "SELECT a FROM AdminAuthority a WHERE a.adminAuthorityPK.adminEmail = :adminEmail")
-    , @NamedQuery(name = "AdminAuthority.findByAuthority", query = "SELECT a FROM AdminAuthority a WHERE a.adminAuthorityPK.authority = :authority")})
+        @NamedQuery(name = "AdminAuthority.findAll", query = "SELECT a FROM AdminAuthority a")
+        , @NamedQuery(name = "AdminAuthority.findByAdminEmail", query = "SELECT a FROM AdminAuthority a WHERE a.adminAuthorityPK.adminEmail = :adminEmail")
+        , @NamedQuery(name = "AdminAuthority.findByAuthority", query = "SELECT a FROM AdminAuthority a WHERE a.adminAuthorityPK.authority = :authority")})
 public class AdminAuthority implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,7 +79,7 @@ public class AdminAuthority implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.AdminAuthority[ adminAuthorityPK=" + adminAuthorityPK + " ]";
+        return "com.service_exchange.AdminAuthority[ adminAuthorityPK=" + adminAuthorityPK + " ]";
     }
-    
+
 }

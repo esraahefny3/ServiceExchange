@@ -5,14 +5,14 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class EducationPK implements Serializable {
@@ -74,7 +74,7 @@ public class EducationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.EducationPK[ id=" + id + ", userId=" + userId + " ]";
+        return "com.service_exchange.EducationPK[ id=" + id + ", userId=" + userId + " ]";
     }
-    
+
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class UserEmailPK implements Serializable {
@@ -26,7 +26,6 @@ public class UserEmailPK implements Serializable {
 
     public UserEmailPK() {
     }
-
 
     public UserEmailPK(int userId, String email) {
         this.userId = userId;
@@ -75,7 +74,7 @@ public class UserEmailPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
+        return "com.service_exchange.UserEmailPK[ userId=" + userId + ", email=" + email + " ]";
     }
-    
+
 }

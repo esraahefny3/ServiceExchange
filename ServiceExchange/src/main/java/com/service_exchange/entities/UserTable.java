@@ -5,40 +5,41 @@
  */
 package com.service_exchange.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_table")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u")
-    , @NamedQuery(name = "UserTable.findById", query = "SELECT u FROM UserTable u WHERE u.id = :id")
-    , @NamedQuery(name = "UserTable.findByName", query = "SELECT u FROM UserTable u WHERE u.name = :name")
-    , @NamedQuery(name = "UserTable.findByImage", query = "SELECT u FROM UserTable u WHERE u.image = :image")
-    , @NamedQuery(name = "UserTable.findByStatus", query = "SELECT u FROM UserTable u WHERE u.status = :status")
-    , @NamedQuery(name = "UserTable.findByBirthDate", query = "SELECT u FROM UserTable u WHERE u.birthDate = :birthDate")
-    , @NamedQuery(name = "UserTable.findByAccountId", query = "SELECT u FROM UserTable u WHERE u.accountId = :accountId")
-    , @NamedQuery(name = "UserTable.findByAccountType", query = "SELECT u FROM UserTable u WHERE u.accountType = :accountType")})
+        @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u")
+        , @NamedQuery(name = "UserTable.findById", query = "SELECT u FROM UserTable u WHERE u.id = :id")
+        , @NamedQuery(name = "UserTable.findByName", query = "SELECT u FROM UserTable u WHERE u.name = :name")
+        , @NamedQuery(name = "UserTable.findByImage", query = "SELECT u FROM UserTable u WHERE u.image = :image")
+        , @NamedQuery(name = "UserTable.findByStatus", query = "SELECT u FROM UserTable u WHERE u.status = :status")
+        , @NamedQuery(name = "UserTable.findByBirthDate", query = "SELECT u FROM UserTable u WHERE u.birthDate = :birthDate")
+        , @NamedQuery(name = "UserTable.findByAccountId", query = "SELECT u FROM UserTable u WHERE u.accountId = :accountId")
+        , @NamedQuery(name = "UserTable.findByAccountType", query = "SELECT u FROM UserTable u WHERE u.accountType = :accountType")
+        , @NamedQuery(name = "UserTable.findByIsEnabled", query = "SELECT u FROM UserTable u WHERE u.isEnabled = :isEnabled")})
 public class UserTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Nullable
     @Column(name = "id")
     private Integer id;
     @Column(name = "name")
@@ -48,42 +49,45 @@ public class UserTable implements Serializable {
     @Column(name = "status")
     private String status;
     @Column(name = "birth_date")
-    private String birthDate;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
     @Column(name = "account_id")
     private String accountId;
     @Column(name = "account_type")
     private String accountType;
-    @JsonIgnore
+    @Column(name = "is_enabled")
+    private Short isEnabled;
     @ManyToMany(mappedBy = "userTableCollection")
+    @JsonIgnore
     private Collection<Skill> skillCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
     private Collection<UserEmail> userEmailCollection;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    @JsonIgnore
     private Collection<Education> educationCollection;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    @JsonIgnore
     private Collection<UserTelephone> userTelephoneCollection;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
-    private Collection<UserNotification> userNotificationCollection;
     @JsonIgnore
+    private Collection<UserNotification> userNotificationCollection;
     @OneToMany(mappedBy = "receiverId")
+    @JsonIgnore
     private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "senderId")
     @JsonIgnore
     private Collection<Message> messageCollection1;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    @JsonIgnore
     private Collection<UserChallenge> userChallengeCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userTable")
     private UserAuthority userAuthority;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Complaint> complaintCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     private Collection<UserBadge> userBadgeCollection;
     @JsonIgnore
     @OneToMany(mappedBy = "madeBy")
@@ -95,9 +99,6 @@ public class UserTable implements Serializable {
     @OneToMany(mappedBy = "startedBy")
     private Collection<TransactionInfo> transactionInfoCollection;
 
-    @Transient
-    private Boolean isFrist = Boolean.TRUE;
-
     public Boolean getFrist() {
         return isFrist;
     }
@@ -105,6 +106,9 @@ public class UserTable implements Serializable {
     public void setFrist(Boolean frist) {
         isFrist = frist;
     }
+
+    @Transient
+    private Boolean isFrist = Boolean.TRUE;
     public UserTable() {
     }
 
@@ -144,11 +148,11 @@ public class UserTable implements Serializable {
         this.status = status;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -166,6 +170,14 @@ public class UserTable implements Serializable {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    public Short getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Short isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     @XmlTransient
@@ -230,7 +242,7 @@ public class UserTable implements Serializable {
     public void setMessageCollection1(Collection<Message> messageCollection1) {
         this.messageCollection1 = messageCollection1;
     }
-    @JsonIgnore
+
     @XmlTransient
     public Collection<UserChallenge> getUserChallengeCollection() {
         return userChallengeCollection;
@@ -312,8 +324,6 @@ public class UserTable implements Serializable {
         }
         return true;
     }
-
-
     @Override
     public String toString() {
         return "UserTable{" +
@@ -352,7 +362,8 @@ public class UserTable implements Serializable {
         }
 //return Boolean.FALSE;
     }
-     public Boolean removeChallange(Integer ch) {
+
+    public Boolean removeChallange(Integer ch) {
         UserChallenge uc = new UserChallenge(id, ch);
         if (userChallengeCollection.contains(uc)) {
             userChallengeCollection.remove(uc);
@@ -362,14 +373,14 @@ public class UserTable implements Serializable {
         }
 //return Boolean.FALSE;
     }
-     
-     public Boolean addSkill(Skill skill){
-         if(!skillCollection.contains(skill)){
-             skillCollection.add(skill);
-             return true;
-         }
-         return false;
-     }
+
+    public Boolean addSkill(Skill skill) {
+        if (!skillCollection.contains(skill)) {
+            skillCollection.add(skill);
+            return true;
+        }
+        return false;
+    }
 
     public Boolean addEmail(Integer userId, String email) {
         UserEmail userEmail = new UserEmail(userId, email, this);
@@ -410,50 +421,55 @@ public class UserTable implements Serializable {
 
         return bool.get();
     }
-      public Boolean removeSkill(Skill skill){
-         if(!skillCollection.contains(skill)){
-             skillCollection.remove(skill);
-             return true;
-         }
-         return false;
-     }
+
+    public Boolean removeSkill(Skill skill) {
+        if (!skillCollection.contains(skill)) {
+            skillCollection.remove(skill);
+            return true;
+        }
+        return false;
+    }
 
     public Boolean addEducation(Education education){
-         if(!educationCollection.contains(education)){
-             educationCollection.add(education);
-             return true;
-         }
-         return false;
-     }
-      public Boolean removeEducation(Education education){
-         if(!educationCollection.contains(education)){
-             educationCollection.remove(education);
-             return true;
-         }
-         return false;
-     }
-      public Boolean addReview(Review review){
-         if(!reviewCollection.contains(review)){
-             reviewCollection.add(review);
-             return true;
-         }
-         return false;
-     }
-        public Boolean addService(Service service){
-         if(!serviceCollection.contains(service)){
-             serviceCollection.add(service);
-             return true;
-         }
-         return false;
-     }
-      public Boolean removeService(Service service){
-         if(!serviceCollection.contains(service)){
-             serviceCollection.remove(service);
-             return true;
-         }
-         return false;
-     }
-      
+        if (!educationCollection.contains(education)) {
+            educationCollection.add(education);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean removeEducation(Education education) {
+        if (!educationCollection.contains(education)) {
+            educationCollection.remove(education);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean addReview(Review review) {
+        if (!reviewCollection.contains(review)) {
+            reviewCollection.add(review);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean addService(Service service) {
+        if (!serviceCollection.contains(service)) {
+            serviceCollection.add(service);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean removeService(Service service) {
+        if (!serviceCollection.contains(service)) {
+            serviceCollection.remove(service);
+            return true;
+        }
+        return false;
+    }
+
 
 
 
@@ -466,19 +482,16 @@ public class UserTable implements Serializable {
 
         return newList;
     }
-    
-    
-    
+
     //---------esraa------
-     public Boolean addBadge(UserBadge userBadge){
-         if(!userBadgeCollection.contains(userBadge)){
-             userBadgeCollection.add(userBadge);
-             return true;
-         }
-         return false;
-     }
-     
-     
-     
-     //-------esraaa--------------
+    public Boolean addBadge(UserBadge userBadge) {
+        if (!userBadgeCollection.contains(userBadge)) {
+            userBadgeCollection.add(userBadge);
+            return true;
+        }
+        return false;
+    }
+
+
+    //-------esraaa--------------
 }

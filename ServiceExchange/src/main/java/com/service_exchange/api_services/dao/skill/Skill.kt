@@ -14,7 +14,7 @@ import java.util.stream.Collectors
 interface SkillData : PagingAndSortingRepository<Skill, Int> {
     fun findByParentSkillId(skill: Skill? = null): List<Skill>
     fun findByIsVerified(isVerified: Int, page: Pageable): Page<Skill>
-    fun findByIsVerified(isVerified: Int): List<Skill>
+    fun findByIsVerified(isVerified: Short): List<Skill>
     fun findByUserTableCollectionContains(skills: List<Skill>?): List<UserTable>
     fun findByServiceCollectionContains(skills: List<Skill>?): List<Service>
 
@@ -39,8 +39,8 @@ interface SkillInterface {
 private class SkillImpl : SkillInterface {
 
 
-    val VERIFIED: Int = 1
-    val NOT_VERFIED: Int = 2
+    val VERIFIED: Short = 1
+    val NOT_VERFIED: Short = 2
     @Autowired
     lateinit var skilldata: SkillData
 

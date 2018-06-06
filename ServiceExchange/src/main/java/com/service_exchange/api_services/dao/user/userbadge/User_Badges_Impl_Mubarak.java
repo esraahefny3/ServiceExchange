@@ -36,7 +36,7 @@ public class User_Badges_Impl_Mubarak implements UserBadgesInterface {
     }
 
     @Override
-    public boolean assignBadgeToUser(UserTable user,UserBadge userBadge) {
+    public boolean assignBadgeToUser(UserTable user, UserBadge userBadge) {
           try{
               user.addBadge(userBadge);
               userDataInterface.save(user);

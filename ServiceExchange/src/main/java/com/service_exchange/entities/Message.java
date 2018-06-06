@@ -5,36 +5,28 @@
  */
 package com.service_exchange.entities;
 
+
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "message")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m")
-    , @NamedQuery(name = "Message.findById", query = "SELECT m FROM Message m WHERE m.id = :id")
-    , @NamedQuery(name = "Message.findByText", query = "SELECT m FROM Message m WHERE m.text = :text")
-    , @NamedQuery(name = "Message.findByAttachment", query = "SELECT m FROM Message m WHERE m.attachment = :attachment")
-    , @NamedQuery(name = "Message.findByDate", query = "SELECT m FROM Message m WHERE m.date = :date")})
+        @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m")
+        , @NamedQuery(name = "Message.findById", query = "SELECT m FROM Message m WHERE m.id = :id")
+        , @NamedQuery(name = "Message.findByText", query = "SELECT m FROM Message m WHERE m.text = :text")
+        , @NamedQuery(name = "Message.findByAttachment", query = "SELECT m FROM Message m WHERE m.attachment = :attachment")
+        , @NamedQuery(name = "Message.findByDate", query = "SELECT m FROM Message m WHERE m.date = :date")
+        , @NamedQuery(name = "Message.findByIsSeen", query = "SELECT m FROM Message m WHERE m.isSeen = :isSeen")
+        , @NamedQuery(name = "Message.findBySeenDate", query = "SELECT m FROM Message m WHERE m.seenDate = :seenDate")})
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +42,11 @@ public class Message implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    @Column(name = "is_seen")
+    private Short isSeen;
+    @Column(name = "seen_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date seenDate;
     @JoinColumn(name = "complaint_id", referencedColumnName = "id")
     @ManyToOne
     private Complaint complaintId;
@@ -100,6 +97,22 @@ public class Message implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Short getIsSeen() {
+        return isSeen;
+    }
+
+    public void setIsSeen(Short isSeen) {
+        this.isSeen = isSeen;
+    }
+
+    public Date getSeenDate() {
+        return seenDate;
+    }
+
+    public void setSeenDate(Date seenDate) {
+        this.seenDate = seenDate;
     }
 
     public Complaint getComplaintId() {
@@ -156,7 +169,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Message[ id=" + id + " ]";
+        return "com.service_exchange.Message[ id=" + id + " ]";
     }
-    
+
 }

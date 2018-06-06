@@ -5,34 +5,26 @@
  */
 package com.service_exchange.entities;
 
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_challenge")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserChallenge.findAll", query = "SELECT u FROM UserChallenge u")
-    , @NamedQuery(name = "UserChallenge.findByUserId", query = "SELECT u FROM UserChallenge u WHERE u.userChallengePK.userId = :userId")
-    , @NamedQuery(name = "UserChallenge.findByChallengeId", query = "SELECT u FROM UserChallenge u WHERE u.userChallengePK.challengeId = :challengeId")
-    , @NamedQuery(name = "UserChallenge.findByStartDate", query = "SELECT u FROM UserChallenge u WHERE u.startDate = :startDate")
-    , @NamedQuery(name = "UserChallenge.findByEndDate", query = "SELECT u FROM UserChallenge u WHERE u.endDate = :endDate")
-    , @NamedQuery(name = "UserChallenge.findByEnded", query = "SELECT u FROM UserChallenge u WHERE u.ended = :ended")})
+        @NamedQuery(name = "UserChallenge.findAll", query = "SELECT u FROM UserChallenge u")
+        , @NamedQuery(name = "UserChallenge.findByUserId", query = "SELECT u FROM UserChallenge u WHERE u.userChallengePK.userId = :userId")
+        , @NamedQuery(name = "UserChallenge.findByChallengeId", query = "SELECT u FROM UserChallenge u WHERE u.userChallengePK.challengeId = :challengeId")
+        , @NamedQuery(name = "UserChallenge.findByStartDate", query = "SELECT u FROM UserChallenge u WHERE u.startDate = :startDate")
+        , @NamedQuery(name = "UserChallenge.findByEndDate", query = "SELECT u FROM UserChallenge u WHERE u.endDate = :endDate")
+        , @NamedQuery(name = "UserChallenge.findByEnded", query = "SELECT u FROM UserChallenge u WHERE u.ended = :ended")})
 public class UserChallenge implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,7 +37,7 @@ public class UserChallenge implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
     @Column(name = "ended")
-    private String ended;
+    private Integer ended;
     @JoinColumn(name = "challenge_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Challenge challenge;
@@ -88,11 +80,11 @@ public class UserChallenge implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getEnded() {
+    public Integer getEnded() {
         return ended;
     }
 
-    public void setEnded(String ended) {
+    public void setEnded(Integer ended) {
         this.ended = ended;
     }
 
@@ -134,7 +126,7 @@ public class UserChallenge implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
+        return "com.service_exchange.UserChallenge[ userChallengePK=" + userChallengePK + " ]";
     }
-    
+
 }

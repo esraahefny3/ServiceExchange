@@ -6,26 +6,27 @@
 package com.service_exchange.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "complaint")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Complaint.findAll", query = "SELECT c FROM Complaint c")
-    , @NamedQuery(name = "Complaint.findById", query = "SELECT c FROM Complaint c WHERE c.id = :id")
-    , @NamedQuery(name = "Complaint.findByState", query = "SELECT c FROM Complaint c WHERE c.state = :state")
-    , @NamedQuery(name = "Complaint.findByDescription", query = "SELECT c FROM Complaint c WHERE c.description = :description")
-    , @NamedQuery(name = "Complaint.findByDate", query = "SELECT c FROM Complaint c WHERE c.date = :date")})
+        @NamedQuery(name = "Complaint.findAll", query = "SELECT c FROM Complaint c")
+        , @NamedQuery(name = "Complaint.findById", query = "SELECT c FROM Complaint c WHERE c.id = :id")
+        , @NamedQuery(name = "Complaint.findByState", query = "SELECT c FROM Complaint c WHERE c.state = :state")
+        , @NamedQuery(name = "Complaint.findByDescription", query = "SELECT c FROM Complaint c WHERE c.description = :description")
+        , @NamedQuery(name = "Complaint.findByDate", query = "SELECT c FROM Complaint c WHERE c.date = :date")})
 public class Complaint implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,7 +63,6 @@ public class Complaint implements Serializable {
     public final static String ACCEPTED_STATE="Accepted";
     @Transient
     public final static String REJECTED_STATE="Rejected";
-
     public Complaint() {
     }
 
@@ -157,7 +157,7 @@ public class Complaint implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Complaint[ id=" + id + " ]";
+        return "com.service_exchange.Complaint[ id=" + id + " ]";
     }
-    
+
 }

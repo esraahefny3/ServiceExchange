@@ -5,29 +5,23 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "user_notification")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserNotification.findAll", query = "SELECT u FROM UserNotification u")
-    , @NamedQuery(name = "UserNotification.findByUserId", query = "SELECT u FROM UserNotification u WHERE u.userNotificationPK.userId = :userId")
-    , @NamedQuery(name = "UserNotification.findByNotificationId", query = "SELECT u FROM UserNotification u WHERE u.userNotificationPK.notificationId = :notificationId")
-    , @NamedQuery(name = "UserNotification.findByState", query = "SELECT u FROM UserNotification u WHERE u.state = :state")})
+        @NamedQuery(name = "UserNotification.findAll", query = "SELECT u FROM UserNotification u")
+        , @NamedQuery(name = "UserNotification.findByUserId", query = "SELECT u FROM UserNotification u WHERE u.userNotificationPK.userId = :userId")
+        , @NamedQuery(name = "UserNotification.findByNotificationId", query = "SELECT u FROM UserNotification u WHERE u.userNotificationPK.notificationId = :notificationId")
+        , @NamedQuery(name = "UserNotification.findByState", query = "SELECT u FROM UserNotification u WHERE u.state = :state")})
 public class UserNotification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -107,7 +101,7 @@ public class UserNotification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
+        return "com.service_exchange.UserNotification[ userNotificationPK=" + userNotificationPK + " ]";
     }
-    
+
 }

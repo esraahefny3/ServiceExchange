@@ -25,4 +25,5 @@ class UserTransactionImpl : UserTransactionInterFace {
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()
                     ?.filter { t -> t.startDate.time >= start && t.endDate.time >= end && (t.state == onSuccess || t.state == onEnd) }
                     ?.mapToLong { t -> t.endDate.time - t.startDate.time }?.sum()
+
 }

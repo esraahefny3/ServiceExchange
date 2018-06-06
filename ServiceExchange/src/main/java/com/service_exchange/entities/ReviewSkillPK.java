@@ -5,14 +5,14 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Embeddable
 public class ReviewSkillPK implements Serializable {
@@ -74,7 +74,7 @@ public class ReviewSkillPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
+        return "com.service_exchange.ReviewSkillPK[ reviewId=" + reviewId + ", skillId=" + skillId + " ]";
     }
-    
+
 }

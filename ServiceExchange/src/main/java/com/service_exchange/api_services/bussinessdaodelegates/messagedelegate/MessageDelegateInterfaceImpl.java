@@ -17,15 +17,14 @@ import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 /**
  *

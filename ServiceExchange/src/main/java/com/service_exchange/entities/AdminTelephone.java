@@ -5,27 +5,22 @@
  */
 package com.service_exchange.entities;
 
-import java.io.Serializable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "admin_telephone")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AdminTelephone.findAll", query = "SELECT a FROM AdminTelephone a")
-    , @NamedQuery(name = "AdminTelephone.findByAdminEmail", query = "SELECT a FROM AdminTelephone a WHERE a.adminTelephonePK.adminEmail = :adminEmail")
-    , @NamedQuery(name = "AdminTelephone.findByTelephone", query = "SELECT a FROM AdminTelephone a WHERE a.adminTelephonePK.telephone = :telephone")})
+        @NamedQuery(name = "AdminTelephone.findAll", query = "SELECT a FROM AdminTelephone a")
+        , @NamedQuery(name = "AdminTelephone.findByAdminEmail", query = "SELECT a FROM AdminTelephone a WHERE a.adminTelephonePK.adminEmail = :adminEmail")
+        , @NamedQuery(name = "AdminTelephone.findByTelephone", query = "SELECT a FROM AdminTelephone a WHERE a.adminTelephonePK.telephone = :telephone")})
 public class AdminTelephone implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,7 +79,7 @@ public class AdminTelephone implements Serializable {
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.AdminTelephone[ adminTelephonePK=" + adminTelephonePK + " ]";
+        return "com.service_exchange.AdminTelephone[ adminTelephonePK=" + adminTelephonePK + " ]";
     }
-    
+
 }

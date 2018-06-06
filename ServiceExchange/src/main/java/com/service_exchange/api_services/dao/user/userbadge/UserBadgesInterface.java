@@ -20,7 +20,8 @@ import java.util.List;
 public interface UserBadgesInterface {
     
    public List<Badge> getAllUserBadge(Integer userId, Pageable page);
-   public boolean assignBadgeToUser(UserTable user,UserBadge userBadge);
+
+    public boolean assignBadgeToUser(UserTable user, UserBadge userBadge);
    
     //isUserDeserveBadge
     

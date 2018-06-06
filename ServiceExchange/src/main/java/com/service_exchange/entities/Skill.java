@@ -5,8 +5,7 @@
  */
 package com.service_exchange.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.jetbrains.annotations.Nullable;
+
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,17 +15,18 @@ import java.util.Collection;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "skill")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Skill.findAll", query = "SELECT s FROM Skill s")
-    , @NamedQuery(name = "Skill.findById", query = "SELECT s FROM Skill s WHERE s.id = :id")
-    , @NamedQuery(name = "Skill.findByName", query = "SELECT s FROM Skill s WHERE s.name = :name")
-    , @NamedQuery(name = "Skill.findByDescription", query = "SELECT s FROM Skill s WHERE s.description = :description")
-    , @NamedQuery(name = "Skill.findByIsVerified", query = "SELECT s FROM Skill s WHERE s.isVerified = :isVerified")})
+        @NamedQuery(name = "Skill.findAll", query = "SELECT s FROM Skill s")
+        , @NamedQuery(name = "Skill.findById", query = "SELECT s FROM Skill s WHERE s.id = :id")
+        , @NamedQuery(name = "Skill.findByName", query = "SELECT s FROM Skill s WHERE s.name = :name")
+        , @NamedQuery(name = "Skill.findByDescription", query = "SELECT s FROM Skill s WHERE s.description = :description")
+        , @NamedQuery(name = "Skill.findByIsVerified", query = "SELECT s FROM Skill s WHERE s.isVerified = :isVerified")
+        , @NamedQuery(name = "Skill.findByIsDeleted", query = "SELECT s FROM Skill s WHERE s.isDeleted = :isDeleted")})
 public class Skill implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,22 +40,20 @@ public class Skill implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "is_verified")
-    private Integer isVerified;
+    private Short isVerified;
+    @Column(name = "is_deleted")
+    private Short isDeleted;
     @ManyToMany(mappedBy = "skillCollection")
-    @JsonIgnore
     private Collection<Service> serviceCollection;
     @JoinTable(name = "user_skill", joinColumns = {
-        @JoinColumn(name = "skill_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", referencedColumnName = "id")})
+            @JoinColumn(name = "skill_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "id")})
     @ManyToMany
-    @JsonIgnore
     private Collection<UserTable> userTableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "skill")
-    @JsonIgnore
     private Collection<ReviewSkill> reviewSkillCollection;
     @OneToMany(mappedBy = "parentSkillId")
     private Collection<Skill> skillCollection;
-    @Nullable
     @JoinColumn(name = "parent_skill_id", referencedColumnName = "id")
     @ManyToOne
     private Skill parentSkillId;
@@ -91,12 +89,20 @@ public class Skill implements Serializable {
         this.description = description;
     }
 
-    public Integer getIsVerified() {
+    public Short getIsVerified() {
         return isVerified;
     }
 
-    public void setIsVerified(Integer isVerified) {
+    public void setIsVerified(Short isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public Short getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Short isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     @XmlTransient
@@ -165,11 +171,7 @@ public class Skill implements Serializable {
 
     @Override
     public String toString() {
-        return "Skill{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", isVerified=" + isVerified +
-                '}';
+        return "com.service_exchange.Skill[ id=" + id + " ]";
     }
+
 }

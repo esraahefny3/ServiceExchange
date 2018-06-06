@@ -16,16 +16,16 @@ import java.util.Date;
 
 /**
  *
- * @author Altysh
+ * @author Nouran
  */
 @Entity
 @Table(name = "notification")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n")
-    , @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id")
-    , @NamedQuery(name = "Notification.findByBody", query = "SELECT n FROM Notification n WHERE n.body = :body")
-    , @NamedQuery(name = "Notification.findByNotifecationDate", query = "SELECT n FROM Notification n WHERE n.notifecationDate = :notifecationDate")})
+        @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n")
+        , @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id")
+        , @NamedQuery(name = "Notification.findByBody", query = "SELECT n FROM Notification n WHERE n.body = :body")
+        , @NamedQuery(name = "Notification.findByNotifecationDate", query = "SELECT n FROM Notification n WHERE n.notifecationDate = :notifecationDate")})
 public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -108,12 +108,15 @@ public class Notification implements Serializable {
             return false;
         }
         Notification other = (Notification) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "com.altysh.mavenproject1.Notification[ id=" + id + " ]";
+        return "com.service_exchange.Notification[ id=" + id + " ]";
     }
 
 }
