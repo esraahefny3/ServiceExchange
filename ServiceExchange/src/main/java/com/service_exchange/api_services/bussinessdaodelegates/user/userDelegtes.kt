@@ -165,9 +165,9 @@ private class UserDataSetImol : UserDataSet {
     }
 
     override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
-        return if (serviceDTO != null && serviceDTO.userIdOwner != null) {
+        return if (serviceDTO != null && serviceDTO.uO != null) {
             val service = AppFactory.mapToDto(serviceDTO, Service::class.java)
-            userService.addServiceToUser(serviceDTO.userIdOwner, service)?.let { AppFactory.mapToDto(this, ServiceDTO::class.java) }
+            userService.addServiceToUser(serviceDTO.uO?.id, service)?.let { AppFactory.mapToDto(this, ServiceDTO::class.java) }
         } else null
 
     }

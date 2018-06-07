@@ -17,6 +17,7 @@ fun Skill.convertSkillAlone(): SkillDTO {
     val skill = AppFactory.mapToDto(this, SkillDTO::class.java)
     if (parentSkillId != null)
         skill.psId = parentSkillId.id
+    skill.children = skillCollection.stream().map { it.convertSkillAlone() }.collect(Collectors.toList())
     return skill
 }
 

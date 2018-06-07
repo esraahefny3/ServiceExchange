@@ -10,6 +10,7 @@ import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.Service
 import com.service_exchange.entities.Skill
+import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
@@ -19,8 +20,15 @@ fun Service.convertServie(): ServiceDTO =
             val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
             ob.skillList = t.skillCollection.stream().map { it.id }.collect(Collectors.toList())
             ob.uO = com.service_exchange.api_services.dao.dto.UserOwner(t.madeBy.name, t.id)
-            ob.numberOfTransaction = t.transactionInfoCollection.stream().filter({ t -> t.state != "completed" }).count().toInt()
-            // ob.rating = t.madeBy.reviewCollection.stream().filter { t -> t. }.
+            ob.numberOfTransaction = t.transactionInfoCollection.stream().filter({ t ->
+                t.state == TransactionInfo.COMPLETED_STATE
+                        || t.state == TransactionInfo.LATE_STATE
+            }).count().toInt()
+            ob.rating = t.transactionInfoCollection.stream().filter { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE }
+                    .mapToDouble { t ->
+                        t.reviewCollection.stream()
+                                .mapToDouble { it.rating.toDouble() }.average().orElse(0.0)
+                    }.average().orElse(0.0)
             ob
         }
 

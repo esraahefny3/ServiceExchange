@@ -207,6 +207,8 @@ class SkillDTO {
 
     var reivewsList: List<ReViewDTO>? = null
 
+    var children: List<SkillDTO>? = null
+
     var psId: Int? = null
 
 }
