@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -69,6 +70,19 @@ public class ComplaintDelegateImpl implements ComplaintDelegateInterface{
             return  null;
         }
 
+    }
+
+    @Override
+    public Complaint checkCoplaintExistById(Integer complaintId) {
+        Optional<Complaint> complaintOptional=complaintDaoInterfaceImpl.findById(complaintId);
+        if(complaintOptional.isPresent()==true)
+        {
+            return complaintOptional.get();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     @Override

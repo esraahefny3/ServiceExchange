@@ -10,6 +10,7 @@ import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.dao.message.MessageInterface;
+import com.service_exchange.api_services.dao.transaction.TransactionCustomInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
@@ -45,7 +46,10 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     
     @Autowired
     private TransactionDaoInterface transactionDaoInterfaceImpl;
-    
+
+
+    @Autowired
+    private TransactionCustomInterface transactionCustomInterfaceImpl;
 //    public Message returnMessage(Integer messageId){
 //        
 //        return messageInterface.findById(messageId).get();
@@ -101,6 +105,8 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
            message.setSenderId(sender);
            message.setComplaintId(complaint);
            message.setDate(new Date());
+           Short isSeen=0;//not seen yet
+           message.setIsSeen(isSeen);
            Message messageTemp=messageInterface.save(message);
            MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(messageTemp, MessageComplaintDto.class);
            messageComplaintDto.setComplaintId(complaintId);
@@ -125,6 +131,8 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
        {
            message.setComplaintId(complaint);
            message.setDate(new Date());
+           Short isSeen=0;//not seen yet
+           message.setIsSeen(isSeen);
            message=messageInterface.save(message);
            MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(message, MessageComplaintDto.class);
            messageComplaintDto.setComplaintId(complaintId);
@@ -159,6 +167,8 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
             message.setReceiverId(receiver);
             message.setTransactionId(transactionInfo);
             message.setDate(new Date());
+            Short isSeen=0;//not seen yet
+            message.setIsSeen(isSeen);
             message=messageInterface.save(message);
             MessageTransactionDto messageTransactionDto=AppFactory.mapToDto(message, MessageTransactionDto.class);
             messageTransactionDto.setSenderId(senderId);
@@ -178,36 +188,35 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
 
     @Override
     public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
+
         return messageInterface.getAllTransactionMessages(transactionId, pageNum);
     
     }
 
     @Override
     public List<Integer> getUserTransactionIdsList(Integer userId, Integer pageNum) {
-        List<Integer>transactionIdsList=null;
-        Optional<UserTable>userTableOptional=userDataInterface.findById(userId);
-        if(userTableOptional.isPresent()==true)
-        {
-            UserTable user=userTableOptional.get();
-            List<TransactionInfo>userTransactionsList= transactionDaoInterfaceImpl.findAllUserTransactions(user,PageRequest.of(pageNum,pageSize));
-            System.out.println(userTransactionsList);
-            for (TransactionInfo transactionInfo:userTransactionsList )
-            {
-                if(transactionIdsList==null)
-                {
-                    transactionIdsList=new ArrayList<>();
-                    transactionIdsList.add(transactionInfo.getId());
-                }
-                else
-                {
-                    transactionIdsList.add(transactionInfo.getId());
-                }
-            }
+        List<Integer> transactionIdsList = null;
+        Optional<UserTable> userTableOptional = userDataInterface.findById(userId);
+        if (userTableOptional.isPresent() == true) {
+            transactionIdsList = transactionCustomInterfaceImpl.getAllUserTransactions(userId, pageNum);
         }
-        return transactionIdsList;
+            return transactionIdsList;
+
     }
 
-    private boolean checkUsersInTransaction(Integer senderId,Integer receiverId,TransactionInfo transactionInfo)
+    @Override
+    public int updateAllTransactionMessagesSeenState(Short notSeenState, Short isSeen, Date seenDate, TransactionInfo transactionId, UserTable senderId) {
+       return messageInterface.updateAllTransactionMessagesSeenState(notSeenState,isSeen,seenDate,transactionId,senderId);
+    }
+
+    @Override
+    public int updateAllComplaintMessagesSeenState(Short notSeenState, Short isSeen, Date seenDate, Complaint complaintId, UserTable senderId) {
+        return messageInterface.updateAllComplaintMessagesSeenState(notSeenState,isSeen,seenDate,complaintId,senderId);
+
+    }
+
+    @Override
+    public boolean checkUsersInTransaction(Integer senderId, Integer receiverId, TransactionInfo transactionInfo)
     {
         if((senderId!=receiverId)&&(transactionInfo.getStartedBy().getId()==senderId||transactionInfo.getStartedBy().getId()==receiverId)
                 && (transactionInfo.getServiceId().getMadeBy().getId()==senderId||transactionInfo.getServiceId().getMadeBy().getId()==receiverId))

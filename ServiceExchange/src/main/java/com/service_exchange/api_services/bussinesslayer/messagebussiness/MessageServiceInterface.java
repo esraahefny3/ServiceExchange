@@ -23,10 +23,10 @@ public interface MessageServiceInterface {
     
     public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer ComplaintId, Message message);
     public MessageComplaintDto adminSendComplaintMessage(Integer ComplaintId,Message message);
-    public List <MessageComplaintDto>getAllComplaintMessages(Integer complaintId,Integer pageNum);
+    public List <MessageComplaintDto>getAllComplaintMessages(Integer complaintId,Integer senderId,Integer pageNum);
   
     public MessageTransactionDto sendTransactionMessage(Integer senderId , Integer recieverId, Message message, Integer TransactionId);
-    public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId,Integer pageNum);
+    public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId,Integer senderId,Integer pageNum);
 
     public List<TransactionChatDto>getAllUserTransactionChats(Integer userId,Integer pageNum);
    

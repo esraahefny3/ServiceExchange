@@ -313,6 +313,8 @@ class MessageComplaintDto {
      var complaintId: Int? = null
      var receiverId: Int? = null
      var senderId: Int? = null
+    var userReadIt:Short?=null
+    var readDate:Date?=null
 }
 
 class MessagePrivateDto {
@@ -333,6 +335,8 @@ class MessageTransactionDto {
      var transactionId: Int? = null
      var receiverId: Int? = null
      var senderId: Int? = null
+     var userReadIt:Short?=null
+    var readDate:Date?=null
 }
 
 class TransactionChatDto {
