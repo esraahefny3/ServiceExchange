@@ -12,8 +12,8 @@ interface SkillBussness {
     fun getAllSkills(): List<SkillDTO>
     fun getMainSkill(): List<SkillDTO>
     fun getSkillChildern(skillId: Int?): List<SkillDTO>
-    fun getServiceUsedBySkill(skillId: Int?): List<ServiceDTO>
-    fun getUsersWithSkill(skillId: Int?): List<UserDTO>
+    fun getServiceUsedBySkill(skillId: Int?, type: String, page: Int): List<ServiceDTO>
+    fun getUsersWithSkill(skillId: Int?, page: Int): List<UserDTO>
     fun approveSkill(skillId: Int?): Boolean
     fun updateSkill(skillId: SkillDTO?): Boolean
     fun getTopSkills(size: Int): List<SkillDTO>
@@ -39,11 +39,11 @@ private class SkillBussnessImpl : SkillBussness {
     override fun getSkillChildern(skillId: Int?): List<SkillDTO> =
             skillId?.let { skillGettable.getSkillChlidren(it) } ?: emptyList()
 
-    override fun getServiceUsedBySkill(skillId: Int?): List<ServiceDTO> =
-            skillId?.let { skillGettable.getServiceUnderSkill(skillId) ?: emptyList() } ?: emptyList()
+    override fun getServiceUsedBySkill(skillId: Int?, type: String, page: Int): List<ServiceDTO> =
+            skillId?.let { skillGettable.getServiceUnderSkill(skillId, type, page) ?: emptyList() } ?: emptyList()
 
-    override fun getUsersWithSkill(skillId: Int?): List<UserDTO> =
-            skillId?.let { skillGettable.getUserWtihSkill(skillId) ?: emptyList() } ?: emptyList()
+    override fun getUsersWithSkill(skillId: Int?, page: Int): List<UserDTO> =
+            skillId?.let { skillGettable.getUserWtihSkill(skillId, page) ?: emptyList() } ?: emptyList()
 
     override fun approveSkill(skillId: Int?): Boolean = skillId?.let { skillModifing.aprroveSkill(skillId = skillId) }
             ?: false

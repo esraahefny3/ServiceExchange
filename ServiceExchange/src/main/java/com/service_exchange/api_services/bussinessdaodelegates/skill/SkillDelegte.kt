@@ -26,8 +26,8 @@ interface SkillGettable {
     fun getTopCatagorys(size: Int): List<SkillDTO>
     fun getAllSkills(): List<SkillDTO>
     fun getAllUnApprovedSkills(): List<SkillDTO>
-    fun getServiceUnderSkill(skillId: Int): List<ServiceDTO>
-    fun getUserWtihSkill(skillId: Int): List<UserDTO>
+    fun getServiceUnderSkill(skillId: Int, type: String, page: Int): List<ServiceDTO>
+    fun getUserWtihSkill(skillId: Int, page: Int): List<UserDTO>
 }
 
 @Component
@@ -57,12 +57,17 @@ private class SkillGettableImpl : SkillGettable {
             skillInterface.getUnAprovedSkills()?.stream()?.map { it.convertSkillAlone() }?.collect(Collectors.toList())
                     ?: emptyList()
 
-    override fun getServiceUnderSkill(skillId: Int): List<ServiceDTO> =
-            skillInterface.getSkillById(skillId)?.serviceCollection?.stream()?.map { it.convertServie() }?.collect(Collectors.toList())
+    override fun getServiceUnderSkill(skillId: Int, type: String, page: Int): List<ServiceDTO> =
+            skillInterface.getSkillById(skillId)?.serviceCollection?.stream()?.filter {
+                it.type == type
+            }?.map { it.convertServie() }?.collect(Collectors.toList())?.filterIndexed { index, serviceDTO -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
-    override fun getUserWtihSkill(skillId: Int): List<UserDTO> =
+    override fun getUserWtihSkill(skillId: Int, page: Int): List<UserDTO> =
             skillInterface.getSkillById(skillId)?.userTableCollection?.stream()?.map { it.convertUser() }?.collect(Collectors.toList())
+                    ?.filterIndexed { index, user ->
+                        (index < (page * 20) + 20) && (index >= page * 20)
+                    }
                     ?: emptyList()
 
 }

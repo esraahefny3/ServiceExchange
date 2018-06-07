@@ -14,6 +14,7 @@ import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.stream.Collectors
 
 
@@ -28,6 +29,7 @@ interface UserDataGet {
 
 fun UserTable.convertUser(): UserDTO {
     val userdto = AppFactory.mapToDto(this, UserDTO::class.java)
+    userdto.bD = birthDate?.time
     userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
     userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
     return userdto
@@ -58,6 +60,9 @@ private open class UserDataGetImpl : UserDataGet {
     override fun loginOrSignUp(user: UserDTO?): UserDTO? =
             if (user != null) {
                 val userDTO = AppFactory.mapToDto(user, UserTable::class.java)
+
+                userDTO.birthDate = user.bD?.let { Date(user.bD ?: 0) }
+                println(userDTO.birthDate)
                 userDTO.userEmailCollection = mutableListOf()
                 userDTO.userTelephoneCollection = mutableListOf()
 

@@ -28,12 +28,12 @@ class SkillRestfull {
             skillussnes.getSkillChildern(skillId)
 
     @RequestMapping(value = ["/getServices"], method = arrayOf(RequestMethod.GET))
-    fun getSkillServices(skillId: Int): List<ServiceDTO> =
-            skillussnes.getServiceUsedBySkill(skillId)
+    fun getSkillServices(skillId: Int, type: String, page: Int): List<ServiceDTO> =
+            skillussnes.getServiceUsedBySkill(skillId, type, page)
 
     @RequestMapping(value = ["/getUsers"], method = arrayOf(RequestMethod.GET))
-    fun getSkillUser(skillId: Int): List<UserDTO> =
-            skillussnes.getUsersWithSkill(skillId)
+    fun getSkillUser(skillId: Int, page: Int): List<UserDTO> =
+            skillussnes.getUsersWithSkill(skillId, page)
 
     @RequestMapping(value = ["/getTop"], method = arrayOf(RequestMethod.GET))
     fun getSkillsMostImplemented(size: Int): List<SkillDTO> =

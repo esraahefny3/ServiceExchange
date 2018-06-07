@@ -129,37 +129,16 @@ class UserDTO {
     var name: String? = null
     var image: String? = null
     var status: String? = null
-    var birthDate: Date? = null
+    var bD: Long? = null
     var accountType: String? = null
     var accountId: String? = null
     var userEmailCollection: List<String>? = null
     var UserTelephone: List<String>? = null
     var isFrist: Boolean? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as UserDTO
+}
 
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (image != other.image) return false
-        if (status != other.status) return false
-        if (birthDate != other.birthDate) return false
-        if (accountType != other.accountType) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + (image?.hashCode() ?: 0)
-        result = 31 * result + (status?.hashCode() ?: 0)
-        result = 31 * result + (birthDate?.hashCode() ?: 0)
-        result = 31 * result + (accountType?.hashCode() ?: 0)
-        return result
-    }
+class UserOwner(val userName: String?, val id: Int?) {
 
 }
 
@@ -180,7 +159,11 @@ class ServiceDTO {
 
     var skillList: List<Int>? = null
 
-    var userIdOwner: Int? = null
+    var uO: UserOwner? = null
+    // number of completed transaction
+    var numberOfTransaction: Int? = null
+    //rating of service 0 if no one used it
+    var rating: Double? = null
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -18,7 +18,9 @@ fun Service.convertServie(): ServiceDTO =
         this.let { t ->
             val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
             ob.skillList = t.skillCollection.stream().map { it.id }.collect(Collectors.toList())
-            ob.userIdOwner = t.madeBy.id
+            ob.uO = com.service_exchange.api_services.dao.dto.UserOwner(t.madeBy.name, t.id)
+            ob.numberOfTransaction = t.transactionInfoCollection.stream().filter({ t -> t.state != "completed" }).count().toInt()
+            // ob.rating = t.madeBy.reviewCollection.stream().filter { t -> t. }.
             ob
         }
 
@@ -27,7 +29,7 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
             val ob = AppFactory.mapToDto(t, Service::class.java)
             ob.skillCollection = t.skillList?.stream()?.map { skillInterface.getSkillById(it) }
                     ?.collect(Collectors.toList()) ?: kotlin.collections.emptyList()
-            ob.madeBy = userInterface.getUser(t.userIdOwner)
+            ob.madeBy = userInterface.getUser(t.id)
             ob
         }
 

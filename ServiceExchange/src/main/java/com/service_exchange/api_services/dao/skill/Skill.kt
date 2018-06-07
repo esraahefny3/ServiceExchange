@@ -50,6 +50,7 @@ private class SkillImpl : SkillInterface {
 
     override fun getSkillById(skillId: Int): Skill? =
             skilldata.findById(skillId).let {
+
                 return@let if (it.isPresent) {
                     it.get()
                 } else null
