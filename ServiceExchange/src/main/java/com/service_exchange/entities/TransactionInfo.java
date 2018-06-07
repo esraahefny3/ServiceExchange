@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.service_exchange.entities;
-
+package com.service_exchange.serviceexchangeentities;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +29,6 @@ import java.util.Date;
         , @NamedQuery(name = "TransactionInfo.findByEndDate", query = "SELECT t FROM TransactionInfo t WHERE t.endDate = :endDate")
         , @NamedQuery(name = "TransactionInfo.findByDuration", query = "SELECT t FROM TransactionInfo t WHERE t.duration = :duration")
         , @NamedQuery(name = "TransactionInfo.findByPrice", query = "SELECT t FROM TransactionInfo t WHERE t.price = :price")
-        , @NamedQuery(name = "TransactionInfo.findByServiceExchanged", query = "SELECT t FROM TransactionInfo t WHERE t.serviceExchanged = :serviceExchanged")
         , @NamedQuery(name = "TransactionInfo.findByTypeOfPayment", query = "SELECT t FROM TransactionInfo t WHERE t.typeOfPayment = :typeOfPayment")})
 public class TransactionInfo implements Serializable {
 
@@ -54,23 +52,40 @@ public class TransactionInfo implements Serializable {
     private BigInteger duration;
     @Column(name = "price")
     private Integer price;
-    @Column(name = "service_exchanged")
-    private String serviceExchanged;
     @Column(name = "type_of_payment")
     private String typeOfPayment;
     @OneToMany(mappedBy = "transactionId")
     private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "transactionId")
     private Collection<Complaint> complaintCollection;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Service service;
+    @OneToMany(mappedBy = "transactionId")
+    private Collection<Review> reviewCollection;
+    @OneToMany(mappedBy = "exchangedBy")
+    private Collection<TransactionInfo> transactionInfoCollection;
+    @JoinColumn(name = "exchanged_by", referencedColumnName = "id")
+    @ManyToOne
+    private TransactionInfo exchangedBy;
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     @ManyToOne
     private Service serviceId;
     @JoinColumn(name = "started_by", referencedColumnName = "id")
     @ManyToOne
     private UserTable startedBy;
+
+    @Transient
+    public static final String PENDING_STATE = "pending";
+    @Transient
+    public static final String ACCEPTED_STATE = "accepted";
+    @Transient
+    public static final String ON_PROGRESS_STATE = "on progress";
+    @Transient
+    public static final String REJECTED_STATE = "rejected";
+    @Transient
+    public static final String COMPLETED_STATE = "completed";
+    @Transient
+    public static final String EXTENDED_STATE = "extended";
+    @Transient
+    public static final String LATE_STATE = "late";
 
     public TransactionInfo() {
     }
@@ -135,14 +150,6 @@ public class TransactionInfo implements Serializable {
         this.price = price;
     }
 
-    public String getServiceExchanged() {
-        return serviceExchanged;
-    }
-
-    public void setServiceExchanged(String serviceExchanged) {
-        this.serviceExchanged = serviceExchanged;
-    }
-
     public String getTypeOfPayment() {
         return typeOfPayment;
     }
@@ -169,12 +176,30 @@ public class TransactionInfo implements Serializable {
         this.complaintCollection = complaintCollection;
     }
 
-    public Service getService() {
-        return service;
+    @XmlTransient
+    public Collection<Review> getReviewCollection() {
+        return reviewCollection;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setReviewCollection(Collection<Review> reviewCollection) {
+        this.reviewCollection = reviewCollection;
+    }
+
+    @XmlTransient
+    public Collection<TransactionInfo> getTransactionInfoCollection() {
+        return transactionInfoCollection;
+    }
+
+    public void setTransactionInfoCollection(Collection<TransactionInfo> transactionInfoCollection) {
+        this.transactionInfoCollection = transactionInfoCollection;
+    }
+
+    public TransactionInfo getExchangedBy() {
+        return exchangedBy;
+    }
+
+    public void setExchangedBy(TransactionInfo exchangedBy) {
+        this.exchangedBy = exchangedBy;
     }
 
     public Service getServiceId() {
@@ -215,7 +240,7 @@ public class TransactionInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.service_exchange.TransactionInfo[ id=" + id + " ]";
+        return "com.service_exchange.serviceexchangeentities.TransactionInfo[ id=" + id + " ]";
     }
 
 }
