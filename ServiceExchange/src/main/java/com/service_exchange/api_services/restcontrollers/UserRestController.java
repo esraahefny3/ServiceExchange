@@ -11,14 +11,15 @@ import com.service_exchange.api_services.dao.dto.EdcationDTO;
 import com.service_exchange.api_services.dao.dto.ServiceDTO;
 import com.service_exchange.api_services.dao.dto.SkillDTO;
 import com.service_exchange.api_services.dao.dto.UserDTO;
+import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
-import com.service_exchange.utal.PageToListConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -32,21 +33,23 @@ public class UserRestController {
     private UserService service;
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET, params = "start")
-    private List<UserTable> getAllChanges(Integer start) {
+    private List<UserDTO> getAllChanges(Integer start) {
 
-        return PageToListConverter.convertList(service.getAllUser((start != null) ? start : 0));
+        return (service.getAllUser((start != null) ? start : 0).stream().map(userTable -> AppFactory.mapToDto(userTable, UserDTO.class))
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    private List<UserTable> getAllChanges() {
-        
-        return service.getAllUser();
+    private List<UserDTO> getAllChanges() {
+
+        return (service.getAllUser().stream().map(userTable -> AppFactory.mapToDto(userTable, UserDTO.class))
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    private UserTable createUser(@RequestBody UserTable user) {
+    private UserTable createUser(@RequestBody UserDTO user) {
 
-        return service.createUser(user);
+        return service.createUser(AppFactory.mapToDto(user, UserTable.class));
     }
 
 //    @RequestMapping(value = "/addChallange", method = RequestMethod.POST)

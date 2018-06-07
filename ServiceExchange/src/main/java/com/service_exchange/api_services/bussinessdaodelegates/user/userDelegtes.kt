@@ -11,10 +11,7 @@ import com.service_exchange.api_services.dao.user.UserTelephoneInterface
 import com.service_exchange.api_services.dao.user.userService.UserServicesInterFace
 import com.service_exchange.api_services.dao.user.userSkill.UserSkillInterFace
 import com.service_exchange.api_services.factories.AppFactory
-import com.service_exchange.entities.Education
-import com.service_exchange.entities.Service
-import com.service_exchange.entities.Skill
-import com.service_exchange.entities.UserTable
+import com.service_exchange.entities.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
@@ -69,6 +66,10 @@ private open class UserDataGetImpl : UserDataGet {
                     if (retVal.frist) {
                         user.userEmailCollection?.forEach { retVal?.addEmail(retVal?.id, it) }
                         user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
+
+                        retVal.userAuthority = UserAuthority()
+                        retVal.userAuthority?.authority = "User"
+                        retVal.userAuthority?.userId = retVal.id
                         retVal = userInterface.updateUser(retVal);
 
                     }

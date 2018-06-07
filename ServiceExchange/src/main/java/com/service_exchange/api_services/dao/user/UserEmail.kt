@@ -9,11 +9,14 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserEmailData : PagingAndSortingRepository<UserEmail, UserEmailPK>
+interface UserEmailData : PagingAndSortingRepository<UserEmail, UserEmailPK> {
+    fun findByUserEmailPK_Email(email: String): UserEmail?
+}
 
 interface UserEmailInterface {
     fun addEmail(email: String?, userId: Int?): Boolean
     fun removeEmail(email: String?, userId: Int?): Boolean
+
 }
 
 @Component

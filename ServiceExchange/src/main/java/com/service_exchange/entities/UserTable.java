@@ -55,14 +55,11 @@ public class UserTable implements Serializable {
     private String accountId;
     @Column(name = "account_type")
     private String accountType;
-    @Column(name = "is_enabled")
-    private Short isEnabled;
+    public static final short ENABELED = 0;
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
     private Collection<Skill> skillCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
-    @JsonIgnore
-    private Collection<UserEmail> userEmailCollection;
+    public static final short DISABLED = 1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     @JsonIgnore
     private Collection<Education> educationCollection;
@@ -98,6 +95,12 @@ public class UserTable implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "startedBy")
     private Collection<TransactionInfo> transactionInfoCollection;
+    @JsonIgnore
+    @Column(name = "is_enabled")
+    private Short isEnabled = 0;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Collection<UserEmail> userEmailCollection;
 
     public Boolean getFrist() {
         return isFrist;
@@ -481,6 +484,12 @@ public class UserTable implements Serializable {
         }
 
         return newList;
+    }
+
+    public Boolean isEnabled() {
+        if (isEnabled != null)
+            return isEnabled == ENABELED;
+        else return true;
     }
 
     //---------esraa------
