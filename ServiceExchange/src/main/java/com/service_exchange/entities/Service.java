@@ -5,8 +5,6 @@
  */
 package com.service_exchange.entities;
 
-
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -57,8 +55,8 @@ public class Service implements Serializable {
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
     private UserTable madeBy;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
-    private TransactionInfo transactionInfo;
+    //    @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
+//    private TransactionInfo transactionInfo;
     @OneToMany(mappedBy = "serviceId")
     private Collection<TransactionInfo> transactionInfoCollection;
     @Transient
@@ -145,14 +143,14 @@ public class Service implements Serializable {
     public void setMadeBy(UserTable madeBy) {
         this.madeBy = madeBy;
     }
-
-    public TransactionInfo getTransactionInfo() {
-        return transactionInfo;
-    }
-
-    public void setTransactionInfo(TransactionInfo transactionInfo) {
-        this.transactionInfo = transactionInfo;
-    }
+//
+//    public TransactionInfo getTransactionInfo() {
+//        return transactionInfo;
+//    }
+//
+//    public void setTransactionInfo(TransactionInfo transactionInfo) {
+//        this.transactionInfo = transactionInfo;
+//    }
 
     @XmlTransient
     public Collection<TransactionInfo> getTransactionInfoCollection() {

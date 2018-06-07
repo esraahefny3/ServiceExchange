@@ -26,7 +26,7 @@ import java.util.Collection;
         , @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id")
         , @NamedQuery(name = "Review.findByComment", query = "SELECT r FROM Review r WHERE r.comment = :comment")
         , @NamedQuery(name = "Review.findByRating", query = "SELECT r FROM Review r WHERE r.rating = :rating")
-        , @NamedQuery(name = "Review.findByTransactionId", query = "SELECT r FROM Review r WHERE r.transactionId = :transactionId")
+//        , @NamedQuery(name = "Review.findByTransactionId", query = "SELECT r FROM Review r WHERE r.transactionId = :transactionId")
         , @NamedQuery(name = "Review.findByIsDeleted", query = "SELECT r FROM Review r WHERE r.isDeleted = :isDeleted")})
 public class Review implements Serializable {
 
@@ -40,8 +40,9 @@ public class Review implements Serializable {
     private String comment;
     @Column(name = "rating")
     private Integer rating;
-    @Column(name = "transaction_id")
-    private Integer transactionId;
+    @JoinColumn(name = "transaction_id", referencedColumnName = "id")
+    @ManyToOne
+    private TransactionInfo transactionId;
     @Column(name = "is_deleted")
     private Short isDeleted;
     @JsonIgnore
@@ -82,11 +83,11 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public Integer getTransactionId() {
+    public TransactionInfo getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(TransactionInfo transactionId) {
         this.transactionId = transactionId;
     }
 
