@@ -72,6 +72,21 @@ public class TransactionInfo implements Serializable {
     @ManyToOne
     private UserTable startedBy;
 
+    @Transient
+    public static final String PENDING_STATE = "pending";
+    @Transient
+    public static final String ACCEPTED_STATE = "accepted";
+    @Transient
+    public static final String ON_PROGRESS_STATE = "on progress";
+    @Transient
+    public static final String REJECTED_STATE = "rejected";
+    @Transient
+    public static final String COMPLETED_STATE = "completed";
+    @Transient
+    public static final String EXTENDED_STATE = "extended";
+    @Transient
+    public static final String LATE_STATE = "late";
+
     public TransactionInfo() {
     }
 
