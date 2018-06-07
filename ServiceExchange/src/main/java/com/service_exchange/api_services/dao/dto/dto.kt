@@ -135,6 +135,7 @@ class UserDTO {
     var userEmailCollection: List<String>? = null
     var UserTelephone: List<String>? = null
     var isFrist: Boolean? = null
+    var uSkills: List<SkillDTO>? = null
 
 }
 
@@ -164,6 +165,7 @@ class ServiceDTO {
     var numberOfTransaction: Int? = null
     //rating of service 0 if no one used it
     var rating: Double? = null
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -204,6 +206,8 @@ class SkillDTO {
     var description: String? = null
 
     var isVerified: Int? = null
+
+    var rating: Double? = null
 
     var reivewsList: List<ReViewDTO>? = null
 
@@ -282,66 +286,64 @@ class EdcationDTO {
     }
 
 
-
-
 }
 
-class BadgeDto{
-     var id: Int? = null
-     var name: String? = null
-     var image: String? = null
-     var description: String? = null
-     var timeNeeded: String? = null
-     var type: String? = null
-     var addedByAdminEmail: String? = null
+class BadgeDto {
+    var id: Int? = null
+    var name: String? = null
+    var image: String? = null
+    var description: String? = null
+    var timeNeeded: String? = null
+    var type: String? = null
+    var addedByAdminEmail: String? = null
 }
 
-class ComplaintDto{
-     var id: Int? = null
-     var state: String? = null
-     var description: String? = null
-     var date: Long? = null
-     var reviewedByAdmin: String? = null
-     var transactionId: Int? = null
-     var userId: Int? = null
+class ComplaintDto {
+    var id: Int? = null
+    var state: String? = null
+    var description: String? = null
+    var date: Long? = null
+    var reviewedByAdmin: String? = null
+    var transactionId: Int? = null
+    var userId: Int? = null
 }
 
 class MessageComplaintDto {
 
-     var id: Int? = null
-     var text: String? = null
-     var attachment: String? = null
-     var date: Long? = null
-     var complaintId: Int? = null
-     var receiverId: Int? = null
-     var senderId: Int? = null
-    var userReadIt:Short?=null
-    var readDate:Date?=null
+    var id: Int? = null
+    var text: String? = null
+    var attachment: String? = null
+    var date: Long? = null
+    var complaintId: Int? = null
+    var receiverId: Int? = null
+    var senderId: Int? = null
+    var userReadIt: Short? = null
+    var readDate: Date? = null
 }
 
 class MessagePrivateDto {
 
-     var id: Int? = null
-     var text: String? = null
-     var attachment: String? = null
-     var date: Long? = null
-     var receiverId: Int? = null
-     var senderId: Int? = null
+    var id: Int? = null
+    var text: String? = null
+    var attachment: String? = null
+    var date: Long? = null
+    var receiverId: Int? = null
+    var senderId: Int? = null
 }
 
 class MessageTransactionDto {
-     var id: Int? = null
-     var text: String? = null
-     var attachment: String? = null
-     var date: Long? = null
-     var transactionId: Int? = null
-     var receiverId: Int? = null
-     var senderId: Int? = null
-     var userReadIt:Short?=null
-    var readDate:Date?=null
+    var id: Int? = null
+    var text: String? = null
+    var attachment: String? = null
+    var date: Long? = null
+    var transactionId: Int? = null
+    var receiverId: Int? = null
+    var senderId: Int? = null
+    var userReadIt: Short? = null
+    var readDate: Date? = null
 }
 
 class TransactionChatDto {
-     var transactionId: Int? = null
-     var transactionChatMessagesList: List<MessageTransactionDto>? = null
+    var transactionId: Int? = null
+    var transactionChatMessagesList: List<MessageTransactionDto>? = null
 }

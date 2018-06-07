@@ -42,7 +42,10 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
         }
 
 fun Skill.convertSkill(): SkillDTO {
-    return AppFactory.mapToDto(this, SkillDTO::class.java)
+
+    val skill = AppFactory.mapToDto(this, SkillDTO::class.java)
+    skill.rating = this.reviewSkillCollection.stream().mapToDouble { it.rating.toDouble() }.average().orElse(0.0)
+    return skill
 }
 
 

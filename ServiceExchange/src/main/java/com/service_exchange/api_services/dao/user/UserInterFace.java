@@ -28,7 +28,7 @@ public interface UserInterFace {
     @Nullable
     UserTable createUser(UserTable user);
 
-    void refresh(UserTable user);
+
 
     @Nullable
     UserTable updateUser(UserTable user);
@@ -36,6 +36,8 @@ public interface UserInterFace {
     Boolean checkEmailAvalible(Integer email);
 
     Page<UserTable> getAllUser(int start);
+
+    List<UserTable> getAllUser();
 
     Page<UserTable> scerchUserByName(String name, int start);
 

@@ -32,6 +32,7 @@ public class UserService{
     @Autowired
     private UserDaoImpl daoImpl;
 
+
     public UserTable createUser(UserTable user) {
     return daoImpl.createUser(user);
     }
@@ -55,8 +56,9 @@ public class UserService{
     //mubarak//
     @Autowired
     private UserDataGet userDataGet;
-    public List<UserTable> getAllUser(){
-        return daoImpl.getAllUser();
+
+    public List<UserDTO> getAllUser() {
+        return userDataGet.getAllUser();
     }
 
 
@@ -93,9 +95,9 @@ public class UserService{
        }
    }
 
-    public Page<UserTable> getAllUser(int start) {
+    public List<UserDTO> getAllUser(int start) {
 
-        return daoImpl.getAllUser(start);
+        return userDataGet.getAllUser(start);
     }
 
     public List<Badge> getAllUserBadges(Integer userId) {

@@ -81,11 +81,7 @@ public class UserDaoImpl implements UserInterFace {
         return null;
     }
 
-    @Override
-    public void refresh(UserTable user) {
 
-
-    }
 
     @Override
     public UserTable updateUser(UserTable user) {
@@ -104,6 +100,7 @@ public class UserDaoImpl implements UserInterFace {
         return dataInterface.findAll(PageRequest.of(start, pageSize));
     }
 
+    @Override
     public List<UserTable> getAllUser() {
         List<UserTable> list = new LinkedList<>();
         dataInterface.findAll().forEach(list::add);

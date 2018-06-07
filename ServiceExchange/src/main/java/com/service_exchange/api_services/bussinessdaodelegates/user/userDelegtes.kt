@@ -1,5 +1,6 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
+import com.service_exchange.api_services.bussinessdaodelegates.service.convertSkill
 import com.service_exchange.api_services.dao.dto.EdcationDTO
 import com.service_exchange.api_services.dao.dto.ServiceDTO
 import com.service_exchange.api_services.dao.dto.SkillDTO
@@ -24,6 +25,7 @@ interface UserDataGet {
     fun getUserEdcation(userId: Int?): List<EdcationDTO>
     fun getUserServices(userId: Int?): List<ServiceDTO>
     fun getAllUser(start: Int): List<UserDTO>
+    fun getAllUser(): List<UserDTO>
 
 }
 
@@ -32,11 +34,13 @@ fun UserTable.convertUser(): UserDTO {
     userdto.bD = birthDate?.time
     userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
     userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
+    userdto.uSkills = this.skillCollection.stream().map { it.convertSkill() }.collect(Collectors.toList())
     return userdto
 }
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
+
 
 
     @Autowired
@@ -55,6 +59,9 @@ private open class UserDataGetImpl : UserDataGet {
         return userInterface.getAllUser(start).stream().map { it.convertUser() }.collect(Collectors.toList())
                 ?: emptyList<UserDTO>()
     }
+
+    override fun getAllUser(): List<UserDTO> =
+            userInterface.getAllUser().toList().stream().map { it.convertUser() }.collect(Collectors.toList())
 
 
     override fun loginOrSignUp(user: UserDTO?): UserDTO? =

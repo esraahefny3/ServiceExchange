@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -35,15 +34,13 @@ public class UserRestController {
     @RequestMapping(value = "/getAll", method = RequestMethod.GET, params = "start")
     private List<UserDTO> getAllChanges(Integer start) {
 
-        return (service.getAllUser((start != null) ? start : 0).stream().map(userTable -> AppFactory.mapToDto(userTable, UserDTO.class))
-                .collect(Collectors.toList()));
+        return service.getAllUser(start);
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     private List<UserDTO> getAllChanges() {
 
-        return (service.getAllUser().stream().map(userTable -> AppFactory.mapToDto(userTable, UserDTO.class))
-                .collect(Collectors.toList()));
+        return service.getAllUser();
     }
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
