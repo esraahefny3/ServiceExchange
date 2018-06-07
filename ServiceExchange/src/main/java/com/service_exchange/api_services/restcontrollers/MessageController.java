@@ -36,32 +36,32 @@ public class MessageController {
 
     private Integer pageSize = 20;
 
-    @RequestMapping(value = "/sendPrivateMessage", method = RequestMethod.POST)
-    public MessagePrivateDto sendPrivateMessage(@RequestBody MessagePrivateDto messagePrivateDto) {
-
-        if (messagePrivateDto != null) {
-            Integer senderId = (Integer) messagePrivateDto.getSenderId();
-            Integer recieverId = (Integer) messagePrivateDto.getReceiverId();
-
-            //b7wl l obj fl map lno3o
-//            ObjectMapper mapper = new ObjectMapper();
-//            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
-            Message message=AppFactory.mapToEntity(messagePrivateDto,Message.class);
-            if (senderId != null && recieverId != null && message != null) {
-                return messageServiceInterfaceImpl.sendPrivateMessage(senderId, recieverId, message);
-            }
-        }
-
-        return null;
-    }
-
-    @RequestMapping(value = "/getAllPrivateChatMessages/{user1Id}/{user2Id}/{pageNum}", method = RequestMethod.GET)
-    public List<MessagePrivateDto> getAllPrivateChatMessages(@PathVariable("user1Id") Integer user1Id, @PathVariable("user2Id") Integer user2Id, @PathVariable("pageNum") Integer pageNum) {
-        if (user1Id != null && user2Id != null && pageNum != null) {
-            return messageServiceInterfaceImpl.getAllPrivateChatMessages(user1Id, user2Id, pageNum);
-        }
-        return null;
-    }
+//    @RequestMapping(value = "/sendPrivateMessage", method = RequestMethod.POST)
+//    public MessagePrivateDto sendPrivateMessage(@RequestBody MessagePrivateDto messagePrivateDto) {
+//
+//        if (messagePrivateDto != null) {
+//            Integer senderId = (Integer) messagePrivateDto.getSenderId();
+//            Integer recieverId = (Integer) messagePrivateDto.getReceiverId();
+//
+//            //b7wl l obj fl map lno3o
+////            ObjectMapper mapper = new ObjectMapper();
+////            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
+//            Message message=AppFactory.mapToEntity(messagePrivateDto,Message.class);
+//            if (senderId != null && recieverId != null && message != null) {
+//                return messageServiceInterfaceImpl.sendPrivateMessage(senderId, recieverId, message);
+//            }
+//        }
+//
+//        return null;
+//    }
+//
+//    @RequestMapping(value = "/getAllPrivateChatMessages/{user1Id}/{user2Id}/{pageNum}", method = RequestMethod.GET)
+//    public List<MessagePrivateDto> getAllPrivateChatMessages(@PathVariable("user1Id") Integer user1Id, @PathVariable("user2Id") Integer user2Id, @PathVariable("pageNum") Integer pageNum) {
+//        if (user1Id != null && user2Id != null && pageNum != null) {
+//            return messageServiceInterfaceImpl.getAllPrivateChatMessages(user1Id, user2Id, pageNum);
+//        }
+//        return null;
+//    }
 
     @RequestMapping(value = "/userSendComplaintMessage", method = RequestMethod.POST)
     public MessageComplaintDto userSendComplaintMessage(@RequestBody MessageComplaintDto messageComplaintDto ) {
@@ -102,10 +102,10 @@ public class MessageController {
         return null;
     }
     
-    @RequestMapping(value = "/getAllComplaintMessages/{complaintId}/{pageNum}", method = RequestMethod.GET)
-    public List<MessageComplaintDto> getAllComplaintMessages(@PathVariable("complaintId") Integer complaintId, @PathVariable("pageNum") Integer pageNum) {
+    @RequestMapping(value = "/getAllComplaintMessages/{complaintId}/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<MessageComplaintDto> getAllComplaintMessages(@PathVariable("complaintId") Integer complaintId,@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
         if (complaintId != null && pageNum != null) {
-            return messageServiceInterfaceImpl.getAllComplaintMessages(complaintId, pageNum);
+            return messageServiceInterfaceImpl.getAllComplaintMessages(complaintId,userId, pageNum);
         }
         return null;
     }
@@ -129,10 +129,10 @@ public class MessageController {
         return null;
     }
     
-     @RequestMapping(value = "/getAllTransactionMessages/{transactionId}/{pageNum}", method = RequestMethod.GET)
-    public List<MessageTransactionDto> getAllTransactionMessages(@PathVariable("transactionId") Integer transactionId, @PathVariable("pageNum") Integer pageNum) {
+     @RequestMapping(value = "/getAllTransactionMessages/{transactionId}/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<MessageTransactionDto> getAllTransactionMessages(@PathVariable("transactionId") Integer transactionId,@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
         if (transactionId != null && pageNum != null) {
-            return messageServiceInterfaceImpl.getAllTransactionMessages(transactionId, pageNum);
+            return messageServiceInterfaceImpl.getAllTransactionMessages(transactionId,userId, pageNum);
         }
         return null;
     }

@@ -1,5 +1,12 @@
 package com.service_exchange.api_services.bussinessdaodelegates.transaction;
 
+//esraaa
+import com.service_exchange.entities.TransactionInfo;
+//esraaaa
+
+//nourrr
+
+//nouur
 public interface TransactionDelegateInterface {
 
     ////////////////////////////Nouran////////////////////////////
@@ -8,6 +15,6 @@ public interface TransactionDelegateInterface {
 
 
     ////////////////////////////Esraa////////////////////////////
-
+    TransactionInfo checkIfTransactionExist(Integer transactionId);
     ////////////////////////////Esraa////////////////////////////
 }

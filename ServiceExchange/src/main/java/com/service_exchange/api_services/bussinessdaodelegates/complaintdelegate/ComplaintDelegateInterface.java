@@ -18,6 +18,7 @@ package com.service_exchange.api_services.bussinessdaodelegates.complaintdelegat
 public interface ComplaintDelegateInterface {
     public ComplaintDto saveComplaint(Complaint complaint);
     public UserTable checkUserExistById(Integer userId);
+    Complaint checkCoplaintExistById(Integer complaintId);
     public TransactionInfo checkTransactionExistById(Integer transactionId);
     public Complaint checkComplaintExsistById(Integer complaintId);
     public AdminTable checkAdminExistById(String adminEmail);

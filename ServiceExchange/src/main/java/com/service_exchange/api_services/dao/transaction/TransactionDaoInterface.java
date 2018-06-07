@@ -5,16 +5,16 @@
  */
 package com.service_exchange.api_services.dao.transaction;
 
-
+//esraaaa
 import com.service_exchange.entities.TransactionInfo;
-import com.service_exchange.entities.UserTable;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+//esraaaa
 
-import java.util.List;
+
+//nourrr
+
+//nouurr
 
 /**
  *
@@ -24,8 +24,8 @@ import java.util.List;
 public interface TransactionDaoInterface extends  PagingAndSortingRepository<TransactionInfo,Integer>{
 
     //esraaaa
-    @Query("select t from TransactionInfo t where t.startedBy=:user or t.serviceId.madeBy=:user")
-    List<TransactionInfo> findAllUserTransactions(@Param("user") UserTable user, Pageable page);
+//    @Query("select t from TransactionInfo t where t.startedBy=:user or t.serviceId.madeBy=:user")
+//    List<TransactionInfo> findAllUserTransactions(@Param("user") UserTable user, Pageable page);
 
 
     //esraaaa

@@ -1,6 +1,19 @@
 package com.service_exchange.api_services.bussinesslayer;
 
-public class TransactionService {
+
+import org.springframework.stereotype.Component;
+
+//esraaaa
+
+
+//esraaaa
+
+//nouur
+
+//nourr
+
+@Component
+public class TransactionService implements TransactionServiceInterface{
 
     ////////////////////////////Nouran////////////////////////////
 
