@@ -100,25 +100,31 @@ public class MessagService implements MessageServiceInterface{
 
     @Override
     public List<TransactionChatDto> getAllUserTransactionChats(Integer userId,Integer pageNum) {
-        List<Integer>userTransactionIdsList=messageDelegateInterface.getUserTransactionIdsList(userId,pageNum);
-        List<TransactionChatDto>transactionChatDtosList=null;
-       if(userTransactionIdsList!=null) {
-           for (Integer transactionId : userTransactionIdsList) {
-               if (transactionChatDtosList == null) {
-                   transactionChatDtosList = new ArrayList<>();
-                   TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
-                   transactionChatDto.setTransactionId(transactionId);
-                   transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
-                   transactionChatDtosList.add(transactionChatDto);
-               } else {
-                   TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
-                   transactionChatDto.setTransactionId(transactionId);
-                   transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
-                   transactionChatDtosList.add(transactionChatDto);
+       try {
+           List<Integer> userTransactionIdsList = messageDelegateInterface.getUserTransactionIdsList(userId, pageNum);
+           List<TransactionChatDto> transactionChatDtosList = new ArrayList<>();
+           if (userTransactionIdsList != null) {
+               for (Integer transactionId : userTransactionIdsList) {
+                   if (transactionChatDtosList == null) {
+                       transactionChatDtosList = new ArrayList<>();
+                       TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
+                       transactionChatDto.setTransactionId(transactionId);
+                       transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
+                       transactionChatDtosList.add(transactionChatDto);
+                   } else {
+                       TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
+                       transactionChatDto.setTransactionId(transactionId);
+                       transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
+                       transactionChatDtosList.add(transactionChatDto);
+                   }
                }
            }
+           return transactionChatDtosList;
+       }catch (Exception e)
+       {
+           e.printStackTrace();
+           return  null;
        }
-        return transactionChatDtosList;
     }
 
 }
