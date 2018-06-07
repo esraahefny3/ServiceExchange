@@ -5,9 +5,10 @@
  */
 package com.service_exchange.utal;
 
+import org.springframework.data.domain.Page;
+
 import java.util.LinkedList;
 import java.util.List;
-import org.springframework.data.domain.Page;
 
 /**
  *
@@ -18,7 +19,7 @@ public class PageToListConverter {
         List<T> newList = new LinkedList<>();
         
         list.forEach(e->newList.add(e));
-        System.out.println(newList);
+        // System.out.println(newList);
        // System.out.println(newList);
         return newList;
     }

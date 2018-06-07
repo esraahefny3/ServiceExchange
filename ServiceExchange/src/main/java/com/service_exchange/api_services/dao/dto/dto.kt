@@ -129,7 +129,7 @@ class UserDTO {
     var name: String? = null
     var image: String? = null
     var status: String? = null
-    var birthDate: String? = null
+    var birthDate: Date? = null
     var accountType: String? = null
     var accountId: String? = null
     var userEmailCollection: List<String>? = null

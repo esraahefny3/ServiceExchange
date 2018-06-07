@@ -8,6 +8,7 @@ package com.service_exchange.api_services.dao.user;
 import com.service_exchange.api_services.dao.challanges.ChallangeDao;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Education;
+import com.service_exchange.entities.UserEmail;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.utal.UnoptimizedDeepCopy;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,8 @@ public class UserDaoImpl implements UserInterFace {
 
     @Autowired
     private UserDataInterFace dataInterface;
-
+    @Autowired
+    private UserEmailData userEmail;
     @Autowired
     private ChallangeDao challangeDao;
 
@@ -44,7 +46,10 @@ public class UserDaoImpl implements UserInterFace {
     @Nullable
     @Override
     public UserTable getUserByEmail(String email) {
-        return dataInterface.findByUserEmailCollectionContaining(Arrays.asList(email));
+        UserEmail ut = userEmail.findByUserEmailPK_Email(email);
+        if (ut != null) {
+            return ut.getUserTable();
+        } else return null;
     }
 
     private <T> List convertList(Collection<T> coll) {
