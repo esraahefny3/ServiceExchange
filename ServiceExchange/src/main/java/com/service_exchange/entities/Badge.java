@@ -44,7 +44,7 @@ public class Badge implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "time_needed")
-    private String timeNeeded;
+    private Integer timeNeeded;
     @Column(name = "type")
     private String type;
     @Column(name = "is_deleted")
@@ -94,11 +94,11 @@ public class Badge implements Serializable {
         this.description = description;
     }
 
-    public String getTimeNeeded() {
+    public Integer getTimeNeeded() {
         return timeNeeded;
     }
 
-    public void setTimeNeeded(String timeNeeded) {
+    public void setTimeNeeded(Integer timeNeeded) {
         this.timeNeeded = timeNeeded;
     }
 

@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
- *
  * @author Nouran
  */
 @Entity
@@ -43,6 +43,12 @@ public class Service implements Serializable {
     private Integer price;
     @Column(name = "type")
     private String type;
+    @Column(name = "start_date")
+    private Date startDate;
+    @Column(name = "end_date")
+    private Date endDate;
+    @Column(name = "duration")
+    private Date duration;
     @Column(name = "description")
     private String description;
     @Column(name = "is_available")
@@ -77,6 +83,30 @@ public class Service implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Date duration) {
+        this.duration = duration;
     }
 
     public String getName() {

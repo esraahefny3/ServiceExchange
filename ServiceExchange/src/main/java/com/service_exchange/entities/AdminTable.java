@@ -6,15 +6,14 @@
 package com.service_exchange.entities;
 
 
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
- *
  * @author Nouran
  */
 @Entity
@@ -40,6 +39,8 @@ public class AdminTable implements Serializable {
     private String password;
     @Column(name = "image")
     private String image;
+    @Column(name = "last_password_changed")
+    private Date lastPasswordChanged;
     @Column(name = "is_enabled")
     private Short isEnabled;
     @OneToMany(mappedBy = "addedBy")
@@ -174,6 +175,14 @@ public class AdminTable implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Date getLastPasswordChanged() {
+        return lastPasswordChanged;
+    }
+
+    public void setLastPasswordChanged(Date lastPasswordChanged) {
+        this.lastPasswordChanged = lastPasswordChanged;
     }
 
     @Override
