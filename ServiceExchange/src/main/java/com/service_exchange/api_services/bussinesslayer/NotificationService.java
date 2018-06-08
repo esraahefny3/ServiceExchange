@@ -37,7 +37,6 @@ public class NotificationService {
     private UserDataInterFace userDataInterFace;
 
     public List<NotificationDto> getAllUserNotifications(Integer userId) {
-        System.out.println(userId);
         List<NotificationDto> notifications = new ArrayList<>();
         List<UserNotification> userNotifications = new ArrayList<>(userNotificationDataInterface.findByUserNotificationPK_UserId(userId));
 
