@@ -36,7 +36,7 @@ public class UserService {
     private UserDaoImpl daoImpl;
 
 
-    //static
+
     //---user badge
     // @Autowired
     private UserBadgesSelegateInterface userBadgesInterface;
@@ -151,6 +151,24 @@ public class UserService {
         return d.get();
     }
 
+    private double getResponceMessageTime(Integer userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        final double[] retval = {0};
+        if (userTable != null) {
+            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+                    .map(service -> service.getTransactionInfoCollection().stream())
+                    .mapToDouble(transactionInfoStream -> {
+                        final double[] dval = {0};
+                        transactionInfoStream.mapToDouble(value -> value.getMessageCollection().stream().filter(message -> message.getSenderId().getId().intValue() != userId.intValue())
+                                .mapToDouble(value1 -> value1.getSeenDate().getTime()).sorted().reduce(0, (left, right) -> right - left)).average().ifPresent(value -> dval[0] = value);
+                        return dval[0];
+                    }).average().ifPresent(value -> retval[0] = value);
+            return retval[0];
+        }
+        return 0;
+    }
+
+    //static
     public List<Badge> getAllUserBadges(Integer userId, Integer pageNum) {
         if (userId != null && pageNum != null) {
             UserTable userNew = userBadgesInterface.checkIfUserExist(userId);

@@ -478,7 +478,7 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeService(Service service) {
-        if (!serviceCollection.contains(service)) {
+        if (serviceCollection.contains(service)) {
             serviceCollection.remove(service);
             return true;
         }
