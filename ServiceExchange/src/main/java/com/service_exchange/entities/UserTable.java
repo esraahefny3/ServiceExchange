@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- *
  * @author Nouran
  */
 @Entity
@@ -48,6 +47,9 @@ public class UserTable implements Serializable {
     private String image;
     @Column(name = "status")
     private String status;
+
+    @Column(name = "last_password_changed")
+    private Date lastPasswordChanged;
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -112,6 +114,7 @@ public class UserTable implements Serializable {
 
     @Transient
     private Boolean isFrist = Boolean.TRUE;
+
     public UserTable() {
     }
 
@@ -181,6 +184,14 @@ public class UserTable implements Serializable {
 
     public void setIsEnabled(Short isEnabled) {
         this.isEnabled = isEnabled;
+    }
+
+    public Date getLastPasswordChanged() {
+        return lastPasswordChanged;
+    }
+
+    public void setLastPasswordChanged(Date lastPasswordChanged) {
+        this.lastPasswordChanged = lastPasswordChanged;
     }
 
     @XmlTransient
@@ -327,6 +338,7 @@ public class UserTable implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "UserTable{" +
@@ -360,7 +372,7 @@ public class UserTable implements Serializable {
         if (!userChallengeCollection.contains(uc)) {
             userChallengeCollection.add(uc);
             return true;
-        }else{
+        } else {
             return false;
         }
 //return Boolean.FALSE;
@@ -371,7 +383,7 @@ public class UserTable implements Serializable {
         if (userChallengeCollection.contains(uc)) {
             userChallengeCollection.remove(uc);
             return true;
-        }else{
+        } else {
             return false;
         }
 //return Boolean.FALSE;
@@ -433,7 +445,7 @@ public class UserTable implements Serializable {
         return false;
     }
 
-    public Boolean addEducation(Education education){
+    public Boolean addEducation(Education education) {
         if (!educationCollection.contains(education)) {
             educationCollection.add(education);
             return true;
@@ -472,8 +484,6 @@ public class UserTable implements Serializable {
         }
         return false;
     }
-
-
 
 
     private <T> Collection<T> copyArray(Collection<T> list) {
