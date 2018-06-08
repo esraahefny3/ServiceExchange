@@ -245,7 +245,7 @@ class JwtAuthorizationTokenFilter(private val userDetailsService: UserDetailsSer
             }
 
         } else {
-            logger2.warn("couldn't find bearer string, will ignore the header")
+            logger2.warn("couldn't find : string, will ignore the header")
         }
 
         logger2.debug("checking authentication for user '{}'", username)

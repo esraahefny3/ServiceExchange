@@ -19,7 +19,7 @@ fun Service.convertServie(): ServiceDTO =
         this.let { t ->
             val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
             ob.skillList = t.skillCollection.stream().map { it.id }.collect(Collectors.toList())
-            ob.uO = com.service_exchange.api_services.dao.dto.UserOwner(t.madeBy.name, t.id)
+            ob.uO = com.service_exchange.api_services.dao.dto.UserOwner(t.madeBy.name, t.id, t.image)
             ob.numberOfTransaction = t.transactionInfoCollection.stream().filter({ t ->
                 t.state == TransactionInfo.COMPLETED_STATE
                         || t.state == TransactionInfo.LATE_STATE
@@ -27,8 +27,8 @@ fun Service.convertServie(): ServiceDTO =
             ob.rating = t.transactionInfoCollection.stream().filter { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE }
                     .mapToDouble { t ->
                         t.reviewCollection.stream()
-                                .mapToDouble { it.rating.toDouble() }.average().orElse(0.0)
-                    }.average().orElse(0.0)
+                                .mapToDouble { it.rating.toDouble() }.average().orElse(0.0) * 5
+                    }.average().orElse(0.0) * 5
             ob
         }
 

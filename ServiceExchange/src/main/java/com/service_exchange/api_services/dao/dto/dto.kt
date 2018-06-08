@@ -139,7 +139,7 @@ class UserDTO {
 
 }
 
-class UserOwner(val userName: String?, val id: Int?) {
+class UserOwner(val userName: String?, val id: Int?, val image: String) {
 
 }
 

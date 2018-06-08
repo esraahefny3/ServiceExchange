@@ -26,6 +26,7 @@ interface UserDataGet {
     fun getUserServices(userId: Int?): List<ServiceDTO>
     fun getAllUser(start: Int): List<UserDTO>
     fun getAllUser(): List<UserDTO>
+    fun getUserById(userId: Int?): UserTable?
 
 }
 
@@ -40,9 +41,6 @@ fun UserTable.convertUser(): UserDTO {
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
-
-
-
     @Autowired
     lateinit var userInterface: UserInterFace
     @Autowired
@@ -54,7 +52,8 @@ private open class UserDataGetImpl : UserDataGet {
     @Autowired
     lateinit var userTelephoneInterface: UserTelephoneInterface
 
-
+    override fun getUserById(userId: Int?): UserTable? =
+            userInterface.getUser(userId)
     override fun getAllUser(start: Int): List<UserDTO> {
         return userInterface.getAllUser(start).stream().map { it.convertUser() }.collect(Collectors.toList())
                 ?: emptyList<UserDTO>()

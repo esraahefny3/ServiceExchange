@@ -54,7 +54,7 @@ class UserServiceImpl : UserServicesInterFace {
                 if (forced == true) {
                     bool = user?.removeService(serviceEnt) ?: false
 
-                } else if (serviceEnt.transactionInfoCollection.size == 0) {
+                } else if (serviceEnt.transactionInfoCollection.size != 0) {
                     bool = user?.removeService(serviceEnt) ?: false
                 }
                 if (bool)

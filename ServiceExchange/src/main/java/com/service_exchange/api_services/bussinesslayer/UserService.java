@@ -15,40 +15,41 @@ import com.service_exchange.api_services.dao.dto.SkillDTO;
 import com.service_exchange.api_services.dao.dto.UserDTO;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.Badge;
+import com.service_exchange.entities.Review;
+import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- *
  * @author Altysh
  */
 @Service
-public class UserService{
+public class UserService {
     @Autowired
     private UserDaoImpl daoImpl;
 
 
+    //static
+    //---user badge
+    // @Autowired
+    private UserBadgesSelegateInterface userBadgesInterface;
+    private int pageSize = 20;
+
     public UserTable createUser(UserTable user) {
-    return daoImpl.createUser(user);
+        return daoImpl.createUser(user);
     }
-    public String getSome(){
-        if(daoImpl ==null)
-        return "hello";
+
+    public String getSome() {
+        if (daoImpl == null)
+            return "hello";
         else return "good";
-    }
-
-    public UserTable updateUser(UserTable user) {
-    return daoImpl.updateUser(user);
-    }
-
-
-    public Boolean checkEmailAvalible(Integer email) {
-   return daoImpl.checkEmailAvalible(email);
     }
 
 
@@ -61,39 +62,112 @@ public class UserService{
         return userDataGet.getAllUser();
     }
 
-
-    public Page<UserTable> scerchUserByName(String name, int start) {
-   return daoImpl.scerchUserByName(name,start);
+    public UserTable updateUser(UserTable user) {
+        return daoImpl.updateUser(user);
     }
 
+    public Boolean checkEmailAvalible(Integer email) {
+        return daoImpl.checkEmailAvalible(email);
+    }
+    //static
 
-    //---user badge
-    // @Autowired
-    private UserBadgesSelegateInterface userBadgesInterface;
+    public Page<UserTable> scerchUserByName(String name, int start) {
+        return daoImpl.scerchUserByName(name, start);
+    }
 
-    private int pageSize=20;
+    @Nullable
+    private String getUserLevel(int userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        String level = null;
+        if (userTable != null) {
+            level = userTable.getUserBadgeCollection().stream().sorted((o1, o2) -> o1.getBadge().getId())
+                    .findFirst().map(userBadge -> userBadge.getBadge().getName()).orElseGet(() -> "");
+        }
+        return level;
+    }
 
-   public List<Badge> getAllUserBadges(Integer userId, Integer pageNum){
-       if(userId!=null&& pageNum!=null)
-        {
-            UserTable userNew=userBadgesInterface.checkIfUserExist(userId);
-            if(userNew!=null)
-            {
-                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of((pageNum!=null)?pageNum:0,pageSize));
+    private double orderCompletion(Integer userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        AtomicReference<Double> d = new AtomicReference<>((double) 0);
+        if (userTable != null) {
+            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+                    .mapToDouble(service -> {
+                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> !transactionInfo.getState().equals(TransactionInfo.REJECTED_STATE)
+                                && !transactionInfo.getState().equals(TransactionInfo.PENDING_STATE))
+                                .mapToDouble(value -> {
+                                    System.out.println(value.getId());
+                                    if (value.getState().equals(TransactionInfo.ACCEPTED_STATE) || value.getState().equals(TransactionInfo.ON_PROGRESS_STATE)) {
+                                        return 0.0;
+                                    } else return 1.0;
+                                }).average().ifPresent(d::set);
+                        return d.get();
+                    }).average().ifPresent(d::set);
+
+        }
+        return d.get();
+    }
+
+    private double onTimeDelevrey(Integer userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        AtomicReference<Double> d = new AtomicReference<>((double) 0);
+        if (userTable != null) {
+            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+                    .mapToDouble(service -> {
+                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE)
+                                || transactionInfo.getState().equals(TransactionInfo.EXTENDED_STATE)
+                                || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
+                                .mapToDouble(value -> {
+                                    if (value.getState().equals(TransactionInfo.LATE_STATE) || value.getState().equals(TransactionInfo.EXTENDED_STATE)) {
+                                        return 0.0;
+                                    } else return 1.0;
+                                }).average().ifPresent(d::set);
+                        return d.get();
+                    })
+                    .average().ifPresent(d::set);
+
+        }
+        return d.get();
+    }
+
+    private double totalFeedBack(Integer userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        AtomicReference<Double> d = new AtomicReference<>((double) 0);
+        if (userTable != null) {
+            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+                    .mapToDouble(service -> {
+                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE)
+                                || transactionInfo.getState().equals(TransactionInfo.EXTENDED_STATE)
+                                || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
+                                .mapToDouble(value -> {
+                                    final double[] val = {0};
+                                    value.getReviewCollection().stream().mapToDouble(Review::getRating).average().ifPresent(value1 -> val[0] = value1 / 5);
+                                    return val[0];
+                                }).average().ifPresent(d::set);
+                        return d.get();
+                    })
+                    .average().ifPresent(d::set);
+
+        }
+        return d.get();
+    }
+
+    public List<Badge> getAllUserBadges(Integer userId, Integer pageNum) {
+        if (userId != null && pageNum != null) {
+            UserTable userNew = userBadgesInterface.checkIfUserExist(userId);
+            if (userNew != null) {
+                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of((pageNum != null) ? pageNum : 0, pageSize));
             }
         }
-         return null;
-   }
-   public boolean assignBadgeToUser(UserTable user,Badge badge){
-       if(user!=null &&user.getId()!=null&&badge!=null&&badge.getId()!=null)
-       {
-           return userBadgesInterface.assignBadgeToUser(user, badge);
-       }
-       else
-       {
-           return false;
-       }
-   }
+        return null;
+    }
+
+    public boolean assignBadgeToUser(UserTable user, Badge badge) {
+        if (user != null && user.getId() != null && badge != null && badge.getId() != null) {
+            return userBadgesInterface.assignBadgeToUser(user, badge);
+        } else {
+            return false;
+        }
+    }
 
     public List<UserDTO> getAllUser(int start) {
 
@@ -171,5 +245,4 @@ public class UserService{
     //mubarak//
 
 
-    
 }
