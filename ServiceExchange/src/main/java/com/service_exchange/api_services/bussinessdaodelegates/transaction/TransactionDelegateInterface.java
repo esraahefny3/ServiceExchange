@@ -1,20 +1,18 @@
 package com.service_exchange.api_services.bussinessdaodelegates.transaction;
-
-//esraaa
+import com.service_exchange.api_services.dao.dto.TransactionChatDto;
+import com.service_exchange.api_services.dao.transaction.TransactionDto;
+import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
-//esraaaa
+import com.service_exchange.entities.UserTable;
 
-//nourrr
+import java.util.List;
 
-//nouur
 public interface TransactionDelegateInterface {
 
-    ////////////////////////////Nouran////////////////////////////
-
-    ////////////////////////////Nouran////////////////////////////
-
-
-    ////////////////////////////Esraa////////////////////////////
     TransactionInfo checkIfTransactionExist(Integer transactionId);
-    ////////////////////////////Esraa////////////////////////////
+    TransactionDto saveTransaction(TransactionInfo transactionInfo);
+    List<TransactionDto>getAllUserTransactions(UserTable user,Integer pageNumbe);
+    List<TransactionInfo>  getAllUserAcceptedTransactionsOnService(Service service);
+    int  postponeAllOtherUserPindingTransactionOnService(Service service);
+    int rejectAcceptedTransactionOnService(Service service);
 }

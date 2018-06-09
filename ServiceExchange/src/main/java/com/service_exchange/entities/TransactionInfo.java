@@ -77,7 +77,7 @@ public class TransactionInfo implements Serializable {
     @Transient
     public static final String ACCEPTED_STATE = "accepted";
     @Transient
-    public static final String ON_PROGRESS_STATE = "on progress";
+    public static final String ON_PROGRESS_STATE = "on_progress";
     @Transient
     public static final String REJECTED_STATE = "rejected";
     @Transient
@@ -86,6 +86,8 @@ public class TransactionInfo implements Serializable {
     public static final String EXTENDED_STATE = "extended";
     @Transient
     public static final String LATE_STATE = "late";
+    @Transient
+    public static final String POSTPONED = "postpone";
 
     public TransactionInfo() {
     }
