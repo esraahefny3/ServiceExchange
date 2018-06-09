@@ -5,6 +5,8 @@
  */
 package com.service_exchange.entities;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,39 +39,54 @@ public class TransactionInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @Nullable
     private Integer id;
     @Column(name = "type")
+    @Nullable
     private String type;
     @Column(name = "state")
+    @Nullable
     private String state;
     @Column(name = "start_date")
+    @Nullable
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
     @Column(name = "end_date")
+    @Nullable
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
     @Column(name = "duration")
+    @Nullable
     private BigInteger duration;
     @Column(name = "price")
+    @Nullable
     private Integer price;
     @Column(name = "type_of_payment")
+    @Nullable
     private String typeOfPayment;
     @OneToMany(mappedBy = "transactionId")
+    @Nullable
     private Collection<Message> messageCollection;
     @OneToMany(mappedBy = "transactionId")
+    @Nullable
     private Collection<Complaint> complaintCollection;
     @OneToMany(mappedBy = "transactionId")
+    @Nullable
     private Collection<Review> reviewCollection;
     @OneToMany(mappedBy = "exchangedBy")
+    @Nullable
     private Collection<TransactionInfo> transactionInfoCollection;
     @JoinColumn(name = "exchanged_by", referencedColumnName = "id")
     @ManyToOne
+    @Nullable
     private TransactionInfo exchangedBy;
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     @ManyToOne
+    @Nullable
     private Service serviceId;
     @JoinColumn(name = "started_by", referencedColumnName = "id")
     @ManyToOne
+    @Nullable
     private UserTable startedBy;
 
     @Transient
@@ -96,127 +113,142 @@ public class TransactionInfo implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(@Nullable Integer id) {
         this.id = id;
     }
 
+    @Nullable
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(@Nullable String type) {
         this.type = type;
     }
 
+    @Nullable
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(@Nullable String state) {
         this.state = state;
     }
 
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(@Nullable Date startDate) {
         this.startDate = startDate;
     }
 
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(@Nullable Date endDate) {
         this.endDate = endDate;
     }
 
+    @Nullable
     public BigInteger getDuration() {
         return duration;
     }
 
-    public void setDuration(BigInteger duration) {
+    public void setDuration(@Nullable BigInteger duration) {
         this.duration = duration;
     }
 
+    @Nullable
     public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(@Nullable Integer price) {
         this.price = price;
     }
 
+    @Nullable
     public String getTypeOfPayment() {
         return typeOfPayment;
     }
 
-    public void setTypeOfPayment(String typeOfPayment) {
+    public void setTypeOfPayment(@Nullable String typeOfPayment) {
         this.typeOfPayment = typeOfPayment;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Message> getMessageCollection() {
         return messageCollection;
     }
 
-    public void setMessageCollection(Collection<Message> messageCollection) {
+    public void setMessageCollection(@Nullable Collection<Message> messageCollection) {
         this.messageCollection = messageCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Complaint> getComplaintCollection() {
         return complaintCollection;
     }
 
-    public void setComplaintCollection(Collection<Complaint> complaintCollection) {
+    public void setComplaintCollection(@Nullable Collection<Complaint> complaintCollection) {
         this.complaintCollection = complaintCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Review> getReviewCollection() {
         return reviewCollection;
     }
 
-    public void setReviewCollection(Collection<Review> reviewCollection) {
+    public void setReviewCollection(@Nullable Collection<Review> reviewCollection) {
         this.reviewCollection = reviewCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<TransactionInfo> getTransactionInfoCollection() {
         return transactionInfoCollection;
     }
 
-    public void setTransactionInfoCollection(Collection<TransactionInfo> transactionInfoCollection) {
+    public void setTransactionInfoCollection(@Nullable Collection<TransactionInfo> transactionInfoCollection) {
         this.transactionInfoCollection = transactionInfoCollection;
     }
 
+    @Nullable
     public TransactionInfo getExchangedBy() {
         return exchangedBy;
     }
 
-    public void setExchangedBy(TransactionInfo exchangedBy) {
+    public void setExchangedBy(@Nullable TransactionInfo exchangedBy) {
         this.exchangedBy = exchangedBy;
     }
 
+    @Nullable
     public Service getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Service serviceId) {
+    public void setServiceId(@Nullable Service serviceId) {
         this.serviceId = serviceId;
     }
 
+    @Nullable
     public UserTable getStartedBy() {
         return startedBy;
     }
 
-    public void setStartedBy(UserTable startedBy) {
+    public void setStartedBy(@Nullable UserTable startedBy) {
         this.startedBy = startedBy;
     }
 
@@ -234,10 +266,7 @@ public class TransactionInfo implements Serializable {
             return false;
         }
         TransactionInfo other = (TransactionInfo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override

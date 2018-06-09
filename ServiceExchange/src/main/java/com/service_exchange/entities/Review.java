@@ -7,6 +7,7 @@ package com.service_exchange.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -59,6 +60,7 @@ public class Review implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public Integer getId() {
         return id;
     }
@@ -67,6 +69,7 @@ public class Review implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public String getComment() {
         return comment;
     }
@@ -75,6 +78,7 @@ public class Review implements Serializable {
         this.comment = comment;
     }
 
+    @Nullable
     public Integer getRating() {
         return rating;
     }
@@ -83,6 +87,7 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
+    @Nullable
     public TransactionInfo getTransactionId() {
         return transactionId;
     }
@@ -91,6 +96,7 @@ public class Review implements Serializable {
         this.transactionId = transactionId;
     }
 
+    @Nullable
     public Short getIsDeleted() {
         return isDeleted;
     }
@@ -99,6 +105,7 @@ public class Review implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<ReviewSkill> getReviewSkillCollection() {
         return reviewSkillCollection;
@@ -108,6 +115,7 @@ public class Review implements Serializable {
         this.reviewSkillCollection = reviewSkillCollection;
     }
 
+    @Nullable
     public UserTable getMadeBy() {
         return madeBy;
     }

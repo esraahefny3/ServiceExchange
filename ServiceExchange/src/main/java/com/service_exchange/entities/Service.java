@@ -5,6 +5,8 @@
  */
 package com.service_exchange.entities;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,40 +37,58 @@ public class Service implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Transient
+    public static final String AVALIBLE = "avalible";
+    @Transient
+    public static final String DELETED = "deleted";
+    @Transient
+    public static final String PAUSED = "paused";
     @Column(name = "name")
+    @Nullable
     private String name;
     @Column(name = "image")
+    @Nullable
     private String image;
     @Column(name = "price")
+    @Nullable
     private Integer price;
     @Column(name = "type")
+    @Nullable
     private String type;
     @Column(name = "start_date")
+    @Nullable
     private Date startDate;
     @Column(name = "end_date")
+    @Nullable
     private Date endDate;
     @Column(name = "duration")
+    @Nullable
     private Date duration;
     @Column(name = "description")
+    @Nullable
     private String description;
     @Column(name = "is_available")
+    @Nullable
     private String isAvailable;
+    @Transient
+    public static final String OFFERED = "offerd";
+    @Transient
+    public static final String REQUSETED = "requested";
+    @Nullable
     @JoinTable(name = "service_skill", joinColumns = {
             @JoinColumn(name = "service_id", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "skill_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Skill> skillCollection;
+    @Nullable
     @JoinColumn(name = "made_by", referencedColumnName = "id")
     @ManyToOne
     private UserTable madeBy;
     //    @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
 //    private TransactionInfo transactionInfo;
     @OneToMany(mappedBy = "serviceId")
+    @Nullable
     private Collection<TransactionInfo> transactionInfoCollection;
-    @Transient
-    public static final String OFFERED = "offerd";
-    @Transient
-    public static final String REQUSETED = "requested";
 
     public Service() {
     }
@@ -85,6 +105,7 @@ public class Service implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -93,6 +114,7 @@ public class Service implements Serializable {
         this.startDate = startDate;
     }
 
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }
@@ -101,6 +123,7 @@ public class Service implements Serializable {
         this.endDate = endDate;
     }
 
+    @Nullable
     public Date getDuration() {
         return duration;
     }
@@ -109,6 +132,7 @@ public class Service implements Serializable {
         this.duration = duration;
     }
 
+    @Nullable
     public String getName() {
         return name;
     }
@@ -117,6 +141,7 @@ public class Service implements Serializable {
         this.name = name;
     }
 
+    @Nullable
     public String getImage() {
         return image;
     }
@@ -125,6 +150,7 @@ public class Service implements Serializable {
         this.image = image;
     }
 
+    @Nullable
     public Integer getPrice() {
         return price;
     }
@@ -133,6 +159,7 @@ public class Service implements Serializable {
         this.price = price;
     }
 
+    @Nullable
     public String getType() {
         return type;
     }
@@ -141,6 +168,7 @@ public class Service implements Serializable {
         this.type = type;
     }
 
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -149,6 +177,7 @@ public class Service implements Serializable {
         this.description = description;
     }
 
+    @Nullable
     public String getIsAvailable() {
         return isAvailable;
     }
@@ -157,6 +186,7 @@ public class Service implements Serializable {
         this.isAvailable = isAvailable;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Skill> getSkillCollection() {
         return skillCollection;
@@ -166,6 +196,7 @@ public class Service implements Serializable {
         this.skillCollection = skillCollection;
     }
 
+    @Nullable
     public UserTable getMadeBy() {
         return madeBy;
     }
@@ -181,7 +212,7 @@ public class Service implements Serializable {
 //    public void setTransactionInfo(TransactionInfo transactionInfo) {
 //        this.transactionInfo = transactionInfo;
 //    }
-
+@Nullable
     @XmlTransient
     public Collection<TransactionInfo> getTransactionInfoCollection() {
         return transactionInfoCollection;

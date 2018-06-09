@@ -23,3 +23,5 @@ public interface UserServicesInterFace {
 
     Boolean disableServiceForUser(Integer userId, Service service, Boolean forced);
 }
+
+

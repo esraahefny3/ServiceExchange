@@ -1,10 +1,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
 import com.service_exchange.api_services.bussinessdaodelegates.service.convertSkill
-import com.service_exchange.api_services.dao.dto.EdcationDTO
-import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.dto.SkillDTO
-import com.service_exchange.api_services.dao.dto.UserDTO
+import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.user.UserEducationInterface
 import com.service_exchange.api_services.dao.user.UserEmailInterface
 import com.service_exchange.api_services.dao.user.UserInterFace
@@ -17,6 +14,10 @@ import com.service_exchange.entities.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
+import java.util.concurrent.atomic.AtomicReference
+import java.util.function.DoubleConsumer
+import java.util.function.ToDoubleFunction
+import java.util.function.ToIntFunction
 import java.util.stream.Collectors
 
 
@@ -36,7 +37,7 @@ fun UserTable.convertUser(): UserDTO {
     userdto.bD = birthDate?.time
     userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
     userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
-    userdto.uSkills = this.skillCollection.stream().map { it.convertSkill() }.collect(Collectors.toList())
+    userdto.uSkills = this.skillCollection?.stream()?.map { it.convertSkill() }?.collect(Collectors.toList())
     return userdto
 }
 
@@ -85,7 +86,7 @@ private open class UserDataGetImpl : UserDataGet {
                         retVal.userAuthority = UserAuthority()
                         retVal.userAuthority?.authority = "User"
                         retVal.userAuthority?.userId = retVal.id
-                        userBadgeInterFace.assignBadgeToUser(retVal.id, 1);
+                        userBadgeInterFace.assignBadgeToUser(retVal.id ?: 0, 1);
                         retVal = userInterface.updateUser(retVal);
 
                     }
@@ -231,5 +232,247 @@ private class UserDataDeletImpel : UserDataDelete {
 
     override fun removeServiceToUser(userId: Int?, serviceId: Int?, forced: Boolean?): Boolean =
             userService.removeServiceForUser(userId, serviceId, forced)
+
+}
+
+@Component
+class UserStaticsGetter {
+    @Autowired
+    lateinit var userDataGet: UserDataGet
+
+    fun getEarning(userId: Int, localDate: Calendar): Double {
+        val userTable = userDataGet.getUserById(userId)
+
+        //localDate.set(Calendar.DAY_OF_MONTH, 1);
+        return if (userTable != null) {
+            userTable.serviceCollection?.stream()?.filter({ service -> service.type == com.service_exchange.entities.Service.OFFERED })
+                    ?.mapToInt({ value ->
+                        value.transactionInfoCollection?.stream()?.filter({ transactionInfo -> transactionInfo.state == TransactionInfo.COMPLETED_STATE || transactionInfo.state == TransactionInfo.LATE_STATE })
+                                ?.filter({ transactionInfo ->
+                                    transactionInfo.startDate?.time ?: 0 + (transactionInfo.duration?.toLong()
+                                            ?: 0) >= localDate.timeInMillis
+                                })
+
+                                ?.mapToInt({ it.price ?: 0 })?.sum() ?: 0
+                    }
+                    )?.sum()?.toDouble() ?: 0.0
+        } else
+            0.0
+    }
+
+    fun getAVGEarning(userId: Int): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val d = doubleArrayOf(0.0)
+        //localDate.set(Calendar.DAY_OF_MONTH, 1);
+        if (userTable != null) {
+            userTable.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }
+                    ?.mapToDouble { value ->
+                        value.transactionInfoCollection?.stream()?.filter { transactionInfo -> transactionInfo.state == TransactionInfo.COMPLETED_STATE || transactionInfo.state == TransactionInfo.LATE_STATE }
+
+
+                                ?.mapToInt(ToIntFunction<TransactionInfo> {
+                                    it.getPrice() ?: 0
+                                })?.average()?.ifPresent { value1 -> d[0] = value1 }
+                        d[0]
+                    }?.average()?.ifPresent { value -> d[0] = value }
+            return d[0]
+        } else
+            return 0.0
+    }
+
+    fun getUserBalance(userId: Int): Int {
+        val userTable = userDataGet.getUserById(userId)
+        return if (userTable != null) {
+            userTable.balance!!
+        } else
+            0
+    }
+
+    fun getUserBalanceFormTheStart(userId: Int): Int {
+        val userTable = userDataGet.getUserById(userId)
+        return if (userTable != null) {
+            val t = userTable.serviceCollection?.stream()
+                    ?.mapToInt { value ->
+
+                        value.transactionInfoCollection!!.stream().filter { transactionInfo -> transactionInfo.state != TransactionInfo.LATE_STATE && transactionInfo.state != TransactionInfo.COMPLETED_STATE }
+
+
+                                .mapToInt(ToIntFunction<TransactionInfo> {
+                                    it.getPrice() ?: 0
+                                }).sum()
+
+                    }?.sum() ?: 0
+
+            t + getUserBalance(userId)
+        } else
+            0
+    }
+
+    fun getOrderCompletion(userId: Int?): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val d = AtomicReference(0.toDouble())
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }
+                ?.mapToDouble { service ->
+                    service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+                        transactionInfo.state != TransactionInfo.REJECTED_STATE
+                                && transactionInfo.state != TransactionInfo.PENDING_STATE
+                    }
+                            .mapToDouble { value ->
+                                if (value.state == TransactionInfo.ACCEPTED_STATE || value.state == TransactionInfo.ON_PROGRESS_STATE) {
+                                    0.0
+                                } else
+                                    1.0
+                            }.average().ifPresent(DoubleConsumer { d.set(it) })
+                    d.get()
+                }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
+        return d.get()
+    }
+
+    fun getOnTimeDelevrey(userId: Int?): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val d = AtomicReference(0.toDouble())
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
+            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+                (transactionInfo.state == TransactionInfo.COMPLETED_STATE
+                        || transactionInfo.state == TransactionInfo.EXTENDED_STATE
+                        || transactionInfo.state == TransactionInfo.LATE_STATE)
+            }
+                    .mapToDouble { value ->
+                        if (value.state == TransactionInfo.LATE_STATE || value.state == TransactionInfo.EXTENDED_STATE) {
+                            0.0
+                        } else
+                            1.0
+                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+            d.get()
+        }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
+        return d.get()
+    }
+
+    fun getTotalFeedBack(userId: Int?): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val d = AtomicReference(0.toDouble())
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
+            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+                (transactionInfo.state == TransactionInfo.COMPLETED_STATE
+                        || transactionInfo.state == TransactionInfo.EXTENDED_STATE
+                        || transactionInfo.state == TransactionInfo.LATE_STATE)
+            }
+                    .mapToDouble { value ->
+                        val `val` = doubleArrayOf(0.0)
+                        value.reviewCollection!!.stream().mapToDouble(ToDoubleFunction<Review> {
+                            (it?.rating?.toDouble() ?: 0.0)
+                        }).average().ifPresent { value1 -> `val`[0] = value1 / 5 }
+                        `val`[0]
+                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+            d.get()
+        }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
+        return d.get()
+    }
+
+    fun getResponceMessageTime(userId: Int?): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val retval = doubleArrayOf(0.0)
+        if (userTable != null) {
+            var d = 0.0;
+            userTable.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }
+                    ?.map { service -> service?.getTransactionInfoCollection()?.stream() }
+                    ?.mapToDouble { value ->
+                        val dval = doubleArrayOf(0.0);
+                        value?.mapToDouble { value ->
+                            value.messageCollection?.stream()?.filter { message -> message.senderId.id!!.toInt() != userId }
+                                    ?.mapToDouble { value -> value.seenDate.time.toDouble() }?.sorted()
+                                    ?.reduce(0.0, { left, right -> right - left })
+                                    ?.toDouble() ?: 0.0
+
+
+                        }?.average()?.ifPresent(DoubleConsumer { value -> dval[0] = value });
+                        return@mapToDouble dval[0];
+                    }?.average()?.ifPresent { d = it }
+            return d;
+
+
+        }
+        return 0.0
+    }
+
+    fun getResponceRate(userId: Int?): Double {
+        val userTable = userDataGet.getUserById(userId)
+        val d = AtomicReference(0.toDouble())
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
+            service.transactionInfoCollection!!.stream().filter { transactionInfo -> transactionInfo.state != TransactionInfo.REJECTED_STATE }
+                    .mapToDouble { value ->
+
+                        if (value.state == TransactionInfo.PENDING_STATE || value.state == TransactionInfo.POSTPONED) {
+                            0.0
+                        } else
+                            1.0
+                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+            d.get()
+        }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
+        return d.get()
+    }
+
+    fun getActiveOrderCount(userId: Int?): ActiveOrder {
+        val userTable = userDataGet.getUserById(userId)
+        val activeOrder = ActiveOrder(0, 0)
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.forEach { service ->
+            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+                (transactionInfo.state == TransactionInfo.ACCEPTED_STATE
+                        || transactionInfo.state == TransactionInfo.ON_PROGRESS_STATE || transactionInfo.state == TransactionInfo.EXTENDED_STATE)
+            }
+                    .forEach { value ->
+
+                        activeOrder.orderCount = activeOrder.orderCount + 1
+                        activeOrder.ordersValue = activeOrder.ordersValue + value.price!!
+                    }
+
+        }
+        return activeOrder
+    }
+
+    fun getEaringList(userId: Int?): List<EarningListObject> {
+        val userTable = userDataGet.getUserById(userId)
+        val list = ArrayList<EarningListObject>()
+        userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.forEach { service ->
+            service?.transactionInfoCollection?.stream()?.filter { transactionInfo ->
+                (transactionInfo?.state == TransactionInfo.ACCEPTED_STATE
+                        || transactionInfo?.state == TransactionInfo.COMPLETED_STATE || transactionInfo?.state == TransactionInfo.LATE_STATE)
+            }
+                    ?.forEach { transactionInfo ->
+                        list.add(EarningListObject(transactionInfo.id,
+                                transactionInfo?.serviceId?.name, transactionInfo?.startDate?.time ?: 0
+                        +(transactionInfo?.duration?.toLong() ?: 0), transactionInfo?.price))
+                    }
+        }
+        return list
+    }
+
+    fun getUserLevel(userId: Int): String? {
+        val userTable = userDataGet.getUserById(userId)
+        var level: String? = null
+        if (userTable != null) {
+            level = userTable.userBadgeCollection!!.stream().filter { userBadge ->
+                val b = userBadge.badge.nextLevel
+                b?.userBadgeCollection?.stream()?.noneMatch { userBadge1 -> userBadge1.userBadgePK.userId == userId }
+                        ?: true
+            }.findFirst().map { userBadge -> userBadge.badge.name }.orElse("not found")
+
+        }
+        return level
+    }
+
+    fun getUserNextLevel(userId: Int): String? {
+        val userTable = userDataGet.getUserById(userId)
+        var level: String? = null
+        if (userTable != null) {
+            level = userTable.userBadgeCollection!!.stream().filter { userBadge ->
+                val b = userBadge.badge.nextLevel
+                b?.userBadgeCollection?.stream()?.noneMatch { userBadge1 -> userBadge1.userBadgePK.userId == userId }
+                        ?: false
+            }.findFirst().map { userBadge -> userBadge.badge.nextLevel.description }.orElse("not found")
+
+        }
+        return level
+    }
 
 }

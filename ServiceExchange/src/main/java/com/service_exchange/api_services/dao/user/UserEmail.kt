@@ -34,7 +34,7 @@ private class UserEmailImpl : UserEmailInterface {
                 val newEmail = UserEmail()
                 val emailPK = UserEmailPK()
                 emailPK.email = email
-                emailPK.userId = user.id
+                emailPK.userId = user.id ?: 0
                 newEmail.userTable = user
                 newEmail.userEmailPK = emailPK
                 userEmailData.save(newEmail)

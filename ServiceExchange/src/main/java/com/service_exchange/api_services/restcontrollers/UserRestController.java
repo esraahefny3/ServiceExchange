@@ -7,10 +7,7 @@ package com.service_exchange.api_services.restcontrollers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.UserService;
-import com.service_exchange.api_services.dao.dto.EdcationDTO;
-import com.service_exchange.api_services.dao.dto.ServiceDTO;
-import com.service_exchange.api_services.dao.dto.SkillDTO;
-import com.service_exchange.api_services.dao.dto.UserDTO;
+import com.service_exchange.api_services.dao.dto.*;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
@@ -39,7 +36,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     private List<UserDTO> getAllChanges() {
-        System.out.println(service.getUserNextLevel(1));
+
         return service.getAllUser();
     }
 
@@ -150,6 +147,16 @@ return false;
         return service.addService(serviceDTO);
     }
 
+    @RequestMapping(value = "/getUserStatic", method = RequestMethod.GET)
+    private UserStatics getUserStatic(@RequestParam Integer userId) {
+
+        return service.getUserStatic(userId);
+    }
+
+    @RequestMapping(value = "/getEarningList", method = RequestMethod.GET)
+    private List<EarningListObject> getEarningList(@RequestParam Integer userId) {
+        return service.getEaringList(userId);
+    }
 
     //mubarak//
 }

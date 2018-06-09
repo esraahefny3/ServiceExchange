@@ -35,27 +35,7 @@ class AdminComplaint {
     var state: String? = null
     var description: String? = null
     var date: Date? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as AdminComplaint
-
-        if (id != other.id) return false
-        if (state != other.state) return false
-        if (description != other.description) return false
-        if (date != other.date) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (state?.hashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + (date?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
@@ -64,27 +44,7 @@ class AdminNotification {
     var body: String? = null
     var notifecationDate: Date? = null
     var sendToUser: List<AdminUserId>? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as AdminNotification
-
-        if (id != other.id) return false
-        if (body != other.body) return false
-        if (notifecationDate != other.notifecationDate) return false
-        if (sendToUser != other.sendToUser) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (body?.hashCode() ?: 0)
-        result = 31 * result + (notifecationDate?.hashCode() ?: 0)
-        result = 31 * result + (sendToUser?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
@@ -96,31 +56,7 @@ class ChallangeDto {
     var reward: Int? = null
     var period: Int? = null
     var userList: List<UserDTO>? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as ChallangeDto
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (description != other.description) return false
-        if (reward != other.reward) return false
-        if (period != other.period) return false
-        if (userList != other.userList) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + (reward ?: 0)
-        result = 31 * result + (period ?: 0)
-        result = 31 * result + (userList?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
@@ -140,7 +76,7 @@ class UserDTO {
 
 }
 
-class UserOwner(val userName: String?, val id: Int?, val image: String) {
+class UserInfo(val userName: String?, val id: Int?, val image: String?) {
 
 }
 
@@ -157,45 +93,16 @@ class ServiceDTO {
 
     var description: String? = null
 
-    var isAvailable: Int? = null
+    var isAvailable: String? = null
 
     var skillList: List<Int>? = null
 
-    var uO: UserOwner? = null
+    var uO: UserInfo? = null
     // number of completed transaction
     var numberOfTransaction: Int? = null
     //rating of service 0 if no one used it
     var rating: Double? = null
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ServiceDTO
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (image != other.image) return false
-        if (price != other.price) return false
-        if (type != other.type) return false
-        if (description != other.description) return false
-        if (isAvailable != other.isAvailable) return false
-        if (skillList != other.skillList) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + (image?.hashCode() ?: 0)
-        result = 31 * result + (price ?: 0)
-        result = 31 * result + (type?.hashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + (isAvailable ?: 0)
-        result = 31 * result + (skillList?.hashCode() ?: 0)
-        return result
-    }
 
 }
 
@@ -297,6 +204,7 @@ class BadgeDto {
     var timeNeeded: String? = null
     var type: String? = null
     var addedByAdminEmail: String? = null
+    var nL: Int? = null
 }
 
 class ComplaintDto {
@@ -347,4 +255,26 @@ class MessageTransactionDto {
 class TransactionChatDto {
     var transactionId: Int? = null
     var transactionChatMessagesList: List<MessageTransactionDto>? = null
+}
+
+class ActiveOrder(var orderCount: Int, var ordersValue: Int)
+
+class EarningListObject(val id: Int?, val name: String?, val endDate: Long?, val price: Int?)
+
+class UserStatics {
+
+    var responseTime: Double? = null
+    var responseRate: Double? = null
+    var orderCompletion: Double? = null
+    var onTimeDelivery: Double? = null
+    var feedBackRate: Double? = null
+    var nextLevelDescription: String? = null
+    var currentLevel: String? = null
+    var earningInThisMounth: Double? = null
+    var activeOrder: ActiveOrder? = null
+    var presonalBalance: Int? = null
+    var avgSellIng: Double? = null
+    var numberOfUnreadedMessage: Int? = null
+    var allUserPoint: Int? = null
+
 }
