@@ -511,7 +511,11 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeService(Service service) {
+        System.out.println("user !=n null");
+        assert service.getIsAvailable() != null;
+        System.out.println(serviceCollection.contains(service));
         if (serviceCollection.contains(service) && !service.getIsAvailable().equals(Service.DELETED)) {
+            System.out.println("service deleted");
             service.setIsAvailable(Service.DELETED);
             return true;
         }

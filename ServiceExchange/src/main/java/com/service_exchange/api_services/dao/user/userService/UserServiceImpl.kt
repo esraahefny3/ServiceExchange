@@ -45,14 +45,19 @@ class UserServiceImpl : UserServicesInterFace {
     }
 
     override fun removeServiceForUser(userId: Int?, service: Int?, forced: Boolean?): Boolean? {
-        var user: UserTable? = userInterface.getUser(userId)
+        val user: UserTable? = userInterface.getUser(userId)
         var serviceEnt: Service? = null
         var bool = false
+
         if (service != null) {
+
             serviceEnt = serviceInterFace.getService(service)
             if (serviceEnt != null) {
+                println("service != null")
                 if (forced == true) {
+                    println("forced == true")
                     bool = user?.removeService(serviceEnt) ?: false
+                    println(bool)
 
                 } else if (serviceEnt.transactionInfoCollection?.size != 0) {
                     bool = user?.removeService(serviceEnt) ?: false
