@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -36,9 +37,8 @@ public class UserService {
     private UserDaoImpl daoImpl;
 
 
-
     //---user badge
-    // @Autowired
+    @Autowired
     private UserBadgesSelegateInterface userBadgesInterface;
     private int pageSize = 20;
 
@@ -76,14 +76,65 @@ public class UserService {
     }
 
     @Nullable
-    private String getUserLevel(int userId) {
+    public String getUserLevel(int userId) {
         UserTable userTable = userDataGet.getUserById(userId);
         String level = null;
         if (userTable != null) {
-            level = userTable.getUserBadgeCollection().stream().sorted((o1, o2) -> o1.getBadge().getId())
-                    .findFirst().map(userBadge -> userBadge.getBadge().getName()).orElseGet(() -> "");
+            level = userTable.getUserBadgeCollection().stream().filter(userBadge -> {
+                        Badge b = userBadge.getBadge().getNextLevel();
+                        if (b != null) {
+
+                            return b.getUserBadgeCollection().stream().noneMatch(userBadge1 -> userBadge1.getUserBadgePK().getUserId() == userId);
+                        } else
+                            return true;
+                    }
+            ).findFirst().map(userBadge -> userBadge.getBadge().getName()).orElse("not found");
+
         }
         return level;
+    }
+
+    @Nullable
+    public String getUserNextLevel(int userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        String level = null;
+        if (userTable != null) {
+            level = userTable.getUserBadgeCollection().stream().filter(userBadge -> {
+                        Badge b = userBadge.getBadge().getNextLevel();
+                        if (b != null) {
+
+                            return b.getUserBadgeCollection().stream().noneMatch(userBadge1 -> userBadge1.getUserBadgePK().getUserId() == userId);
+                        } else
+                            return false;
+                    }
+            ).findFirst().map(userBadge -> userBadge.getBadge().getNextLevel().getDescription()).orElse("not found");
+
+        }
+        return level;
+    }
+
+    public double getEarningInMonth(int userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        Calendar localDate = Calendar.getInstance();
+        localDate.set(Calendar.DAY_OF_MONTH, 1);
+        if (userTable != null) {
+            return userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+                    .mapToInt(value -> value.getTransactionInfoCollection().stream().filter(transactionInfo -> !transactionInfo.getState().equals(TransactionInfo.REJECTED_STATE)
+                            && !transactionInfo.getState().equals(TransactionInfo.PENDING_STATE))
+                            .filter(transactionInfo -> (transactionInfo.getStartDate().getTime() + transactionInfo.getDuration().longValue()) >= localDate.getTimeInMillis())
+
+                            .mapToInt(TransactionInfo::getPrice).sum()
+                    ).sum();
+        } else return 0;
+    }
+
+    public int getUserBalance(int userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        Calendar localDate = Calendar.getInstance();
+        localDate.set(Calendar.DAY_OF_MONTH, 1);
+        if (userTable != null) {
+            return userTable.getBalance();
+        } else return 0;
     }
 
     private double orderCompletion(Integer userId) {

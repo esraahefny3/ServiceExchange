@@ -6,7 +6,6 @@
 package com.service_exchange.entities;
 
 
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -14,7 +13,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- *
  * @author Nouran
  */
 @Entity
@@ -52,6 +50,9 @@ public class Badge implements Serializable {
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable addedBy;
+    @JoinColumn(name = "next_level", referencedColumnName = "id")
+    @ManyToOne
+    private Badge nextLevel;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "badge")
     private Collection<UserBadge> userBadgeCollection;
 
@@ -68,6 +69,14 @@ public class Badge implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Badge getNextLevel() {
+        return nextLevel;
+    }
+
+    public void setNextLevel(Badge nextLevel) {
+        this.nextLevel = nextLevel;
     }
 
     public String getName() {

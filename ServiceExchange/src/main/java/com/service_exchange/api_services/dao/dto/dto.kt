@@ -132,6 +132,7 @@ class UserDTO {
     var bD: Long? = null
     var accountType: String? = null
     var accountId: String? = null
+    var balance: Int? = null
     var userEmailCollection: List<String>? = null
     var UserTelephone: List<String>? = null
     var isFrist: Boolean? = null

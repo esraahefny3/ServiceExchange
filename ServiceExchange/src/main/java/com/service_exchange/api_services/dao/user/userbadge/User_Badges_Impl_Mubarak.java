@@ -8,7 +8,6 @@ package com.service_exchange.api_services.dao.user.userbadge;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserBadge;
-import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -25,6 +24,8 @@ public class User_Badges_Impl_Mubarak implements UserBadgesInterface {
     @Autowired
     private UserDataInterFace userDataInterface;
 
+    @Autowired
+    private UserBadeCrudRes userBadeCrudRes;
     @Override
     public List<Badge> getAllUserBadge(Integer userId, Pageable page) {
 //           UserTable user = userDataInterface.findById(userId);
@@ -36,10 +37,10 @@ public class User_Badges_Impl_Mubarak implements UserBadgesInterface {
     }
 
     @Override
-    public boolean assignBadgeToUser(UserTable user, UserBadge userBadge) {
+    public boolean assignBadgeToUser(int user, int userBadge) {
           try{
-              user.addBadge(userBadge);
-              userDataInterface.save(user);
+              UserBadge userBadge1 = new UserBadge(user, userBadge);
+              userBadeCrudRes.save(userBadge1);
               return true;
           }
           catch(Exception e)

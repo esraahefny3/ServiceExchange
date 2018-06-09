@@ -38,6 +38,7 @@ public class UserBadge implements Serializable {
     public UserBadge() {
     }
 
+
     public UserBadge(UserBadgePK userBadgePK) {
         this.userBadgePK = userBadgePK;
     }

@@ -57,6 +57,8 @@ public class UserTable implements Serializable {
     private String accountId;
     @Column(name = "account_type")
     private String accountType;
+    @Column(name = "balance")
+    private Integer balance;
     public static final short ENABELED = 0;
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
@@ -118,6 +120,13 @@ public class UserTable implements Serializable {
     public UserTable() {
     }
 
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
     public UserTable(Integer id) {
         this.id = id;
     }
@@ -438,7 +447,7 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeSkill(Skill skill) {
-        if (!skillCollection.contains(skill)) {
+        if (skillCollection.contains(skill)) {
             skillCollection.remove(skill);
             return true;
         }
@@ -454,7 +463,7 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeEducation(Education education) {
-        if (!educationCollection.contains(education)) {
+        if (educationCollection.contains(education)) {
             educationCollection.remove(education);
             return true;
         }

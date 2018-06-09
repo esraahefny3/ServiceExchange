@@ -39,7 +39,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     private List<UserDTO> getAllChanges() {
-        // System.out.println(service.totalFeedBack(1));
+        System.out.println(service.getUserNextLevel(1));
         return service.getAllUser();
     }
 

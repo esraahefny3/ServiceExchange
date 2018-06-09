@@ -11,6 +11,7 @@ import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.api_services.dao.user.UserTelephoneInterface
 import com.service_exchange.api_services.dao.user.userService.UserServicesInterFace
 import com.service_exchange.api_services.dao.user.userSkill.UserSkillInterFace
+import com.service_exchange.api_services.dao.user.userbadge.UserBadgesInterface
 import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,6 +52,9 @@ private open class UserDataGetImpl : UserDataGet {
     lateinit var userEmail: UserEmailInterface
     @Autowired
     lateinit var userTelephoneInterface: UserTelephoneInterface
+    @Autowired
+    lateinit var userBadgeInterFace: UserBadgesInterface
+
 
     override fun getUserById(userId: Int?): UserTable? =
             userInterface.getUser(userId)
@@ -81,6 +85,7 @@ private open class UserDataGetImpl : UserDataGet {
                         retVal.userAuthority = UserAuthority()
                         retVal.userAuthority?.authority = "User"
                         retVal.userAuthority?.userId = retVal.id
+                        userBadgeInterFace.assignBadgeToUser(retVal.id, 1);
                         retVal = userInterface.updateUser(retVal);
 
                     }
