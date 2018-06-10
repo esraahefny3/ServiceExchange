@@ -283,7 +283,7 @@ class UserStaticsGetter {
     fun getUserBalance(userId: Int): Int {
         val userTable = userDataGet.getUserById(userId)
         return if (userTable != null) {
-            userTable.balance!!
+            userTable.balance ?: 0
         } else
             0
     }
@@ -294,12 +294,12 @@ class UserStaticsGetter {
             val t = userTable.serviceCollection?.stream()
                     ?.mapToInt { value ->
 
-                        value.transactionInfoCollection!!.stream().filter { transactionInfo -> transactionInfo.state != TransactionInfo.LATE_STATE && transactionInfo.state != TransactionInfo.COMPLETED_STATE }
+                        value.transactionInfoCollection?.stream()?.filter { transactionInfo -> transactionInfo.state != TransactionInfo.LATE_STATE && transactionInfo.state != TransactionInfo.COMPLETED_STATE }
 
 
-                                .mapToInt(ToIntFunction<TransactionInfo> {
+                                ?.mapToInt(ToIntFunction<TransactionInfo> {
                                     it.getPrice() ?: 0
-                                }).sum()
+                                })?.sum() ?: 0
 
                     }?.sum() ?: 0
 
@@ -313,16 +313,16 @@ class UserStaticsGetter {
         val d = AtomicReference(0.toDouble())
         userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }
                 ?.mapToDouble { service ->
-                    service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+                    service.transactionInfoCollection?.stream()?.filter { transactionInfo ->
                         transactionInfo.state != TransactionInfo.REJECTED_STATE
                                 && transactionInfo.state != TransactionInfo.PENDING_STATE
                     }
-                            .mapToDouble { value ->
+                            ?.mapToDouble { value ->
                                 if (value.state == TransactionInfo.ACCEPTED_STATE || value.state == TransactionInfo.ON_PROGRESS_STATE) {
                                     0.0
                                 } else
                                     1.0
-                            }.average().ifPresent(DoubleConsumer { d.set(it) })
+                            }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
                     d.get()
                 }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
         return d.get()
@@ -332,17 +332,17 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         val d = AtomicReference(0.toDouble())
         userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
-            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+            service.transactionInfoCollection?.stream()?.filter { transactionInfo ->
                 (transactionInfo.state == TransactionInfo.COMPLETED_STATE
                         || transactionInfo.state == TransactionInfo.EXTENDED_STATE
                         || transactionInfo.state == TransactionInfo.LATE_STATE)
             }
-                    .mapToDouble { value ->
+                    ?.mapToDouble { value ->
                         if (value.state == TransactionInfo.LATE_STATE || value.state == TransactionInfo.EXTENDED_STATE) {
                             0.0
                         } else
                             1.0
-                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+                    }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
             d.get()
         }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
         return d.get()
@@ -352,18 +352,18 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         val d = AtomicReference(0.toDouble())
         userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
-            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+            service.transactionInfoCollection?.stream()?.filter { transactionInfo ->
                 (transactionInfo.state == TransactionInfo.COMPLETED_STATE
                         || transactionInfo.state == TransactionInfo.EXTENDED_STATE
                         || transactionInfo.state == TransactionInfo.LATE_STATE)
             }
-                    .mapToDouble { value ->
+                    ?.mapToDouble { value ->
                         val `val` = doubleArrayOf(0.0)
-                        value.reviewCollection!!.stream().mapToDouble(ToDoubleFunction<Review> {
+                        value.reviewCollection?.stream()?.mapToDouble(ToDoubleFunction<Review> {
                             (it?.rating?.toDouble() ?: 0.0)
-                        }).average().ifPresent { value1 -> `val`[0] = value1 / 5 }
+                        })?.average()?.ifPresent { value1 -> `val`[0] = value1 / 5 }
                         `val`[0]
-                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+                    }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
             d.get()
         }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
         return d.get()
@@ -379,7 +379,7 @@ class UserStaticsGetter {
                     ?.mapToDouble { value ->
                         val dval = doubleArrayOf(0.0);
                         value?.mapToDouble { value ->
-                            value.messageCollection?.stream()?.filter { message -> message.senderId.id!!.toInt() != userId }
+                            value.messageCollection?.stream()?.filter { message -> message.senderId.id?.toInt() != userId }
                                     ?.mapToDouble { value -> value.seenDate.time.toDouble() }?.sorted()
                                     ?.reduce(0.0, { left, right -> right - left })
                                     ?.toDouble() ?: 0.0
@@ -399,14 +399,14 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         val d = AtomicReference(0.toDouble())
         userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.mapToDouble { service ->
-            service.transactionInfoCollection!!.stream().filter { transactionInfo -> transactionInfo.state != TransactionInfo.REJECTED_STATE }
-                    .mapToDouble { value ->
+            service.transactionInfoCollection?.stream()?.filter { transactionInfo -> transactionInfo.state != TransactionInfo.REJECTED_STATE }
+                    ?.mapToDouble { value ->
 
                         if (value.state == TransactionInfo.PENDING_STATE || value.state == TransactionInfo.POSTPONED) {
                             0.0
                         } else
                             1.0
-                    }.average().ifPresent(DoubleConsumer { d.set(it) })
+                    }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
             d.get()
         }?.average()?.ifPresent(DoubleConsumer { d.set(it) })
         return d.get()
@@ -416,14 +416,14 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         val activeOrder = ActiveOrder(0, 0)
         userTable?.serviceCollection?.stream()?.filter { service -> service.type == com.service_exchange.entities.Service.OFFERED }?.forEach { service ->
-            service.transactionInfoCollection!!.stream().filter { transactionInfo ->
+            service.transactionInfoCollection?.stream()?.filter { transactionInfo ->
                 (transactionInfo.state == TransactionInfo.ACCEPTED_STATE
                         || transactionInfo.state == TransactionInfo.ON_PROGRESS_STATE || transactionInfo.state == TransactionInfo.EXTENDED_STATE)
             }
-                    .forEach { value ->
+                    ?.forEach { value ->
 
                         activeOrder.orderCount = activeOrder.orderCount + 1
-                        activeOrder.ordersValue = activeOrder.ordersValue + value.price!!
+                        activeOrder.ordersValue = activeOrder.ordersValue + (value.price ?: 0)
                     }
 
         }
@@ -451,11 +451,11 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         var level: String? = null
         if (userTable != null) {
-            level = userTable.userBadgeCollection!!.stream().filter { userBadge ->
+            level = userTable.userBadgeCollection?.stream()?.filter { userBadge ->
                 val b = userBadge.badge.nextLevel
                 b?.userBadgeCollection?.stream()?.noneMatch { userBadge1 -> userBadge1.userBadgePK.userId == userId }
                         ?: true
-            }.findFirst().map { userBadge -> userBadge.badge.name }.orElse("not found")
+            }?.findFirst()?.map { userBadge -> userBadge.badge.name }?.orElse("not found")
 
         }
         return level
@@ -465,11 +465,11 @@ class UserStaticsGetter {
         val userTable = userDataGet.getUserById(userId)
         var level: String? = null
         if (userTable != null) {
-            level = userTable.userBadgeCollection!!.stream().filter { userBadge ->
+            level = userTable.userBadgeCollection?.stream()?.filter { userBadge ->
                 val b = userBadge.badge.nextLevel
                 b?.userBadgeCollection?.stream()?.noneMatch { userBadge1 -> userBadge1.userBadgePK.userId == userId }
                         ?: false
-            }.findFirst().map { userBadge -> userBadge.badge.nextLevel.description }.orElse("not found")
+            }?.findFirst()?.map { userBadge -> userBadge.badge.nextLevel.description }?.orElse("not found")
 
         }
         return level

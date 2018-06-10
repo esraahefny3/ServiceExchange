@@ -113,23 +113,26 @@ public class UserService {
     }
 
     public UserStatics getUserStatic(int userId) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        UserStatics userStatics = new UserStatics();
-        userStatics.setActiveOrder(userStaticsGetter.getActiveOrderCount(userId));
-        userStatics.setAllUserPoint(userStaticsGetter.getUserBalanceFormTheStart(userId));
-        userStatics.setAvgSellIng(userStaticsGetter.getAVGEarning(userId));
-        userStatics.setCurrentLevel(userStaticsGetter.getUserLevel(userId));
-        userStatics.setEarningInThisMounth(userStaticsGetter.getEarning(userId, calendar));
-        userStatics.setFeedBackRate(userStaticsGetter.getTotalFeedBack(userId));
-        userStatics.setNextLevelDescription(userStaticsGetter.getUserNextLevel(userId));
-        userStatics.setNumberOfUnreadedMessage(0);
-        userStatics.setOnTimeDelivery(userStaticsGetter.getOnTimeDelevrey(userId));
-        userStatics.setOrderCompletion(userStaticsGetter.getOrderCompletion(userId));
-        userStatics.setPresonalBalance(userStaticsGetter.getUserBalance(userId));
-        userStatics.setResponseRate(userStaticsGetter.getResponceRate(userId));
-        userStatics.setResponseTime(userStaticsGetter.getResponceMessageTime(userId));
-        return userStatics;
+        if (userDataGet.getUserById(userId) != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            UserStatics userStatics = new UserStatics();
+            userStatics.setActiveOrder(userStaticsGetter.getActiveOrderCount(userId));
+            userStatics.setAllUserPoint(userStaticsGetter.getUserBalanceFormTheStart(userId));
+            userStatics.setAvgSellIng(userStaticsGetter.getAVGEarning(userId));
+            userStatics.setCurrentLevel(userStaticsGetter.getUserLevel(userId));
+            userStatics.setEarningInThisMounth(userStaticsGetter.getEarning(userId, calendar));
+            userStatics.setFeedBackRate(userStaticsGetter.getTotalFeedBack(userId));
+            userStatics.setNextLevelDescription(userStaticsGetter.getUserNextLevel(userId));
+            userStatics.setNumberOfUnreadedMessage(0);
+            userStatics.setOnTimeDelivery(userStaticsGetter.getOnTimeDelevrey(userId));
+            userStatics.setOrderCompletion(userStaticsGetter.getOrderCompletion(userId));
+            userStatics.setPresonalBalance(userStaticsGetter.getUserBalance(userId));
+            userStatics.setResponseRate(userStaticsGetter.getResponceRate(userId));
+            userStatics.setResponseTime(userStaticsGetter.getResponceMessageTime(userId));
+            return userStatics;
+        }
+        return null;
     }
     /*
      Calendar calendar = Calendar.getInstance();
