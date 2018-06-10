@@ -14,13 +14,6 @@ public class UserDelegate implements UserDelegateInterface {
     @Override
     public UserTable getUserById(Integer userId) {
         Optional<UserTable>userTableOptional=userDataInterFace.findById(userId);
-        if(userTableOptional.isPresent()==true)
-        {
-            return userTableOptional.get();
-        }
-        else
-        {
-            return null;
-        }
+        return userTableOptional.orElse(null);
     }
 }
