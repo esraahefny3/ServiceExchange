@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 interface AdminInterface {
-    fun changePassWord(pass: String, adminId: Int): Boolean
-    fun changeImage(image: String, adminId: Int): Boolean
-    fun getAdmin(adminId: Int): AdminTable?
+    fun changePassWord(pass: String, adminId: String): Boolean
+    fun changeImage(image: String, adminId: String): Boolean
+    fun getAdmin(adminId: String): AdminTable?
     fun save(admin: AdminTable): AdminTable
 
 }
@@ -18,7 +18,7 @@ private class Admin : AdminInterface {
     @Autowired
     lateinit var admindata: AdminDataInterface
 
-    override fun changePassWord(pass: String, adminId: Int): Boolean {
+    override fun changePassWord(pass: String, adminId: String): Boolean {
         val admin = getAdmin(adminId)
         return if (admin != null) {
             admin.password = pass
@@ -28,7 +28,7 @@ private class Admin : AdminInterface {
 
     }
 
-    override fun changeImage(image: String, adminId: Int): Boolean {
+    override fun changeImage(image: String, adminId: String): Boolean {
         val admin = getAdmin(adminId)
         return if (admin != null) {
             admin.image = image
@@ -38,7 +38,7 @@ private class Admin : AdminInterface {
     }
 
 
-    override fun getAdmin(adminId: Int): AdminTable? =
+    override fun getAdmin(adminId: String): AdminTable? =
             admindata.findById(adminId).get()
 
     override fun save(admin: AdminTable): AdminTable =

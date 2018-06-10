@@ -122,7 +122,7 @@ public class ComplaintDelegateImpl implements ComplaintDelegateInterface{
 
       boolean retVal=true;
      try {
-         List<Complaint> complaintList = complaintDaoInterfaceImpl.findComplaintByTransactionId(transactionId);
+         List<Complaint> complaintList = complaintDaoInterfaceImpl.findComplaintByTransactionId_Id(transactionId);
          for (Complaint complaint : complaintList) {
              if (complaint.getUserId().getId() == userId) {
                  retVal = false;

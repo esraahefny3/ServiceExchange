@@ -53,9 +53,9 @@ class UserServiceImpl : UserServicesInterFace {
 
             serviceEnt = serviceInterFace.getService(service)
             if (serviceEnt != null) {
-                println("service != null")
+
                 if (forced == true) {
-                    println("forced == true")
+
                     bool = user?.removeService(serviceEnt) ?: false
                     println(bool)
 

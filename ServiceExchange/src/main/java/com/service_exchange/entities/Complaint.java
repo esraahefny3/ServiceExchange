@@ -63,6 +63,8 @@ public class Complaint implements Serializable {
     public final static String ACCEPTED_STATE="Accepted";
     @Transient
     public final static String REJECTED_STATE="Rejected";
+    @Transient
+    public final static String COMPLETED = "Completed";
     public Complaint() {
     }
 

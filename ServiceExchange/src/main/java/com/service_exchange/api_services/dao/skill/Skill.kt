@@ -17,6 +17,11 @@ interface SkillData : PagingAndSortingRepository<Skill, Int> {
     fun findByIsVerified(isVerified: Short): List<Skill>
     fun findByUserTableCollectionContains(skills: List<Skill>?): List<UserTable>
     fun findByServiceCollectionContains(skills: List<Skill>?): List<Service>
+    fun countAllByIdIsNotNull(): Long?
+
+    fun countAllByParentSkillIdIsNull(): Long?
+
+    fun countAllByParentSkillId_IdEquals(id: Int?): Long?
 
 }
 
@@ -31,6 +36,9 @@ interface SkillInterface {
     fun updateSkill(skill: Skill?): Skill?
     fun aprroveSkill(skillId: Int): Boolean
     fun getUnAprovedSkills(): List<Skill>?
+    fun getNumberOfSkills(): Long
+    fun getNumberOfParentSkills(): Long
+    fun getNumberOfChldren(parentId: Int): Long
 
 
 }
@@ -74,4 +82,12 @@ private class SkillImpl : SkillInterface {
 
     override fun getUnAprovedSkills(): List<Skill> = skilldata.findByIsVerified(NOT_VERFIED)
 
+    override fun getNumberOfChldren(parentId: Int): Long =
+            skilldata.countAllByParentSkillId_IdEquals(parentId) ?: 0
+
+    override fun getNumberOfParentSkills(): Long =
+            skilldata.countAllByParentSkillIdIsNull() ?: 0
+
+    override fun getNumberOfSkills(): Long =
+            skilldata.countAllByIdIsNotNull() ?: 0
 }
