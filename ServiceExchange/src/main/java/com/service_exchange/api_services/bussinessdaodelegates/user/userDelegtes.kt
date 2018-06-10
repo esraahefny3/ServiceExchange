@@ -118,7 +118,7 @@ private open class UserDataGetImpl : UserDataGet {
     }
 
     override fun getUserServices(userId: Int?): List<ServiceDTO> {
-        return userService.getUserServices(userId)?.stream()?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
+        return userService.getUserServices(userId)?.stream()?.filter { it.isAvailable != null && it.isAvailable != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
                 ?: emptyList()
     }
 
