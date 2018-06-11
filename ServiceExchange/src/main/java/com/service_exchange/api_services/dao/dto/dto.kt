@@ -76,6 +76,7 @@ class UserDTO {
 
 }
 
+
 class UserInfo(val userName: String?, val id: Int?, val image: String?) {
 
 }
@@ -277,4 +278,68 @@ class UserStatics {
     var numberOfUnreadedMessage: Int? = null
     var allUserPoint: Int? = null
 
+}
+
+class NotificationDto {
+
+    var id: Int? = null
+    var body: String? = null
+    var notifecationDate: Date? = null
+    var sentBy: String? = null
+
+}
+
+class UserAdminInfo {
+    var name: String? = null
+    var state: String? = null
+    var image: String? = null
+    var reivews: Int? = null
+    var requests: Int? = null
+    var services: Int? = null
+    var balance: Int? = null
+    var pointSpend: Int? = null
+    var PointEarned: Int? = null
+}
+
+class ServiceAdminInfo {
+    var id: Int? = null
+    var name: String? = null
+    var price: Int? = null
+    var reviewsCount: Int? = null
+    var ownerName: String? = null
+    var ownerImage: String? = null
+    var startedDated: Long? = null
+    var serviceImage: String? = null
+    var category: String? = null
+
+}
+
+
+class ComplaintStatics {
+    var acceptedCount: Int? = null
+    var rejectedCount: Int? = null
+    var onReviewCount: Int? = null
+    var completedCount: Int? = null
+    var notReveiwCount: Int? = null
+}
+
+class UserStatices {
+    var onlineCount: Int? = null
+    var offlineCount: Int? = null
+    var busyCount: Int? = null
+}
+
+class ServiceStatices {
+    var offeredCount: Int? = null
+    var reqCount: Int? = null
+    var pausedCount: Int? = null
+}
+
+class TransactionStatices {
+    var activeCount: Int? = null
+    var waitingCount: Int? = null
+    var totalPointCount: Int? = null
+    var completedCount: Int? = null
+    var lateCompletedCount: Int? = null
+    var caneledCount: Int? = null
 }

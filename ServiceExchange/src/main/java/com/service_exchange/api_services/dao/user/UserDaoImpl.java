@@ -158,9 +158,19 @@ public class UserDaoImpl implements UserInterFace {
     public List<Complaint> getUserComplaints(Integer userId) {
         UserTable user = getUser(userId);
         if (user != null) {
-            return convertList(user.getComplaintCollection());
+            return new ArrayList<>(Objects.requireNonNull(user.getComplaintCollection()));
         }
         return null;
+    }
+
+    @Override
+    public Long getUserCount() {
+        return dataInterface.countAllByIdIsNotNull();
+    }
+
+    @Override
+    public Long getUserCountBasedOnStatus(String states) {
+        return dataInterface.countAllByStatusEquals(states);
     }
 
 

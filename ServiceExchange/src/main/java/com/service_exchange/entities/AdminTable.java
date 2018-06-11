@@ -56,6 +56,10 @@ public class AdminTable implements Serializable {
     @OneToMany(mappedBy = "addedBy")
     private Collection<Challenge> challengeCollection;
 
+    @Transient
+    public static Short ENDABLED = 0;
+    @Transient
+    public static Short DISABLED = 1;
     public AdminTable() {
     }
 

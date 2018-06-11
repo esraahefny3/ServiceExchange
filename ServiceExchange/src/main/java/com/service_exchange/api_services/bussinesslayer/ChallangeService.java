@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Altysh
  */
-@Component
+@Component("challangeInterFace")
 public class ChallangeService implements ChallangeInterFace {
 
     @Autowired
@@ -54,9 +54,9 @@ public class ChallangeService implements ChallangeInterFace {
     }
 
     @Override
-    public List<Challenge> getAllChallanges() {
+    public List<Challenge> getAllChallanges(Integer page) {
 
-        List<Challenge> challenge1 = challangeDao.getAllChallanges();
+        List<Challenge> challenge1 = challangeDao.getAllChallanges(page);
         List<Challenge> challenges2 = new LinkedList<>();
         challenge1.stream().map((t) -> {
 

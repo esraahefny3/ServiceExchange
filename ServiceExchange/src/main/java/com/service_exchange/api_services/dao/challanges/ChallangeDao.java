@@ -8,12 +8,15 @@ package com.service_exchange.api_services.dao.challanges;
 import com.service_exchange.entities.Challenge;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -69,15 +72,15 @@ public class ChallangeDao implements ChallangeInterFace {
     }
 
     @Override
-    public List<Challenge> getAllChallanges() {
-        List<Challenge> list = new LinkedList();
-        dataInteface.findAll().forEach(e -> list.add(e));
-        return list;
+    public List<Challenge> getAllChallanges(Integer page) {
+        return dataInteface.findAllByIsSuspendedEquals(Challenge.RESUMED, PageRequest.of(page, 20)).stream().collect(Collectors.toList());
+
     }
 
     private boolean isChallangeTouchable(Challenge c) {
-        Challenge ch = dataInteface.findById(c.getId()).get();
-        return ch.getUserChallengeCollection().size() <= 0;
+        AtomicReference<Challenge> ch = new AtomicReference<>();
+        dataInteface.findById(c.getId()).ifPresent(ch::set);
+        return Objects.requireNonNull(ch.get()).getUserChallengeCollection().size() <= 0;
     }
 
     private boolean isChallangeExit(Challenge c) {
@@ -86,22 +89,17 @@ public class ChallangeDao implements ChallangeInterFace {
 
     @Override
     public List<Challenge> getUserChallanges(UserTable user) {
-        List<Integer> list = new LinkedList<>();
-       // Integer[] a = (Integer[]) user.getUserChallengeCollection().stream().map(e -> e.getChallenge().getId()).toArray();
 
-        List<Challenge> ucs = new LinkedList<>();
-        dataInteface.findAllById(Arrays.asList(new Integer(0))).forEach(e -> ucs.add(e));
-        return ucs;
+        List<Challenge> list = new ArrayList<>();
+        dataInteface.findAllById(Objects.requireNonNull(user.getUserChallengeCollection()).stream().map(userChallenge -> userChallenge.getChallenge().getId())
+                .collect(Collectors.toList())).forEach(list::add);
+        return list;
     }
 
     @Override
     public Challenge getChallange(Integer id) {
         Optional<Challenge> ch = dataInteface.findById(id);
-        if (ch.isPresent()) {
-            return ch.get();
-        } else {
-            return null;
-        }
+        return ch.orElse(null);
     }
 
 }

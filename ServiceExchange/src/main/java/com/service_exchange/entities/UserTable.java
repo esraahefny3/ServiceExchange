@@ -60,11 +60,11 @@ public class UserTable implements Serializable {
     private String accountType;
     @Column(name = "balance")
     private Integer balance;
-    public static final short ENABELED = 0;
+
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
     private Collection<Skill> skillCollection;
-    public static final short DISABLED = 1;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     @JsonIgnore
     private Collection<Education> educationCollection;
@@ -106,7 +106,18 @@ public class UserTable implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<UserEmail> userEmailCollection;
-
+    @Transient
+    public static final short ENABELED = 0;
+    @Transient
+    public static final short DISABLED = 1;
+    @Transient
+    public static final String ONLINE = "online";
+    @Transient
+    public static final String OFFLINE = "offline";
+    @Transient
+    public static final String BUSY = "busy";
+    @Transient
+    private Boolean isFrist = Boolean.TRUE;
     public Boolean getFrist() {
         return isFrist;
     }
@@ -115,8 +126,6 @@ public class UserTable implements Serializable {
         isFrist = frist;
     }
 
-    @Transient
-    private Boolean isFrist = Boolean.TRUE;
 
     public UserTable() {
     }
@@ -511,11 +520,11 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeService(Service service) {
-        System.out.println("user !=n null");
+
         assert service.getIsAvailable() != null;
-        System.out.println(serviceCollection.contains(service));
+
         if (serviceCollection.contains(service) && !service.getIsAvailable().equals(Service.DELETED)) {
-            System.out.println("service deleted");
+
             service.setIsAvailable(Service.DELETED);
             return true;
         }

@@ -57,6 +57,14 @@ public class Skill implements Serializable {
     @JoinColumn(name = "parent_skill_id", referencedColumnName = "id")
     @ManyToOne
     private Skill parentSkillId;
+    @Transient
+    public static final Short VIREFIED = 0;
+    @Transient
+    public static final Short NOTVIREFIED = 1;
+    @Transient
+    public static final Short DELETED = 2;
+    @Transient
+    public static final Short NOTDELETED = 3;
 
     public Skill() {
     }

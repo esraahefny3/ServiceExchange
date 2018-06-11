@@ -8,7 +8,9 @@ import java.util.stream.Collectors
 
 interface AdminBadgeInterface {
     fun createBadge(badge: Badge?): Badge?
-    fun getAllBadgeMadeByAdmin(adminId: Int): List<Badge>?
+    fun getAllBadgeMadeByAdmin(adminId: String): List<Badge>?
+    fun disableBadge(badgeId: Int): Boolean
+    fun enableBadge(badgeId: Int): Boolean
 
 }
 
@@ -25,8 +27,24 @@ private class AdminBadgeImpl : AdminBadgeInterface {
             else null
 
 
-    override fun getAllBadgeMadeByAdmin(adminId: Int): List<Badge>? =
+    override fun getAllBadgeMadeByAdmin(adminId: String): List<Badge>? =
             adminData.getAdmin(adminId)?.badgeCollection?.stream()?.collect(Collectors.toList())
 
+    override fun disableBadge(badgeId: Int): Boolean {
+        var bool = false
+        badgeData.findById(badgeId).ifPresent { t ->
+            t.isDeleted = Badge.Deleted
+            bool = true
+        }
+        return bool
+    }
 
+    override fun enableBadge(badgeId: Int): Boolean {
+        var bool = false
+        badgeData.findById(badgeId).ifPresent { t ->
+            t.isDeleted = Badge.ENABLED
+            bool = true
+        }
+        return bool
+    }
 }
