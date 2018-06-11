@@ -244,8 +244,9 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
               messageList.forEach(message -> messageGeneralDtoList.add(AppFactory.mapToDto(message, MessageGeneralDto.class)));
               return messageGeneralDtoList;
           }
-          else
-          return null;
+          else {
+              return null;
+          }
       }
       catch (Exception e)
       {
