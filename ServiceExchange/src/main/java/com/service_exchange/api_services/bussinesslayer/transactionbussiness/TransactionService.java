@@ -55,12 +55,10 @@ public class TransactionService implements TransactionServiceInterface{
         //security will check that the user called this method is the started by user
          TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         if (transactionInfo != null) {
-            System.out.println("hna1");
-            UserTable transactionStartedByUser = transactionInfo.getStartedBy();
+             UserTable transactionStartedByUser = transactionInfo.getStartedBy();
             Service service = transactionInfo.getServiceId();
             if ( transactionStartedByUser != null && service != null &&transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE) == true)
             {
-                System.out.println("hna2");
                 transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
                 transactionInfo.setStartDate(new Date());
                 if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
