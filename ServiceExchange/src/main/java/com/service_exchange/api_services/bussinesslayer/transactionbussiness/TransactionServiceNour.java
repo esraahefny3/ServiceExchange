@@ -58,11 +58,64 @@ public class TransactionServiceNour implements TransactionServiceInterfaceNour {
     @Override
     public TransactionDtoNour completeTransaction(TransactionDtoNour transactionDto) {
 
-//        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
-//        if (transactionInfo != null) {
-//            transactionInfo.setState(TransactionInfo.COMPLETED_STATE);
-//        }
-//
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.completeTransaction(transactionInfo);
+            if (done) {
+                transactionDao.save(transactionInfo);
+                TransactionDtoNour transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDtoNour.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
         return null;
     }
+
+    @Override
+    public TransactionDtoNour approveCompletedTransaction(TransactionDtoNour transactionDto) {
+
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.approveCompletedTransaction(transactionInfo);
+            if (done) {
+                transactionInfo.setEndDate(new Date());
+                transactionDao.save(transactionInfo);
+                TransactionDtoNour transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDtoNour.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public TransactionDtoNour rejectCompletedTransaction(TransactionDtoNour transactionDto) {
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.rejectCompletedTransaction(transactionInfo);
+            if (done) {
+                transactionDao.save(transactionInfo);
+                TransactionDtoNour transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDtoNour.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
+        return null;
+    }
+
 }

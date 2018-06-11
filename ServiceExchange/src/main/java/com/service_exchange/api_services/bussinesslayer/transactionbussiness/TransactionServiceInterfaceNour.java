@@ -6,4 +6,8 @@ public interface TransactionServiceInterfaceNour {
     TransactionDtoNour makeTransactionOnService(TransactionDtoNour transactionDto);
 
     TransactionDtoNour completeTransaction(TransactionDtoNour transactionDto);
+
+    TransactionDtoNour approveCompletedTransaction(TransactionDtoNour transactionDto);
+
+    TransactionDtoNour rejectCompletedTransaction(TransactionDtoNour transactionDto);
 }
