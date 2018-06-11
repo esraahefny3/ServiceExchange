@@ -7,7 +7,7 @@ interface AdminGettable {
     fun getAdminChallanges(adminId: Int): List<AdminChallange>
     fun getAdminOpenComplains(adminId: Int): List<AdminComplaint>
     fun getAdminNotifecation(adminId: Int): List<AdminNotification>
-    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto>
+    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageGeneralDto>
 }
 
 interface AdminCreate {

@@ -7,6 +7,7 @@ package com.service_exchange.api_services.factories;
 
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.entities.AdminTable;
+import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.UserTable;
 import org.modelmapper.ModelMapper;
@@ -67,5 +68,8 @@ public class AppFactory {
    public static TransactionChatDto getTransactionChatDtoInstance()
     {
         return new TransactionChatDto();
+    }
+    public static Badge getBadgeInstance(){
+        return  new Badge();
     }
 }

@@ -5,9 +5,8 @@
  */
 package com.service_exchange.api_services.dao.message;
 
-import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
-import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Message;
 import org.springframework.stereotype.Component;
@@ -59,7 +58,7 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
     }
 
     @Override
-    public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
+    public List<MessageGeneralDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
      
         try {
             Query query = entityManager.createNativeQuery("select * from " + tableName + " where complaint_id=?  order by date desc", Message.class);
@@ -70,13 +69,13 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
             query.setMaxResults(limit);
 
             List<Message> resultList = query.getResultList();
-            List<MessageComplaintDto> resultDtoList = new ArrayList();
+            List<MessageGeneralDto> resultDtoList = new ArrayList();
            // resultList.forEach(obj -> resultDtoList.add(AppFactory.mapToDto(obj, MessageComplaintDto.class)));
             for (Message message:resultList) {
-                MessageComplaintDto messageComplaintDto=AppFactory.mapToDto(message, MessageComplaintDto.class);
-                messageComplaintDto.setReadDate(message.getSeenDate());
-                messageComplaintDto.setUserReadIt(message.getIsSeen());
-                resultDtoList.add(messageComplaintDto);
+                MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
+                messageGeneralDto.setReadDate(message.getSeenDate());
+                messageGeneralDto.setUserReadIt(message.getIsSeen());
+                resultDtoList.add(messageGeneralDto);
             }
            return resultDtoList;
         }catch (Exception e)
@@ -87,7 +86,7 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
     }
 
     @Override
-    public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
+    public List<MessageGeneralDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
 
         try {
             Query query = entityManager.createNativeQuery("select * from " + tableName + " where transaction_id=? order by date desc", Message.class);
@@ -98,15 +97,14 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
             query.setMaxResults(limit);
 
             List<Message> resultList = query.getResultList();
-            List<MessageTransactionDto> resultDtoList = new ArrayList();
+            List<MessageGeneralDto> resultDtoList = new ArrayList();
          //   resultList.forEach(obj -> resultDtoList.add(AppFactory.mapToDto(obj, MessageTransactionDto.class)));
 
             for (Message message:resultList) {
-                MessageTransactionDto messageTransactionDto=AppFactory.mapToDto(message, MessageTransactionDto.class);
-                messageTransactionDto.setReadDate(message.getSeenDate());
-                messageTransactionDto.setUserReadIt(message.getIsSeen());
-                System.out.println(messageTransactionDto.getUserReadIt());
-                resultDtoList.add(messageTransactionDto);
+                MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
+                messageGeneralDto.setReadDate(message.getSeenDate());
+                messageGeneralDto.setUserReadIt(message.getIsSeen());
+                resultDtoList.add(messageGeneralDto);
             }
            return resultDtoList;
         }catch (Exception e)
@@ -115,5 +113,5 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
             return null;
         }
     }
-    
+
 }

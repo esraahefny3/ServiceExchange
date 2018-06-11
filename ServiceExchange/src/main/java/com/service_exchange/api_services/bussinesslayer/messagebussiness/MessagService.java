@@ -7,22 +7,19 @@ package com.service_exchange.api_services.bussinesslayer.messagebussiness;
 
 import com.service_exchange.api_services.bussinessdaodelegates.complaintdelegate.ComplaintDelegateInterface;
 import com.service_exchange.api_services.bussinessdaodelegates.messagedelegate.MessageDelegateInterface;
+import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable;
 import com.service_exchange.api_services.bussinessdaodelegates.transaction.TransactionDelegateInterface;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegateInterface;
-import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
-import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.api_services.factories.AppFactory;
-import com.service_exchange.entities.Complaint;
-import com.service_exchange.entities.Message;
+import com.service_exchange.entities.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.service_exchange.entities.TransactionInfo;
-import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +41,9 @@ public class MessagService implements MessageServiceInterface{
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
     @Autowired
     private UserDelegateInterface userDelegateInterfaceImpl;
+
+    @Autowired
+    private ServiceGettable serviceGettableImpl;
     @Override
     public MessagePrivateDto sendPrivateMessage(Integer senderId, Integer recieverId, Message message) {
       
@@ -56,17 +56,17 @@ public class MessagService implements MessageServiceInterface{
     }
 
     @Override
-    public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer ComplaintId, Message message) {
-        return messageDelegateInterface.userSendComplaintMessage(senderId, ComplaintId, message);
+    public MessageGeneralDto userSendComplaintMessage(Integer senderId, Integer ComplaintId,Integer transactionId, Message message) {
+        return messageDelegateInterface.userSendComplaintMessage(senderId, ComplaintId, transactionId, message);
     }
 
     @Override
-    public MessageComplaintDto adminSendComplaintMessage( Integer ComplaintId, Message message) {
-       return messageDelegateInterface.adminSendComplaintMessage(ComplaintId, message);
+    public MessageGeneralDto adminSendComplaintMessage( Integer ComplaintId,Integer transactionId, Message message) {
+       return messageDelegateInterface.adminSendComplaintMessage(ComplaintId, transactionId, message);
     }
 
     @Override
-    public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId,Integer senderId, Integer pageNum) {
+    public List<MessageGeneralDto> getAllComplaintMessages(Integer complaintId,Integer senderId, Integer pageNum) {
         Short notSeenState=0;
         Short isSeen=1;
         Complaint complaint=complaintDelegateInterfaceImpl.checkComplaintExsistById(complaintId);
@@ -81,12 +81,12 @@ public class MessagService implements MessageServiceInterface{
     }
 
     @Override
-    public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
+    public MessageGeneralDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
             return messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
     }
 
     @Override
-    public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId,Integer userId ,Integer pageNum) {
+    public List<MessageGeneralDto> getAllTransactionMessages(Integer transactionId,Integer userId ,Integer pageNum) {
         Short notSeenState=0;
         Short isSeen=1;
         TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionId);
@@ -107,16 +107,39 @@ public class MessagService implements MessageServiceInterface{
                for (Integer transactionId : userTransactionIdsList) {
                    if (transactionChatDtosList == null) {
                        transactionChatDtosList = new ArrayList<>();
-                       TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
-                       transactionChatDto.setTransactionId(transactionId);
-                       transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
-                       transactionChatDtosList.add(transactionChatDto);
-                   } else {
-                       TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
-                       transactionChatDto.setTransactionId(transactionId);
-                       transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
-                       transactionChatDtosList.add(transactionChatDto);
                    }
+                       TransactionChatDto transactionChatDto = AppFactory.getTransactionChatDtoInstance();
+                       transactionChatDto.setTransactionId(transactionId);
+                       transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
+                       TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionId);
+                       UserTable user=transactionInfo.getStartedBy();
+                       if(user!=null&&user.getId()!=userId)
+                       {
+                           //hoa da l user l tany
+                           transactionChatDto.setUserId(user.getId());
+                           transactionChatDto.setUserName(user.getName());
+                           transactionChatDto.setUserImage(user.getImage());
+                           transactionChatDto.setUserStatus(user.getStatus());
+                           Service service=serviceGettableImpl.getService(transactionInfo.getServiceId().getId());
+                           transactionChatDto.setServiceId(service.getId());
+                           transactionChatDto.setServiceName(service.getName());
+                           transactionChatDtosList.add(transactionChatDto);
+                       }
+                       else
+                       {   user=transactionInfo.getServiceId().getMadeBy();
+                           if(user!=null)
+                           {   transactionChatDto.setUserId(user.getId());
+                               transactionChatDto.setUserName(user.getName());
+                               transactionChatDto.setUserImage(user.getImage());
+                               transactionChatDto.setUserStatus(user.getStatus());
+                               Service service=serviceGettableImpl.getService(transactionInfo.getServiceId().getId());
+                               transactionChatDto.setServiceId(service.getId());
+                               transactionChatDto.setServiceName(service.getName());
+                               transactionChatDtosList.add(transactionChatDto);
+                           }
+                       }
+
+
                }
            }
            return transactionChatDtosList;
@@ -125,6 +148,16 @@ public class MessagService implements MessageServiceInterface{
            e.printStackTrace();
            return  null;
        }
+    }
+
+    @Override
+    public List<MessageGeneralDto> selectAllUserUnreadedMessages(Integer userId) {
+        return  messageDelegateInterface.selectAllUserUnreadedMessages(userId);
+    }
+
+    @Override
+    public List<MessageGeneralDto> selectAllUserUnreadedMessages(Integer userId,Integer pageNumber) {
+        return  messageDelegateInterface.selectAllUserUnreadedMessages(userId,pageNumber);
     }
 
 }

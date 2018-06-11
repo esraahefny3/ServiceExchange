@@ -297,6 +297,7 @@ class BadgeDto {
     var timeNeeded: String? = null
     var type: String? = null
     var addedByAdminEmail: String? = null
+    var nextLevelId:Int?=null
 }
 
 class ComplaintDto {
@@ -309,18 +310,18 @@ class ComplaintDto {
     var userId: Int? = null
 }
 
-class MessageComplaintDto {
-
-    var id: Int? = null
-    var text: String? = null
-    var attachment: String? = null
-    var date: Long? = null
-    var complaintId: Int? = null
-    var receiverId: Int? = null
-    var senderId: Int? = null
-    var userReadIt: Short? = null
-    var readDate: Date? = null
-}
+//class MessageComplaintDto {
+//
+//    var id: Int? = null
+//    var text: String? = null
+//    var attachment: String? = null
+//    var date: Long? = null
+//    var complaintId: Int? = null
+//    var receiverId: Int? = null
+//    var senderId: Int? = null
+//    var userReadIt: Short? = null
+//    var readDate: Date? = null
+//}
 
 class MessagePrivateDto {
 
@@ -331,8 +332,21 @@ class MessagePrivateDto {
     var receiverId: Int? = null
     var senderId: Int? = null
 }
+//
+//class MessageTransactionDto {
+//    var id: Int? = null
+//    var text: String? = null
+//    var attachment: String? = null
+//    var date: Long? = null
+//    var transactionId: Int? = null
+//    var receiverId: Int? = null
+//    var senderId: Int? = null
+//    var userReadIt: Short? = null
+//    var readDate: Date? = null
+//}
 
-class MessageTransactionDto {
+
+class MessageGeneralDto {
     var id: Int? = null
     var text: String? = null
     var attachment: String? = null
@@ -342,9 +356,16 @@ class MessageTransactionDto {
     var senderId: Int? = null
     var userReadIt: Short? = null
     var readDate: Date? = null
+    var complaintId: Int? = null
 }
-
 class TransactionChatDto {
     var transactionId: Int? = null
-    var transactionChatMessagesList: List<MessageTransactionDto>? = null
+
+    var userId: Int? = null
+    var userName: String? = null
+    var userImage: String? = null
+    var userStatus: String? = null
+    var ServiceId:Int?=null
+    var serviceName:String?=null
+    var transactionChatMessagesList: List<MessageGeneralDto>? = null
 }

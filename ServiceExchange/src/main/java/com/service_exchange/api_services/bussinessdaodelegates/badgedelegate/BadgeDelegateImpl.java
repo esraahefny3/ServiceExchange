@@ -28,14 +28,33 @@ public class BadgeDelegateImpl implements BadgeDelegateInterface{
     
     @Override
     public Badge getBadge(Integer id)
-    { 
-        return  badgeDataInterface.findById(id.intValue()).get();
+
+    {
+        try {
+
+            Optional<Badge> badgeOptional = badgeDataInterface.findById(id.intValue());
+            if (badgeOptional.isPresent() == true) {
+                return badgeOptional.get();
+            } else {
+                return null;
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     @Override
     public Badge  createBadge(Badge badge)
-    {   
-        return badgeDataInterface.save(badge);
+    {
+        try {
+            return badgeDataInterface.save(badge);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     @Override
@@ -53,19 +72,37 @@ public class BadgeDelegateImpl implements BadgeDelegateInterface{
     @Override
     public Badge updateBadge(Badge badge)
     {
-           return badgeDataInterface.save(badge);
+        try {
+            return badgeDataInterface.save(badge);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
        
     }
    
     @Override
     public Page<Badge> getAllBadges(Pageable page)
     {
-       return  badgeDataInterface.findAll(page);
+        try {
+            return badgeDataInterface.findAll(page);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Iterable<Badge> getAllBadges() {
-     return  badgeDataInterface.findAll();
+        try {
+            return badgeDataInterface.findAll();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
