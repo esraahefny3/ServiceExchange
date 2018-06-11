@@ -24,6 +24,8 @@ interface AdminGettable {
     fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification>
     fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto>
     fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto>
+    fun getAllOpenedComplaints(page: Int): List<AdminComplaint>
+    fun getAlladmins(page: Int): List<AdminMain>
 }
 
 @Component
@@ -33,6 +35,11 @@ private class AdminGettableImpl : AdminGettable {
     @Autowired
     lateinit var complainInterface: ComplaintInterface
 
+    override fun getAlladmins(page: Int): List<AdminMain> =
+            adminInterface.getAllAdmins(page).map { it.convertAdmin() }
+
+    override fun getAllOpenedComplaints(page: Int): List<AdminComplaint> =
+            complainInterface.getUnseenComplaints(page).map { it.convertAdminComplaint() }
     override fun getAdminInfo(adminId: String): AdminMain? =
             adminInterface.getAdmin(adminId)?.convertAdmin()
 
@@ -43,7 +50,7 @@ private class AdminGettableImpl : AdminGettable {
                     ?: emptyList()
 
     override fun getAdminOpenComplains(adminId: String, page: Int): List<AdminComplaint> =
-            adminInterface.getAdmin(adminId)?.complaintCollection?.stream()?.map { it.convertAdminComplaint() }?.collect(Collectors.toList())
+            adminInterface.getAdmin(adminId)?.complaintCollection?.stream()?.filter { it.state != Complaint.COMPLETED }?.map { it.convertAdminComplaint() }?.collect(Collectors.toList())
                     ?.filterIndexed { index, adminChallange -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
@@ -111,7 +118,7 @@ interface AdminAccept {
     fun enableAdmin(adminId: String): Boolean
     fun enableUser(userId: Int): Boolean
     fun enableService(serviceId: Int): Boolean
-    fun acceptComplaint(compaintId: Int): Boolean
+    fun acceptComplaint(compaintId: Int, adminId: String): Boolean
     fun approveSkill(skillId: Int): Boolean
     fun restoreSkill(skillId: Int): Boolean
 }
@@ -156,15 +163,19 @@ private class AdminAcceptImpl : AdminAccept {
         return false
     }
 
-    override fun acceptComplaint(compaintId: Int): Boolean {
+    override fun acceptComplaint(compaintId: Int, adminId: String): Boolean {
         complaintInterface.getComplaintById(compaintId)?.takeIf {
             if (it.state == Complaint.NOT_REVIEWED_STATE)
                 return true
             else false
         }?.let {
             it.state = Complaint.ACCEPTED_STATE
-            complaintInterface.saveComplaint(it)
-            return true
+            adminInterface.getAdmin(adminId)?.let { admin ->
+                it.reviewedBy = admin
+                complaintInterface.saveComplaint(it)
+                return true
+            }
+            return false
         }
         return false
     }

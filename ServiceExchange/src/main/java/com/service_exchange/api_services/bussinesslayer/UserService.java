@@ -10,6 +10,7 @@ import com.service_exchange.api_services.bussinessdaodelegates.user.UserDataGet;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDataSet;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserStaticsGetter;
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
+import com.service_exchange.api_services.bussinesslayer.messagebussiness.MessageServiceInterface;
 import com.service_exchange.api_services.dao.dto.*;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.Badge;
@@ -36,6 +37,8 @@ public class UserService {
     //---user badge
     @Autowired
     private UserBadgesSelegateInterface userBadgesInterface;
+    @Autowired
+    private MessageServiceInterface messageInterface;
     private int pageSize = 20;
 
     public UserTable createUser(UserTable user) {
@@ -124,7 +127,7 @@ public class UserService {
             userStatics.setEarningInThisMounth(userStaticsGetter.getEarning(userId, calendar));
             userStatics.setFeedBackRate(userStaticsGetter.getTotalFeedBack(userId));
             userStatics.setNextLevelDescription(userStaticsGetter.getUserNextLevel(userId));
-            userStatics.setNumberOfUnreadedMessage(0);
+            userStatics.setNumberOfUnreadedMessage(messageInterface.selectAllUserUnreadedMessages(userId).size());
             userStatics.setOnTimeDelivery(userStaticsGetter.getOnTimeDelevrey(userId));
             userStatics.setOrderCompletion(userStaticsGetter.getOrderCompletion(userId));
             userStatics.setPresonalBalance(userStaticsGetter.getUserBalance(userId));

@@ -100,12 +100,15 @@ class ServiceDTO {
 
     var expectDur: Long? = null
 
+    var duration: Long? = null
+
     var uO: UserInfo? = null
     // number of completed transaction
     var numberOfTransaction: Int? = null
     //rating of service 0 if no one used it
     var rating: Double? = null
 
+    var revList: MutableList<ReviewDTO>? = null
 
 }
 
@@ -120,7 +123,7 @@ class SkillDTO {
 
     var rating: Double? = null
 
-    var reivewsList: List<ReViewDTO>? = null
+    var reivewsList: List<ReviewDTO>? = null
 
     var children: List<SkillDTO>? = null
 
@@ -128,7 +131,7 @@ class SkillDTO {
 
 }
 
-class ReViewDTO {
+class ReviewDTO {
     var id: Int? = null
 
     var comment: String? = null
@@ -136,27 +139,10 @@ class ReViewDTO {
     var rating: Int? = null
 
     var transactionId: Int? = null
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as ReViewDTO
+    var userInfo: UserInfo? = null
 
-        if (id != other.id) return false
-        if (comment != other.comment) return false
-        if (rating != other.rating) return false
-        if (transactionId != other.transactionId) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id ?: 0
-        result = 31 * result + (comment?.hashCode() ?: 0)
-        result = 31 * result + (rating ?: 0)
-        result = 31 * result + (transactionId ?: 0)
-        return result
-    }
+    var reviewDate: Long? = null
 
 }
 
@@ -207,7 +193,7 @@ class BadgeDto {
     var timeNeeded: String? = null
     var type: String? = null
     var addedByAdminEmail: String? = null
-    var nextLevelId:Int?=null
+    var nextLevelId: Int? = null
 }
 
 class ComplaintDto {
@@ -268,6 +254,7 @@ class MessageGeneralDto {
     var readDate: Date? = null
     var complaintId: Int? = null
 }
+
 class TransactionChatDto {
     var transactionId: Int? = null
 
@@ -275,8 +262,8 @@ class TransactionChatDto {
     var userName: String? = null
     var userImage: String? = null
     var userStatus: String? = null
-    var ServiceId:Int?=null
-    var serviceName:String?=null
+    var ServiceId: Int? = null
+    var serviceName: String? = null
 
     var transactionChatMessagesList: List<MessageGeneralDto>? = null
 }
@@ -351,6 +338,11 @@ class UserStatices {
     var offlineCount: Int? = null
     var busyCount: Int? = null
     var userCount: Int? = null
+}
+
+class SkillStatistics {
+    var mainCount: Int? = null
+    var totalSkillCount: Int? = null
 }
 
 class ServiceStatices {
