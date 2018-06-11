@@ -98,6 +98,8 @@ class ServiceDTO {
 
     var skillList: List<Int>? = null
 
+    var expectDur: Long? = null
+
     var uO: UserInfo? = null
     // number of completed transaction
     var numberOfTransaction: Int? = null
@@ -205,7 +207,7 @@ class BadgeDto {
     var timeNeeded: String? = null
     var type: String? = null
     var addedByAdminEmail: String? = null
-    var nL: Int? = null
+    var nextLevelId:Int?=null
 }
 
 class ComplaintDto {
@@ -253,9 +255,30 @@ class MessageTransactionDto {
     var readDate: Date? = null
 }
 
+
+class MessageGeneralDto {
+    var id: Int? = null
+    var text: String? = null
+    var attachment: String? = null
+    var date: Long? = null
+    var transactionId: Int? = null
+    var receiverId: Int? = null
+    var senderId: Int? = null
+    var userReadIt: Short? = null
+    var readDate: Date? = null
+    var complaintId: Int? = null
+}
 class TransactionChatDto {
     var transactionId: Int? = null
-    var transactionChatMessagesList: List<MessageTransactionDto>? = null
+
+    var userId: Int? = null
+    var userName: String? = null
+    var userImage: String? = null
+    var userStatus: String? = null
+    var ServiceId:Int?=null
+    var serviceName:String?=null
+
+    var transactionChatMessagesList: List<MessageGeneralDto>? = null
 }
 
 class ActiveOrder(var orderCount: Int, var ordersValue: Int)
@@ -327,6 +350,7 @@ class UserStatices {
     var onlineCount: Int? = null
     var offlineCount: Int? = null
     var busyCount: Int? = null
+    var userCount: Int? = null
 }
 
 class ServiceStatices {

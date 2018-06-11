@@ -1,5 +1,6 @@
 package com.service_exchange.api_services.bussinessdaodelegates.Admin
 
+import com.service_exchange.api_services.KotlinUtal.*
 import com.service_exchange.api_services.bussinessdaodelegates.skill.convertSkillAlone
 import com.service_exchange.api_services.dao.admin.AdminInterface
 import com.service_exchange.api_services.dao.complaint.ComplaintInterface
@@ -15,33 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
-
-fun AdminTable.convertAdmin() =
-        AppFactory.mapToDto(this, AdminMain::class.java)
-
-fun Challenge.convertAdminChallenge() =
-        AppFactory.mapToDto(this, AdminChallange::class.java)
-
-fun Complaint.convertAdminComplaint() =
-        AppFactory.mapToDto(this, AdminComplaint::class.java)
-
-fun Notification.convertAdminNotifecation() =
-        AppFactory.mapToDto(this, AdminNotification::class.java)
-
-fun Notification.convertNotifecationDTO() =
-        AppFactory.mapToDto(this, NotificationDto::class.java)
-
-fun Message.convertToTransaction() =
-        AppFactory.mapToDto(this, MessageTransactionDto::class.java)
-
-fun Message.convertToComplain() =
-        AppFactory.mapToDto(this, MessageComplaintDto::class.java)
-
-fun SkillDTO.convertToSkill() =
-        AppFactory.mapToDto(this, Skill::class.java)
-
-fun AdminMain.convertToAdmin() =
-        AppFactory.mapToDto(this, AdminTable::class.java)
 
 interface AdminGettable {
     fun getAdminInfo(adminId: String): AdminMain?
@@ -310,6 +284,15 @@ interface AdminStatic {
     fun getAllNotifecation(page: Int): List<NotificationDto>
     fun getAllUsersWithSimpleDetails(page: Int): List<UserAdminInfo>
     fun getAllServiceWithSimpleDetails(page: Int, type: String): List<ServiceAdminInfo>
+    fun getCompletedComplaint(): Long
+    fun getPausedService(): Long
+    fun getNumberWaitingTransactions(): Long
+    fun getNumberOfCanceledTransactions(): Long
+    fun getNumberOfLateTransactions(): Long
+    fun getNumberOfCompletedTransactions(): Long
+    fun getTotalPointOnServices(): Long
+    fun getUserCountBasedOnStatus(states: String): Long
+
 }
 
 @Component
@@ -362,8 +345,23 @@ private class AdminStaticImpl : AdminStatic {
     override fun getAcceptedComplaint(): Long =
             complaintInterface.getCountOfAcceptedComplaint()
 
+    override fun getCompletedComplaint(): Long =
+            complaintInterface.getCountBasedOnType(Complaint.COMPLETED)
+
     override fun getNumberOfActiveTransactions(): Long =
             adminStaticTransaction.countAllByStateEquals(TransactionInfo.ON_PROGRESS_STATE)
+
+    override fun getNumberWaitingTransactions(): Long =
+            adminStaticTransaction.countAllByStateEquals(TransactionInfo.PENDING_STATE)
+
+    override fun getNumberOfCanceledTransactions(): Long =
+            adminStaticTransaction.countAllByStateEquals(TransactionInfo.REJECTED_STATE)
+
+    override fun getNumberOfLateTransactions(): Long =
+            adminStaticTransaction.countAllByStateEquals(TransactionInfo.LATE_STATE)
+
+    override fun getNumberOfCompletedTransactions(): Long =
+            adminStaticTransaction.countAllByStateEquals(TransactionInfo.COMPLETED_STATE)
 
     override fun getAllNotifecation(page: Int): List<NotificationDto> =
             adminInterface.findAll(PageRequest.of(page, 20)).stream()
@@ -410,6 +408,15 @@ private class AdminStaticImpl : AdminStatic {
                 service
 
             }.collect(Collectors.toList())
+
+    override fun getPausedService(): Long =
+            serviceInterface.countAllBaseOnIsAvalibe(Service.PAUSED)
+
+    override fun getTotalPointOnServices(): Long =
+            serviceInterface.getAll().stream().mapToInt { it.price ?: 0 }.sum().toLong()
+
+    override fun getUserCountBasedOnStatus(states: String): Long =
+            userInterface.getUserCountBasedOnStatus(states)
 
 
 

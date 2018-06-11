@@ -9,6 +9,7 @@ import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.Message;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -36,5 +38,11 @@ public interface MessageInterface extends PagingAndSortingRepository<Message,Int
     @Query("update Message m set m.isSeen=:isSeen,m.seenDate=:seenDate where m.isSeen=:notSeenState and m.complaintId=:complaintId and m.senderId <>:senderId")
     public int updateAllComplaintMessagesSeenState(@Param("notSeenState")Short notSeenState, @Param("isSeen") Short isSeen, @Param("seenDate")Date seenDate,
                                                        @Param("complaintId")Complaint complaintId, @Param("senderId")UserTable senderId);
+
+    @Query("select  m from Message m where (m.senderId=:user or m.receiverId=:user ) and m.isSeen=0 order by m.date desc ")
+    public List<Message> selectAllUserUnreadedMessages(@Param("user")UserTable user);
+
+    @Query("select  m from Message m where (m.senderId=:user or m.receiverId=:user ) and m.isSeen=0 order by m.date desc ")
+    public List<Message> selectAllUserUnreadedMessages(@Param("user")UserTable user, Pageable page);
 
 }

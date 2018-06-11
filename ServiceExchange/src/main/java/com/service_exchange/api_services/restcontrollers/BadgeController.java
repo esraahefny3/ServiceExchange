@@ -40,23 +40,36 @@ public class BadgeController {
 
                Badge badgeTemp= badgeService.getBadge(id);
                BadgeDto badgeDto=AppFactory.mapToDto(badgeTemp,BadgeDto.class);
-               badgeDto.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
-               return badgeDto;
+                if(badgeTemp.getAddedBy()!=null)
+                {
+                    badgeDto.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
+                }
+                if(badgeTemp.getNextLevel()!=null)
+                    badgeDto.setNextLevelId(badgeTemp.getNextLevel().getId());
+                return badgeDto;
     }
     
     
     @RequestMapping(value = "/createBadge", method = RequestMethod.POST)
     public BadgeDto createBadge(@RequestBody BadgeDto badgeDto) {
 
-        if(badgeDto !=null)
+        if(badgeDto !=null&&badgeDto.getName()!=null&&badgeDto.getAddedByAdminEmail()!=null&&badgeDto.getType()!=null&&badgeDto.getDescription()!=null)
         {
             Badge badge=AppFactory.mapToEntity(badgeDto,Badge.class);
             AdminTable admin=AppFactory.getAdminTableInstance();
             admin.setEmail(badgeDto.getAddedByAdminEmail());
             badge.setAddedBy(admin);
+            Badge nextLevel=AppFactory.getBadgeInstance();
+            nextLevel.setId(badgeDto.getNextLevelId());
+            badge.setNextLevel(nextLevel);
            Badge badgeTemp= badgeService.createBadge(badge);
             BadgeDto badgeDto2=AppFactory.mapToDto(badgeTemp,BadgeDto.class);
-            badgeDto2.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
+            if(badgeTemp.getAddedBy()!=null)
+            {
+                badgeDto2.setAddedByAdminEmail(badgeTemp.getAddedBy().getEmail());
+            }
+            if(badgeTemp.getNextLevel()!=null)
+            badgeDto2.setNextLevelId(badgeTemp.getNextLevel().getId());
             return badgeDto2;
         }
         else
@@ -103,9 +116,18 @@ public class BadgeController {
                 admin.setEmail(badgeDto.getAddedByAdminEmail());
                 badge.setAddedBy(admin);
 
+                Badge nextLevel=AppFactory.getBadgeInstance();
+                nextLevel.setId(badgeDto.getNextLevelId());
+                badge.setNextLevel(nextLevel);
                  Badge badge2=badgeService.updateBadge(badge);
                 BadgeDto badgeDto2=AppFactory.mapToDto(badge2,BadgeDto.class);
-                badgeDto2.setAddedByAdminEmail(badge2.getAddedBy().getEmail());
+                if(badge2.getAddedBy()!=null)
+                {
+                    badgeDto2.setAddedByAdminEmail(badge2.getAddedBy().getEmail());
+                }
+                if(badge2.getNextLevel()!=null)
+                    badgeDto2.setNextLevelId(badge2.getNextLevel().getId());
+
                 return badgeDto2;
                 
             }
@@ -128,7 +150,12 @@ public class BadgeController {
         for (Badge badge:badgeList)
         {
             BadgeDto badgeDto=AppFactory.mapToDto(badge,BadgeDto.class);
-            badgeDto.setAddedByAdminEmail(badge.getAddedBy().getEmail());
+            if(badge.getAddedBy()!=null)
+            {
+                badgeDto.setAddedByAdminEmail(badge.getAddedBy().getEmail());
+            }
+            if(badge.getNextLevel()!=null)
+                badgeDto.setNextLevelId(badge.getNextLevel().getId());
             badgeDtoList.add(badgeDto);
         }
        

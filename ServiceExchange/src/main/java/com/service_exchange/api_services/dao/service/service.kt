@@ -3,6 +3,7 @@ package com.service_exchange.api_services.dao.service
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.entities.Service
 import com.service_exchange.entities.Skill
+import com.service_exchange.entities.TransactionInfo
 import com.service_exchange.entities.UserTable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
+import java.util.function.DoubleConsumer
 import java.util.stream.Collectors
 
 @Repository
@@ -24,7 +26,9 @@ interface ServiceData : PagingAndSortingRepository<Service, Int> {
     fun findAllByMadeByEquals(userTable: UserTable): List<Service>
 
     fun countAllByIdIsNotNull(): Long
-    fun countAllByTypeEquals(type: String): Long?
+    fun countAllByTypeEquals(type: String): Long
+    fun countAllByIsAvailableEquals(isavailbe: String): Long
+
 
 }
 
@@ -41,6 +45,10 @@ interface ServiceInterface {
     fun countAllservice(): Long
     fun countAllRequset(): Long
     fun countAllOffers(): Long
+    fun countAllBaseOnIsAvalibe(isavailbe: String): Long
+    fun getMostPubler(size: Int): List<Service>
+    fun getTopRated(size: Int): List<Service>
+    fun getAll(): List<Service>
 
 }
 
@@ -56,6 +64,10 @@ private class ServiceImpl : ServiceInterface {
 
     override fun getAll(start: Int): Page<Service> {
         return serviceData.findAll(PageRequest.of(start, 20))
+    }
+
+    override fun getAll(): List<Service> {
+        return serviceData.findAll().filterIndexed({ index, service -> true })
     }
 
     override fun getAll(start: Int, type: String): Page<Service> {
@@ -118,4 +130,31 @@ private class ServiceImpl : ServiceInterface {
 
     override fun countAllservice(): Long =
             serviceData.countAllByIdIsNotNull()
+
+    override fun getTopRated(size: Int): List<Service> =
+            serviceData.findAll().filter { service -> service.type == Service.OFFERED }
+                    .sortedBy { service ->
+                        var avg = 0.0
+                        service.transactionInfoCollection?.stream()?.filter { it.state == TransactionInfo.LATE_STATE || it.state == TransactionInfo.COMPLETED_STATE }
+                                ?.mapToDouble {
+                                    it.reviewCollection
+                                            ?.stream()?.mapToDouble { it.rating?.toDouble() ?: 0.0 }
+                                            ?.average()?.ifPresent { avg = it }
+                                    avg
+                                }?.average()?.ifPresent(DoubleConsumer { avg = it })
+                        return@sortedBy avg
+                    }
+                    .take(size)
+
+    override fun getMostPubler(size: Int): List<Service> =
+            serviceData.findAll().filter { service -> service.type == Service.OFFERED }
+                    .sortedBy { service ->
+                        service.transactionInfoCollection?.stream()?.filter { it.state == TransactionInfo.LATE_STATE || it.state == TransactionInfo.COMPLETED_STATE }?.count()
+                                ?: 0
+                    }
+                    .take(size)
+
+    override fun countAllBaseOnIsAvalibe(isavailbe: String): Long =
+            serviceData.countAllByIsAvailableEquals(isavailbe)
+
 }

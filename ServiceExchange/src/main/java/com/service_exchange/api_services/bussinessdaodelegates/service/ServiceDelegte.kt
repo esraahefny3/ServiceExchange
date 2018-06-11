@@ -1,52 +1,17 @@
 package com.service_exchange.api_services.bussinessdaodelegates.service
 
+import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.bussinessdaodelegates.user.convertUser
 import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.dto.SkillDTO
 import com.service_exchange.api_services.dao.dto.UserDTO
 import com.service_exchange.api_services.dao.service.ServiceInterface
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.user.UserInterFace
-import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.Service
-import com.service_exchange.entities.Skill
-import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.stream.Collectors
 
-fun Service.convertServie(): ServiceDTO =
-        this.let { t ->
-            val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
-            ob.skillList = t.skillCollection?.stream()?.map { it.id }?.collect(Collectors.toList())
-            ob.uO = com.service_exchange.api_services.dao.dto.UserInfo(t.madeBy?.name, t.id, t.image)
-            ob.numberOfTransaction = t.transactionInfoCollection?.stream()?.filter({ t ->
-                t.state == TransactionInfo.COMPLETED_STATE
-                        || t.state == TransactionInfo.LATE_STATE
-            })?.count()?.toInt()
-            ob.rating = t.transactionInfoCollection?.stream()?.filter { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE }
-                    ?.mapToDouble { t ->
-                        t.reviewCollection?.stream()
-                                ?.mapToDouble { it.rating?.toDouble() ?: 0.0 }?.average()?.orElse(0.0) ?: 0.0
-                    }?.average()?.orElse(0.0)
-            ob
-        }
-
-fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: UserInterFace): Service =
-        this.let { t ->
-            val ob = AppFactory.mapToDto(t, Service::class.java)
-            ob.skillCollection = t.skillList?.stream()?.map { skillInterface.getSkillById(it) }
-                    ?.collect(Collectors.toList()) ?: kotlin.collections.emptyList()
-            ob.madeBy = userInterface.getUser(t.id)
-            ob
-        }
-
-fun Skill.convertSkill(): SkillDTO {
-
-    val skill = AppFactory.mapToDto(this, SkillDTO::class.java)
-    skill.rating = this.reviewSkillCollection.stream().mapToDouble { it.rating.toDouble() }.average().orElse(0.0)
-    return skill
-}
 
 
 interface ServiceGettable {
@@ -54,8 +19,8 @@ interface ServiceGettable {
     fun getAllService(start: Int, type: String): List<ServiceDTO>
     fun getServiceWithSkills(start: Int, skills: List<Int>?): List<ServiceDTO>
     fun getServiceUsers(serviceId: Int): List<UserDTO>
-    fun getMostPupler(start: Int): List<ServiceDTO>
-    fun getTopRated(start: Int): List<ServiceDTO>
+    fun getMostPupler(size: Int): List<ServiceDTO>
+    fun getTopRated(size: Int): List<ServiceDTO>
     fun getService(serviceId: Int): Service?
 }
 
@@ -97,13 +62,11 @@ class ServiceGettableImpl : ServiceGettable {
             serviceInterface.getUserwithIt(serviceId).stream().map { it.convertUser() }.collect(Collectors.toList())
 
 
-    override fun getMostPupler(start: Int): List<ServiceDTO> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getMostPupler(size: Int): List<ServiceDTO> =
+            serviceInterface.getMostPubler(size).stream().map { it.convertServie() }.collect(Collectors.toList())
 
-    override fun getTopRated(start: Int): List<ServiceDTO> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getTopRated(size: Int): List<ServiceDTO> =
+            serviceInterface.getTopRated(size).stream().map { it.convertServie() }.collect(Collectors.toList())
 
 }
 

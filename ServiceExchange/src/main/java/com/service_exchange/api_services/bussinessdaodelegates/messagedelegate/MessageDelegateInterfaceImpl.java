@@ -6,9 +6,8 @@
 package com.service_exchange.api_services.bussinessdaodelegates.messagedelegate;
 
 import com.service_exchange.api_services.dao.complaint.ComplaintDaoInterface;
-import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
-import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 import com.service_exchange.api_services.dao.message.MessageInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionCustomInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
@@ -20,6 +19,7 @@ import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -96,23 +96,26 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     }
 
     @Override
-    public MessageComplaintDto userSendComplaintMessage(Integer senderId, Integer complaintId, Message message) {
+    public MessageGeneralDto userSendComplaintMessage(Integer senderId, Integer complaintId, Integer transactionId, Message message) {
        try{
            Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
            UserTable sender=userDataInterface.findById(senderId).get();
-       if(complaint!=null&&sender!=null&&senderId==complaint.getUserId().getId())
+           Optional<TransactionInfo> transactionInfoOptional=transactionDaoInterfaceImpl.findById(transactionId);
+       if(transactionInfoOptional.isPresent()&& complaint!=null&&sender!=null&&senderId==complaint.getUserId().getId()&&complaint.getTransactionId().getId()==transactionId)
        {
+           message.setTransactionId(transactionInfoOptional.get());
            message.setSenderId(sender);
            message.setComplaintId(complaint);
            message.setDate(new Date());
            Short isSeen=0;//not seen yet
            message.setIsSeen(isSeen);
            Message messageTemp=messageInterface.save(message);
-           MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(messageTemp, MessageComplaintDto.class);
-           messageComplaintDto.setComplaintId(complaintId);
-           messageComplaintDto.setSenderId(senderId);
-           messageComplaintDto.setDate(messageTemp.getDate().getTime());
-           return messageComplaintDto;
+           MessageGeneralDto messageGeneralDto= AppFactory.mapToDto(messageTemp, MessageGeneralDto.class);
+           messageGeneralDto.setComplaintId(complaintId);
+           messageGeneralDto.setTransactionId(transactionId);
+           messageGeneralDto.setSenderId(senderId);
+           messageGeneralDto.setDate(messageTemp.getDate().getTime());
+           return messageGeneralDto;
        }
          return null;
        }
@@ -124,20 +127,24 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     }
 
     @Override
-    public MessageComplaintDto adminSendComplaintMessage(Integer complaintId, Message message) {
+    public MessageGeneralDto adminSendComplaintMessage(Integer complaintId,Integer transactionId, Message message) {
          try{
            Complaint complaint=complaintDaoInterfaceImpl.findById(complaintId).get();
-      if(complaint!=null)
+             Optional<TransactionInfo> transactionInfoOptional=transactionDaoInterfaceImpl.findById(transactionId);
+             if(transactionInfoOptional.isPresent()&&complaint!=null&&complaint.getTransactionId().getId()==transactionId)
        {
+           message.setTransactionId(transactionInfoOptional.get());
            message.setComplaintId(complaint);
+           message.setReceiverId(complaint.getUserId());
            message.setDate(new Date());
            Short isSeen=0;//not seen yet
            message.setIsSeen(isSeen);
            message=messageInterface.save(message);
-           MessageComplaintDto messageComplaintDto= AppFactory.mapToDto(message, MessageComplaintDto.class);
-           messageComplaintDto.setComplaintId(complaintId);
-           messageComplaintDto.setDate(message.getDate().getTime());
-           return messageComplaintDto;
+           MessageGeneralDto messageGeneralDto= AppFactory.mapToDto(message, MessageGeneralDto.class);
+           messageGeneralDto.setComplaintId(complaintId);
+           messageGeneralDto.setDate(message.getDate().getTime());
+           messageGeneralDto.setTransactionId(transactionId);
+           return messageGeneralDto;
        }
          return null;
        }
@@ -149,12 +156,12 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     }
 
     @Override
-    public List<MessageComplaintDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
+    public List<MessageGeneralDto> getAllComplaintMessages(Integer complaintId, Integer pageNum) {
          return messageInterface.getAllComplaintMessages(complaintId, pageNum);
     }
 
     @Override
-    public MessageTransactionDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer transactionId) {
+    public MessageGeneralDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer transactionId) {
    
         try{
         TransactionInfo transactionInfo=transactionDaoInterfaceImpl.findById(transactionId).get();
@@ -170,12 +177,12 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
             Short isSeen=0;//not seen yet
             message.setIsSeen(isSeen);
             message=messageInterface.save(message);
-            MessageTransactionDto messageTransactionDto=AppFactory.mapToDto(message, MessageTransactionDto.class);
-            messageTransactionDto.setSenderId(senderId);
-            messageTransactionDto.setReceiverId(recieverId);
-            messageTransactionDto.setTransactionId(transactionId);
-            messageTransactionDto.setDate(message.getDate().getTime());
-            return messageTransactionDto;
+            MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
+            messageGeneralDto.setSenderId(senderId);
+            messageGeneralDto.setReceiverId(recieverId);
+            messageGeneralDto.setTransactionId(transactionId);
+            messageGeneralDto.setDate(message.getDate().getTime());
+            return messageGeneralDto;
         }
         return null;
         }
@@ -187,7 +194,7 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
     }
 
     @Override
-    public List<MessageTransactionDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
+    public List<MessageGeneralDto> getAllTransactionMessages(Integer transactionId, Integer pageNum) {
 
         return messageInterface.getAllTransactionMessages(transactionId, pageNum);
     
@@ -224,5 +231,50 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<MessageGeneralDto> selectAllUserUnreadedMessages(Integer userId) {
+      try {
+          Optional<UserTable> userTableOptional=userDataInterface.findById(userId);
+          if (userTableOptional.isPresent()) {
+
+              List<Message> messageList = messageInterface.selectAllUserUnreadedMessages(userTableOptional.get());
+              List<MessageGeneralDto> messageGeneralDtoList = new ArrayList<>();
+              messageList.forEach(message -> messageGeneralDtoList.add(AppFactory.mapToDto(message, MessageGeneralDto.class)));
+              return messageGeneralDtoList;
+          }
+          else {
+              return null;
+          }
+      }
+      catch (Exception e)
+      {
+          e.printStackTrace();
+          return null;
+      }
+    }
+
+
+    @Override
+    public List<MessageGeneralDto> selectAllUserUnreadedMessages(Integer userId,Integer pageNumber) {
+        try {
+            Optional<UserTable> userTableOptional = userDataInterface.findById(userId);
+            if (userTableOptional.isPresent()) {
+
+                List<Message> messageList = messageInterface.selectAllUserUnreadedMessages(userTableOptional.get(), PageRequest.of(pageNumber, pageSize));
+                List<MessageGeneralDto> messageGeneralDtoList = new ArrayList<>();
+                messageList.forEach(message -> messageGeneralDtoList.add(AppFactory.mapToDto(message, MessageGeneralDto.class)));
+                return messageGeneralDtoList;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

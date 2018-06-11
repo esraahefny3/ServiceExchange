@@ -5,6 +5,7 @@ import com.service_exchange.api_services.dao.dto.ServiceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -28,5 +29,13 @@ class ServiceRestfull {
     @RequestMapping(value = ["/getAllWithSkills"], method = arrayOf(RequestMethod.GET))
     fun getServiceWithSkills(page: Int, skills: List<Int>): List<ServiceDTO> =
             serviceBussness.getServiceWithSkills(page, skills)
+
+    @RequestMapping(value = ["/getTopRated"], method = arrayOf(RequestMethod.GET))
+    fun getTopRated(@RequestParam size: Int): List<ServiceDTO> =
+            serviceBussness.getAllService(size)
+
+    @RequestMapping(value = ["/getPub"], method = arrayOf(RequestMethod.GET))
+    fun getPub(@RequestParam size: Int): List<ServiceDTO> =
+            serviceBussness.getAllService(size)
 
 }

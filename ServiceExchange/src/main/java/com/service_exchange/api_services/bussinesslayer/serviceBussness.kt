@@ -1,8 +1,8 @@
 package com.service_exchange.api_services.bussinesslayer
 
+import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceAddAble
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable
-import com.service_exchange.api_services.bussinessdaodelegates.service.convertServie
 import com.service_exchange.api_services.dao.dto.ServiceDTO
 import com.service_exchange.entities.Service
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,8 +14,8 @@ interface ServiceBussness {
     fun getAllOfferService(page: Int): List<ServiceDTO>
     fun getAllReqService(page: Int): List<ServiceDTO>
     fun getServiceWithSkills(page: Int, skills: List<Int>): List<ServiceDTO>
-    fun getPublerService(page: Int): List<ServiceDTO>
-    fun getTopRatedService(page: Int): List<ServiceDTO>
+    fun getPublerService(size: Int): List<ServiceDTO>
+    fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
 }
 
@@ -47,12 +47,11 @@ class ServiceBussnessImpl : ServiceBussness {
     override fun getServiceWithSkills(page: Int, skills: List<Int>): List<ServiceDTO> =
             serviceGet.getServiceWithSkills(page, skills)
 
-    override fun getPublerService(page: Int): List<ServiceDTO> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getPublerService(size: Int): List<ServiceDTO> =
+            serviceGet.getMostPupler(size)
 
-    override fun getTopRatedService(page: Int): List<ServiceDTO> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getTopRatedService(size: Int): List<ServiceDTO> =
+            serviceGet.getTopRated(size)
+
 
 }

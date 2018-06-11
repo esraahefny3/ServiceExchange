@@ -5,9 +5,8 @@
  */
 package com.service_exchange.api_services.dao.message;
 
-import com.service_exchange.api_services.dao.dto.MessageComplaintDto;
+import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
 import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
-import com.service_exchange.api_services.dao.dto.MessageTransactionDto;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  */
 public interface CustomMessageInterface {
     public List<MessagePrivateDto> findAllPrivateChatMessages(Integer user1Id, Integer user2Id, Integer pageNum);
-    public List <MessageComplaintDto>getAllComplaintMessages(Integer complaintId, Integer pageNum);
-    public List <MessageTransactionDto>getAllTransactionMessages(Integer transactionId, Integer pageNum);
+    public List <MessageGeneralDto>getAllComplaintMessages(Integer complaintId, Integer pageNum);
+    public List <MessageGeneralDto>getAllTransactionMessages(Integer transactionId, Integer pageNum);
     
 }

@@ -1,10 +1,13 @@
 package com.service_exchange.api_services.bussinesslayer.transactionbussiness;
 
 
-import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable;
 import com.service_exchange.api_services.bussinessdaodelegates.transaction.TransactionDelegateInterface;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegateInterface;
+import com.service_exchange.api_services.dao.service.ServiceData;
+import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
+import com.service_exchange.api_services.dao.user.UserDataInterFace;
+import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
@@ -16,8 +19,10 @@ import java.util.List;
 
 
 @Component
-public class TransactionService implements TransactionServiceInterface{
+public class TransactionService implements TransactionServiceInterface {
 
+
+    ////////////////////////////Esraa////////////////////////////
 
     @Autowired
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
@@ -25,19 +30,33 @@ public class TransactionService implements TransactionServiceInterface{
     @Autowired
     private UserDelegateInterface userDelegateInterfaceImpl;
 
+    @Autowired
+    TransactionDelegateInterface delegate;
+    @Autowired
+    TransactionDelegateInterface transactionDelegate;
+    @Autowired
+    TransactionDaoInterface transactionDao;
+    @Autowired
+    UserDataInterFace userDataInterFace;
+
+    ////////////////////////////Esraa////////////////////////////
+
+    ////////////////////////////Nouran////////////////////////////
+    @Autowired
+    ServiceData serviceData;
+
     @Override
     public TransactionDto userAcceptTransaction(TransactionDto transactionDto) {//service maker or requester can only accept
         //security will check that startedby user is the service maker user
-        TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
-     //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
-        if (transactionInfo != null)
-        {
+        TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
+        //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
+        if (transactionInfo != null) {
             Service service = transactionInfo.getServiceId();
             UserTable transactionStartedByUser = service.getMadeBy();
             if (transactionDelegateInterfaceImpl.getAllUserAcceptedTransactionsOnService(service).isEmpty() == true)
             //user can accept only one transaction
             {
-                if ( transactionStartedByUser != null&&(transactionInfo.getState().equals(TransactionInfo.PENDING_STATE) == true ||transactionInfo.getState().equals(TransactionInfo.POSTPONED) == true)) {
+                if (transactionStartedByUser != null && (transactionInfo.getState().equals(TransactionInfo.PENDING_STATE) == true || transactionInfo.getState().equals(TransactionInfo.POSTPONED) == true)) {
                     //make sure an l user l start l transaction hoa hoa l user l m2dm l service aw 3mlha request
                     transactionInfo.setState(TransactionInfo.ACCEPTED_STATE);
                     transactionInfo.setPrice(transactionDto.getPrice());
@@ -53,14 +72,11 @@ public class TransactionService implements TransactionServiceInterface{
     @Override
     public TransactionDto userApproveAcceptedTransaction(TransactionDto transactionDto) {
         //security will check that the user called this method is the started by user
-         TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
+        TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         if (transactionInfo != null) {
-            System.out.println("hna1");
             UserTable transactionStartedByUser = transactionInfo.getStartedBy();
             Service service = transactionInfo.getServiceId();
-            if ( transactionStartedByUser != null && service != null &&transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE) == true)
-            {
-                System.out.println("hna2");
+            if (transactionStartedByUser != null && service != null && transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE) == true) {
                 transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
                 transactionInfo.setStartDate(new Date());
                 if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
@@ -73,7 +89,7 @@ public class TransactionService implements TransactionServiceInterface{
 
     @Override
     public boolean userRejectTransaction(TransactionDto transactionDto) {
-        TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
+        TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         if (transactionInfo != null) {
             UserTable transactionStartedByUser = transactionInfo.getStartedBy();
             Service service = transactionInfo.getServiceId();
@@ -90,15 +106,105 @@ public class TransactionService implements TransactionServiceInterface{
 
     @Override
     public List<TransactionDto> getAllUserTransactions(Integer userId, Integer pageNum) {
-        UserTable user=userDelegateInterfaceImpl.getUserById(userId);
-        if(user!=null)
-        {
-           return transactionDelegateInterfaceImpl.getAllUserTransactions(user,pageNum);
-        }
-        else {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegateInterfaceImpl.getAllUserTransactions(user, pageNum);
+        } else {
             return null;
         }
 
 
     }
+
+    @Override
+    public TransactionDto makeTransactionOnService(TransactionDto transactionDto) {
+        if ((delegate.checkIfUserExists(transactionDto.getStartedByUser()) != null) &&
+                (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
+            if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
+                Service service = serviceData.findById(transactionDto.getServiceId()).get();
+
+                Integer userId = transactionDto.getStartedByUser();
+                TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
+                transactionInfo.setType(service.getType());
+                transactionInfo.setState(transactionInfo.PENDING_STATE);
+                transactionInfo.setStartDate(new Date());
+
+                transactionDao.save(transactionInfo);
+                transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
+                transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto.setStartedByUser(userId);
+
+                System.out.println(transactionDao.findByServiceId(service));
+
+                return transactionDto;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public TransactionDto completeTransaction(TransactionDto transactionDto) {
+
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.completeTransaction(transactionInfo);
+            if (done) {
+                transactionDao.save(transactionInfo);
+                TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public TransactionDto approveCompletedTransaction(TransactionDto transactionDto) {
+
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.approveCompletedTransaction(transactionInfo);
+            if (done) {
+                transactionInfo.setEndDate(new Date());
+                transactionDao.save(transactionInfo);
+                TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public TransactionDto rejectCompletedTransaction(TransactionDto transactionDto) {
+        TransactionInfo transactionInfo = transactionDelegate.checkIfTransactionExist(transactionDto.getId());
+        if (transactionInfo != null &&
+                transactionInfo.getStartedBy() != null &&
+                transactionInfo.getServiceId() != null) {
+            Boolean done = delegate.rejectCompletedTransaction(transactionInfo);
+            if (done) {
+                transactionDao.save(transactionInfo);
+                TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                return transactionDto2;
+            }
+
+            return null;
+        }
+
+        return null;
+    }
+
+    ////////////////////////////Nouran////////////////////////////
 }

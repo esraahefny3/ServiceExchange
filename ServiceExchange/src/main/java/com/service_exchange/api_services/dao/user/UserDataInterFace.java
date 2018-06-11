@@ -5,7 +5,7 @@
  */
 package com.service_exchange.api_services.dao.user;
 
-import com.service_exchange.entities.Skill;
+import com.service_exchange.entities.Service;
 import com.service_exchange.entities.UserTable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +29,8 @@ public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,
 
 }
 
-interface u extends PagingAndSortingRepository<Skill, Integer> {
-    Long countAllByIdIsNotNull();
-
-    Long countAllByParentSkillIdIsNull();
-
-    Long countAllByParentSkillId_IdEquals(Integer id);
+interface u extends PagingAndSortingRepository<Service, Integer> {
+    Long countAllByIsAvailableEquals(String isavailbe);
 
 }
 
