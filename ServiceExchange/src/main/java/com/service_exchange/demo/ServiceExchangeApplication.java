@@ -14,5 +14,7 @@ public class ServiceExchangeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceExchangeApplication.class, args);
-	}
+        System.out.println("spring boot start mubarak 2");
+    }
+
 }

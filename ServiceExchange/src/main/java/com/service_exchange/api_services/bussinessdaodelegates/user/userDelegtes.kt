@@ -61,7 +61,7 @@ private open class UserDataGetImpl : UserDataGet {
             userInterface.getUser(userId)
     override fun getAllUser(start: Int): List<UserDTO> {
         return userInterface.getAllUser(start).stream().map { it.convertUser() }.collect(Collectors.toList())
-                ?: emptyList<UserDTO>()
+                ?: emptyList()
     }
 
     override fun getAllUser(): List<UserDTO> =
