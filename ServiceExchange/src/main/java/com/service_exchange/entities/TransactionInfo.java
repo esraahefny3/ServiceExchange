@@ -64,6 +64,11 @@ public class TransactionInfo implements Serializable {
     @Column(name = "type_of_payment")
     @Nullable
     private String typeOfPayment;
+
+
+    @Column(name = "jop_file")
+    @Nullable
+    private String jop_file;
     @OneToMany(mappedBy = "transactionId")
     @Nullable
     private Collection<Message> messageCollection;
@@ -126,6 +131,15 @@ public class TransactionInfo implements Serializable {
 
     public void setId(@Nullable Integer id) {
         this.id = id;
+    }
+
+    @Nullable
+    public String getJop_file() {
+        return jop_file;
+    }
+
+    public void setJop_file(@Nullable String jop_file) {
+        this.jop_file = jop_file;
     }
 
     @Nullable

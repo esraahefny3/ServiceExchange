@@ -34,4 +34,23 @@ public class TransactionControllerNour {
         }
     }
 
+    @RequestMapping(value = "/approveCompletedTransaction", method = RequestMethod.POST)
+    public TransactionDtoNour approveCompletedTransaction(@RequestBody TransactionDtoNour transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.approveCompletedTransaction(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/rejectCompletedTransaction", method = RequestMethod.POST)
+    public TransactionDtoNour rejectCompletedTransaction(@RequestBody TransactionDtoNour transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.rejectCompletedTransaction(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+
 }
