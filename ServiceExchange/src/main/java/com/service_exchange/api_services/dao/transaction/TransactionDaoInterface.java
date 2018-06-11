@@ -5,8 +5,6 @@
  */
 package com.service_exchange.api_services.dao.transaction;
 
-//esraaaa
-
 import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
@@ -27,6 +25,7 @@ import java.util.List;
 @Repository
 public interface TransactionDaoInterface extends PagingAndSortingRepository<TransactionInfo, Integer> {
 
+    ////////////////////////////Esraa////////////////////////////
 
     @Query("select t from TransactionInfo t where t.startedBy=:user or t.serviceId.madeBy=:user")
     List<TransactionInfo> findAllUserTransactions(@Param("user") UserTable user, Pageable page);
@@ -39,10 +38,20 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
     @Query("update  TransactionInfo t set t.state=:newState where t.serviceId=:service and t.state=:oldState ")
     int changeAllUserTransactionsStateOnServiceWithState(@Param("service") Service service, @Param("oldState") String oldState, @Param("newState") String newState);
 
+    ////////////////////////////Esraa////////////////////////////
+
+    
     //mubarak//
     Long countAllByIdIsNotNull();
 
     Long countAllByStateEquals(String state);
     //mubarak//
+
+
+    ////////////////////////////Nouran////////////////////////////
+
+    List<TransactionInfo> findByServiceId(Service service);
+
+    ////////////////////////////Nouran////////////////////////////
 
 }
