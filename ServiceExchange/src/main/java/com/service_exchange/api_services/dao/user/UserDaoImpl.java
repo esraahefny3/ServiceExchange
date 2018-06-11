@@ -96,7 +96,7 @@ public class UserDaoImpl implements UserInterFace {
     @Override
     @Transactional
     public Page<UserTable> getAllUser(int start) {
-        System.out.println("get all user");
+
         Page<UserTable> p = dataInterface.findAll(PageRequest.of(start, pageSize));
         System.out.println(p);
         return p;

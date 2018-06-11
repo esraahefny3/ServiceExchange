@@ -1,6 +1,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
-import com.service_exchange.api_services.bussinessdaodelegates.service.convertSkill
+
+import com.service_exchange.api_services.KotlinUtal.convertSkill
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.user.UserEducationInterface
 import com.service_exchange.api_services.dao.user.UserEmailInterface
