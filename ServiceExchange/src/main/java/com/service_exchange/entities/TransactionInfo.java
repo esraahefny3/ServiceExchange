@@ -104,6 +104,12 @@ public class TransactionInfo implements Serializable {
     @Transient
     public static final String LATE_STATE = "late";
     @Transient
+    public static final String COMPLETED_APPROVED_STATE = "completed and approved";
+    @Transient
+    public static final String NOT_COMPLETED_STATE = "not completed";
+    @Transient
+    public static final String FAILED_STATE = "failed";
+    @Transient
     public static final String POSTPONED = "postpone";
 
     public TransactionInfo() {
