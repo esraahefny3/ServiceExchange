@@ -105,8 +105,8 @@ class AdminRest {
     ////////////////////////////complaint/////////////////////////////////////////////////////////
 
     @RequestMapping(value = ["/acceptComplain"], method = [(RequestMethod.POST)])
-    fun acceptComplain(@RequestBody complaintId: Int): Boolean =
-            adminCrud.acceptComplaint(complaintId)
+    fun acceptComplain(@RequestBody complaintId: Int, adminId: String): Boolean =
+            adminCrud.acceptComplaint(complaintId, adminId)
 
     @RequestMapping(value = ["/rejectComplaint"], method = [(RequestMethod.POST)])
     fun rejectComplaint(@RequestBody complaintId: Int): Boolean =

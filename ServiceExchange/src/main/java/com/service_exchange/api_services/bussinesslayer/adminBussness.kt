@@ -125,7 +125,7 @@ interface AdminBussnessCrud {
     fun enableAdmin(adminId: String): Boolean
     fun enableUser(userId: Int): Boolean
     fun enableService(serviceId: Int): Boolean
-    fun acceptComplaint(compaintId: Int): Boolean
+    fun acceptComplaint(compaintId: Int, adminId: String): Boolean
     fun approveSkill(skillId: Int): Boolean
     fun restoreSkill(skillId: Int): Boolean
     fun addSkill(skillDTO: SkillDTO): SkillDTO?
@@ -156,8 +156,8 @@ private class AdminBussnessCrudImpl : AdminBussnessCrud {
     override fun enableService(serviceId: Int): Boolean =
             adminAccept.enableService(serviceId)
 
-    override fun acceptComplaint(compaintId: Int): Boolean =
-            adminAccept.acceptComplaint(compaintId)
+    override fun acceptComplaint(compaintId: Int, adminId: String): Boolean =
+            adminAccept.acceptComplaint(compaintId, adminId)
 
     override fun approveSkill(skillId: Int): Boolean =
             adminAccept.approveSkill(skillId)

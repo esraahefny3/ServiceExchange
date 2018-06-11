@@ -12,19 +12,34 @@ fun Service.convertServie(): ServiceDTO =
         this.let { t ->
             val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
             ob.skillList = t.skillCollection?.stream()?.map { it.id }?.collect(Collectors.toList())
-            ob.uO = com.service_exchange.api_services.dao.dto.UserInfo(t.madeBy?.name, t.id, t.image)
-            ob.numberOfTransaction = t.transactionInfoCollection?.stream()?.filter({ t ->
-                t.state == TransactionInfo.COMPLETED_STATE
-                        || t.state == TransactionInfo.LATE_STATE
+            ob.uO = com.service_exchange.api_services.dao.dto.UserInfo(t.madeBy?.name, t.madeBy?.id, t.madeBy?.image)
+            ob.numberOfTransaction = t.transactionInfoCollection?.stream()?.filter({
+                it.state == TransactionInfo.COMPLETED_STATE
+                        || it.state == TransactionInfo.LATE_STATE
             })?.count()?.toInt()
-            ob.rating = t.transactionInfoCollection?.stream()?.filter { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE }
-                    ?.mapToDouble { t ->
-                        t.reviewCollection?.stream()
+            ob.rating = t.transactionInfoCollection?.stream()?.filter { it.state == TransactionInfo.COMPLETED_STATE || it.state == TransactionInfo.LATE_STATE }
+                    ?.mapToDouble {
+                        it.reviewCollection?.stream()
                                 ?.mapToDouble { it.rating?.toDouble() ?: 0.0 }?.average()?.orElse(0.0) ?: 0.0
                     }?.average()?.orElse(0.0)
             ob.expectDur = t.duration?.time
+            ob.revList = kotlin.collections.mutableListOf()
+            t.transactionInfoCollection?.stream()?.map {
+                it.reviewCollection?.stream()?.map { it.convertReview() }?.forEach { ob.revList?.add(it) }
+            }
+
             ob
         }
+
+fun Review.convertReview(): ReviewDTO =
+        ReviewDTO().apply {
+            id = this@convertReview.id
+            comment = this@convertReview.comment
+            rating = this@convertReview.rating
+            transactionId = this@convertReview.transactionId?.id
+            userInfo = this@convertReview.madeBy?.let { com.service_exchange.api_services.dao.dto.UserInfo(it.name, it.id, it.image) }
+        }
+
 
 fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: UserInterFace): Service =
         this.let { t ->
@@ -32,7 +47,8 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
             ob.skillCollection = t.skillList?.stream()?.map { skillInterface.getSkillById(it) }
                     ?.collect(Collectors.toList()) ?: kotlin.collections.emptyList()
             ob.madeBy = userInterface.getUser(t.id)
-            t.expectDur?.let { l -> ob.duration = java.util.Date(l) }
+            t.expectDur?.let { l -> ob.startDate = java.util.Date(l) }
+            t.duration?.let { ob.duration = java.util.Date(it) }
             ob
         }
 

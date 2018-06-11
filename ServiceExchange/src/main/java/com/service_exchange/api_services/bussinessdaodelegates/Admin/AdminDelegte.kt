@@ -118,7 +118,7 @@ interface AdminAccept {
     fun enableAdmin(adminId: String): Boolean
     fun enableUser(userId: Int): Boolean
     fun enableService(serviceId: Int): Boolean
-    fun acceptComplaint(compaintId: Int): Boolean
+    fun acceptComplaint(compaintId: Int, adminId: String): Boolean
     fun approveSkill(skillId: Int): Boolean
     fun restoreSkill(skillId: Int): Boolean
 }
@@ -163,15 +163,19 @@ private class AdminAcceptImpl : AdminAccept {
         return false
     }
 
-    override fun acceptComplaint(compaintId: Int): Boolean {
+    override fun acceptComplaint(compaintId: Int, adminId: String): Boolean {
         complaintInterface.getComplaintById(compaintId)?.takeIf {
             if (it.state == Complaint.NOT_REVIEWED_STATE)
                 return true
             else false
         }?.let {
             it.state = Complaint.ACCEPTED_STATE
-            complaintInterface.saveComplaint(it)
-            return true
+            adminInterface.getAdmin(adminId)?.let { admin ->
+                it.reviewedBy = admin
+                complaintInterface.saveComplaint(it)
+                return true
+            }
+            return false
         }
         return false
     }
