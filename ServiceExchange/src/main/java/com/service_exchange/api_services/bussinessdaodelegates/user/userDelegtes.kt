@@ -379,14 +379,14 @@ class UserStaticsGetter {
                     ?.map { service -> service?.getTransactionInfoCollection()?.stream() }
                     ?.mapToDouble { value ->
                         val dval = doubleArrayOf(0.0);
-                        value?.mapToDouble { value ->
-                            value.messageCollection?.stream()?.filter { message -> message.senderId.id?.toInt() != userId }
-                                    ?.mapToDouble { value -> value.seenDate.time.toDouble() }?.sorted()
+                        value?.mapToDouble {
+                            it.messageCollection?.stream()?.filter { message -> message?.senderId?.id != userId }
+                                    ?.mapToDouble { value -> value.seenDate?.time?.toDouble() ?: 0.0 }?.sorted()
                                     ?.reduce(0.0, { left, right -> right - left })
                                     ?.toDouble() ?: 0.0
 
 
-                        }?.average()?.ifPresent(DoubleConsumer { value -> dval[0] = value });
+                        }?.average()?.ifPresent(DoubleConsumer { dval[0] = it });
                         return@mapToDouble dval[0];
                     }?.average()?.ifPresent { d = it }
             return d;

@@ -6,6 +6,7 @@
 package com.service_exchange.entities;
 
 
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +36,7 @@ public class Message implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "text")
     private String text;
     @Column(name = "attachment")
@@ -75,6 +77,7 @@ public class Message implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public String getText() {
         return text;
     }
@@ -83,6 +86,7 @@ public class Message implements Serializable {
         this.text = text;
     }
 
+    @Nullable
     public String getAttachment() {
         return attachment;
     }
@@ -91,6 +95,7 @@ public class Message implements Serializable {
         this.attachment = attachment;
     }
 
+    @Nullable
     public Date getDate() {
         return date;
     }
@@ -99,6 +104,7 @@ public class Message implements Serializable {
         this.date = date;
     }
 
+    @Nullable
     public Short getIsSeen() {
         return isSeen;
     }
@@ -107,6 +113,7 @@ public class Message implements Serializable {
         this.isSeen = isSeen;
     }
 
+    @Nullable
     public Date getSeenDate() {
         return seenDate;
     }
@@ -115,6 +122,7 @@ public class Message implements Serializable {
         this.seenDate = seenDate;
     }
 
+    @Nullable
     public Complaint getComplaintId() {
         return complaintId;
     }
@@ -123,6 +131,7 @@ public class Message implements Serializable {
         this.complaintId = complaintId;
     }
 
+    @Nullable
     public TransactionInfo getTransactionId() {
         return transactionId;
     }
@@ -131,6 +140,7 @@ public class Message implements Serializable {
         this.transactionId = transactionId;
     }
 
+    @Nullable
     public UserTable getReceiverId() {
         return receiverId;
     }
@@ -139,6 +149,7 @@ public class Message implements Serializable {
         this.receiverId = receiverId;
     }
 
+    @Nullable
     public UserTable getSenderId() {
         return senderId;
     }
