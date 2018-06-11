@@ -98,6 +98,8 @@ class ServiceDTO {
 
     var skillList: List<Int>? = null
 
+    var expectDur: Long? = null
+
     var uO: UserInfo? = null
     // number of completed transaction
     var numberOfTransaction: Int? = null
@@ -348,6 +350,7 @@ class UserStatices {
     var onlineCount: Int? = null
     var offlineCount: Int? = null
     var busyCount: Int? = null
+    var userCount: Int? = null
 }
 
 class ServiceStatices {
