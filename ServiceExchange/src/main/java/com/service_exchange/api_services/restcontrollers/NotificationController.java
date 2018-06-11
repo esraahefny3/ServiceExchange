@@ -8,7 +8,7 @@ package com.service_exchange.api_services.restcontrollers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.NotificationService;
-import com.service_exchange.api_services.dao.notification.NotificationDto;
+import com.service_exchange.api_services.dao.dto.NotificationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

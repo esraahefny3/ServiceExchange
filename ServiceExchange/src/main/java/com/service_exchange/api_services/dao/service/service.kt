@@ -19,9 +19,12 @@ interface ServiceData : PagingAndSortingRepository<Service, Int> {
     @Query("select s from Service s join s.skillCollection t where t in (?1) group by s having count(t) >= (select count(t2) from Skill t2 where t2 in (?1))")
     fun findIfSubsetOfSkillExists(skills: List<Skill>, page: Pageable): List<Service>
 
-    fun findAllByTypeEquals(type: String, page: Pageable): Page<Service>
+    fun findAllByTypeEqualsAndIsAvailableEquals(type: String, isAvalible: String, pageable: Pageable): Page<Service>
 
     fun findAllByMadeByEquals(userTable: UserTable): List<Service>
+
+    fun countAllByIdIsNotNull(): Long
+    fun countAllByTypeEquals(type: String): Long?
 
 }
 
@@ -35,6 +38,9 @@ interface ServiceInterface {
     fun getAllServiceMadeByUser(userid: Int?): List<Service>?
     fun getAll(start: Int): Page<Service>
     fun getAll(start: Int, type: String): Page<Service>
+    fun countAllservice(): Long
+    fun countAllRequset(): Long
+    fun countAllOffers(): Long
 
 }
 
@@ -53,8 +59,9 @@ private class ServiceImpl : ServiceInterface {
     }
 
     override fun getAll(start: Int, type: String): Page<Service> {
-        return serviceData.findAllByTypeEquals(type, PageRequest.of(start, 20))
+        return serviceData.findAllByTypeEqualsAndIsAvailableEquals(type, Service.AVALIBLE, PageRequest.of(start, 20))
     }
+
     override fun createService(service: Service?): Service? =
             if (service != null)
                 serviceData.save(service)
@@ -69,7 +76,11 @@ private class ServiceImpl : ServiceInterface {
 
 
     override fun disableService(serviceId: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        getService(serviceId)?.takeIf { it.isAvailable != Service.DELETED }?.let {
+            it.isAvailable = Service.PAUSED
+            return true
+        }
+        return false
     }
 
     override fun getService(serviceId: Int): Service? {
@@ -82,7 +93,8 @@ private class ServiceImpl : ServiceInterface {
     override fun getUserwithIt(serviceId: Int): List<UserTable> {
         val service = serviceData.findById(serviceId)
         return if (service.isPresent) {
-            service.get().transactionInfoCollection.stream().filter { t -> t.state == "complete" }.map { t -> t.startedBy }.collect(Collectors.toList())
+            service.get().transactionInfoCollection?.stream()?.filter { t -> t.state == "complete" }?.map { t -> t.startedBy }?.collect(Collectors.toList())
+                    ?.requireNoNulls() ?: emptyList()
         } else emptyList()
     }
 
@@ -98,4 +110,12 @@ private class ServiceImpl : ServiceInterface {
                 user?.serviceCollection?.stream()?.collect(Collectors.toList())
             } else null
 
+    override fun countAllOffers(): Long =
+            serviceData.countAllByTypeEquals(Service.OFFERED) ?: 0
+
+    override fun countAllRequset(): Long =
+            serviceData.countAllByTypeEquals(Service.REQUSETED) ?: 0
+
+    override fun countAllservice(): Long =
+            serviceData.countAllByIdIsNotNull()
 }

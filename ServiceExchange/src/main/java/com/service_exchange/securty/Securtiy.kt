@@ -54,24 +54,24 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class UserSercurity(val id: Int, private val username: String, private val password: String
-                    , val email: String, val authortys: List<GrantedAuthority>
-                    , enabled: Boolean, val lastPasswordResetDate: Date = Date(Date().time - 1000000)) : UserDetails {
+class UserSercurity(val id: Int?, private val username: String?, private val password: String?
+                    , val email: String?, val authortys: List<GrantedAuthority>?
+                    , enabled: Boolean?, val lastPasswordResetDate: Date = Date(Date().time - 1000000)) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
-            authortys.toMutableList()
+            authortys?.toMutableList() ?: mutableListOf()
 
     override fun isEnabled(): Boolean {
         return true;
     }
 
     override fun getUsername(): String =
-            username
+            username ?: ""
 
     override fun isCredentialsNonExpired(): Boolean =
             true
 
     override fun getPassword(): String =
-            password
+            password ?: ""
 
     override fun isAccountNonExpired(): Boolean =
             true
@@ -89,10 +89,10 @@ class JwtFactory {
 
     companion object {
         fun create(user: UserTable): UserSercurity {
-            val email = user.userEmailCollection.elementAt(0)
-            val authority = listOf(user.userAuthority.authority)
-            val u = UserSercurity(id = user.id, email = user.name, authortys = mapToGrantedAuthorities(authority)
-                    , enabled = user.isEnabled(), password = user.accountId, username = email.userEmailPK.email)
+            val email = user.userEmailCollection?.elementAt(0)
+            val authority = listOf(user.userAuthority?.authority)
+            val u = UserSercurity(id = user.id, email = user.name, authortys = mapToGrantedAuthorities(authority.requireNoNulls())
+                    , enabled = user.isEnabled(), password = user.accountId, username = email?.userEmailPK?.email)
 
             return u
 

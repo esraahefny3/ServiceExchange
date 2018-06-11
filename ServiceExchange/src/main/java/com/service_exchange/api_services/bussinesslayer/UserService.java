@@ -8,15 +8,11 @@ package com.service_exchange.api_services.bussinesslayer;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDataDelete;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDataGet;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDataSet;
+import com.service_exchange.api_services.bussinessdaodelegates.user.UserStaticsGetter;
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
-import com.service_exchange.api_services.dao.dto.EdcationDTO;
-import com.service_exchange.api_services.dao.dto.ServiceDTO;
-import com.service_exchange.api_services.dao.dto.SkillDTO;
-import com.service_exchange.api_services.dao.dto.UserDTO;
+import com.service_exchange.api_services.dao.dto.*;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.Review;
-import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Altysh
@@ -75,6 +71,9 @@ public class UserService {
         return daoImpl.scerchUserByName(name, start);
     }
 
+    @Autowired
+    private UserStaticsGetter userStaticsGetter;
+
     @Nullable
     public String getUserLevel(int userId) {
         UserTable userTable = userDataGet.getUserById(userId);
@@ -113,110 +112,49 @@ public class UserService {
         return level;
     }
 
-    public double getEarningInMonth(int userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        Calendar localDate = Calendar.getInstance();
-        localDate.set(Calendar.DAY_OF_MONTH, 1);
-        if (userTable != null) {
-            return userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-                    .mapToInt(value -> value.getTransactionInfoCollection().stream().filter(transactionInfo -> !transactionInfo.getState().equals(TransactionInfo.REJECTED_STATE)
-                            && !transactionInfo.getState().equals(TransactionInfo.PENDING_STATE))
-                            .filter(transactionInfo -> (transactionInfo.getStartDate().getTime() + transactionInfo.getDuration().longValue()) >= localDate.getTimeInMillis())
-
-                            .mapToInt(TransactionInfo::getPrice).sum()
-                    ).sum();
-        } else return 0;
-    }
-
-    public int getUserBalance(int userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        Calendar localDate = Calendar.getInstance();
-        localDate.set(Calendar.DAY_OF_MONTH, 1);
-        if (userTable != null) {
-            return userTable.getBalance();
-        } else return 0;
-    }
-
-    private double orderCompletion(Integer userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        AtomicReference<Double> d = new AtomicReference<>((double) 0);
-        if (userTable != null) {
-            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-                    .mapToDouble(service -> {
-                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> !transactionInfo.getState().equals(TransactionInfo.REJECTED_STATE)
-                                && !transactionInfo.getState().equals(TransactionInfo.PENDING_STATE))
-                                .mapToDouble(value -> {
-                                    System.out.println(value.getId());
-                                    if (value.getState().equals(TransactionInfo.ACCEPTED_STATE) || value.getState().equals(TransactionInfo.ON_PROGRESS_STATE)) {
-                                        return 0.0;
-                                    } else return 1.0;
-                                }).average().ifPresent(d::set);
-                        return d.get();
-                    }).average().ifPresent(d::set);
-
+    public UserStatics getUserStatic(int userId) {
+        if (userDataGet.getUserById(userId) != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            UserStatics userStatics = new UserStatics();
+            userStatics.setActiveOrder(userStaticsGetter.getActiveOrderCount(userId));
+            userStatics.setAllUserPoint(userStaticsGetter.getUserBalanceFormTheStart(userId));
+            userStatics.setAvgSellIng(userStaticsGetter.getAVGEarning(userId));
+            userStatics.setCurrentLevel(userStaticsGetter.getUserLevel(userId));
+            userStatics.setEarningInThisMounth(userStaticsGetter.getEarning(userId, calendar));
+            userStatics.setFeedBackRate(userStaticsGetter.getTotalFeedBack(userId));
+            userStatics.setNextLevelDescription(userStaticsGetter.getUserNextLevel(userId));
+            userStatics.setNumberOfUnreadedMessage(0);
+            userStatics.setOnTimeDelivery(userStaticsGetter.getOnTimeDelevrey(userId));
+            userStatics.setOrderCompletion(userStaticsGetter.getOrderCompletion(userId));
+            userStatics.setPresonalBalance(userStaticsGetter.getUserBalance(userId));
+            userStatics.setResponseRate(userStaticsGetter.getResponceRate(userId));
+            userStatics.setResponseTime(userStaticsGetter.getResponceMessageTime(userId));
+            return userStatics;
         }
-        return d.get();
+        return null;
     }
+    /*
+     Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+    */
 
-    private double onTimeDelevrey(Integer userId) {
+    public List<EarningListObject> getEaringList(Integer userId) {
         UserTable userTable = userDataGet.getUserById(userId);
-        AtomicReference<Double> d = new AtomicReference<>((double) 0);
-        if (userTable != null) {
-            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-                    .mapToDouble(service -> {
-                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE)
-                                || transactionInfo.getState().equals(TransactionInfo.EXTENDED_STATE)
-                                || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
-                                .mapToDouble(value -> {
-                                    if (value.getState().equals(TransactionInfo.LATE_STATE) || value.getState().equals(TransactionInfo.EXTENDED_STATE)) {
-                                        return 0.0;
-                                    } else return 1.0;
-                                }).average().ifPresent(d::set);
-                        return d.get();
-                    })
-                    .average().ifPresent(d::set);
-
-        }
-        return d.get();
-    }
-
-    private double totalFeedBack(Integer userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        AtomicReference<Double> d = new AtomicReference<>((double) 0);
-        if (userTable != null) {
-            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-                    .mapToDouble(service -> {
-                        service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE)
-                                || transactionInfo.getState().equals(TransactionInfo.EXTENDED_STATE)
-                                || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
-                                .mapToDouble(value -> {
-                                    final double[] val = {0};
-                                    value.getReviewCollection().stream().mapToDouble(Review::getRating).average().ifPresent(value1 -> val[0] = value1 / 5);
-                                    return val[0];
-                                }).average().ifPresent(d::set);
-                        return d.get();
-                    })
-                    .average().ifPresent(d::set);
-
-        }
-        return d.get();
-    }
-
-    private double getResponceMessageTime(Integer userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        final double[] retval = {0};
-        if (userTable != null) {
-            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-                    .map(service -> service.getTransactionInfoCollection().stream())
-                    .mapToDouble(transactionInfoStream -> {
-                        final double[] dval = {0};
-                        transactionInfoStream.mapToDouble(value -> value.getMessageCollection().stream().filter(message -> message.getSenderId().getId().intValue() != userId.intValue())
-                                .mapToDouble(value1 -> value1.getSeenDate().getTime()).sorted().reduce(0, (left, right) -> right - left)).average().ifPresent(value -> dval[0] = value);
-                        return dval[0];
-                    }).average().ifPresent(value -> retval[0] = value);
-            return retval[0];
-        }
-        return 0;
+        final List<EarningListObject> list = new ArrayList<>();
+//        if (userTable != null) {
+//            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
+//                    .forEach(service ->
+//                            service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE)
+//                                    || transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE) || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
+//                                    .forEach(transactionInfo -> list.add(new EarningListObject(transactionInfo.getId(),
+//                                            transactionInfo.getServiceId().getName()
+//                                            , transactionInfo.getStartDate().getTime()
+//                                            + transactionInfo.getDuration().longValue(), transactionInfo.getPrice())))
+//                    );
+//
+//        }
+        return userStaticsGetter.getEaringList(userId);
     }
 
     //static
@@ -224,7 +162,7 @@ public class UserService {
         if (userId != null && pageNum != null) {
             UserTable userNew = userBadgesInterface.checkIfUserExist(userId);
             if (userNew != null) {
-                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of((pageNum != null) ? pageNum : 0, pageSize));
+                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of(pageNum, pageSize));
             }
         }
         return null;

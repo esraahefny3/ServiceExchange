@@ -52,4 +52,8 @@ public interface UserInterFace {
 
     List getUserComplaints(Integer userId);
 
+    Long getUserCount();
+
+    Long getUserCountBasedOnStatus(String states);
+
 }

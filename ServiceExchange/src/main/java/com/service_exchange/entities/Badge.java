@@ -56,6 +56,11 @@ public class Badge implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "badge")
     private Collection<UserBadge> userBadgeCollection;
 
+    @Transient
+    public static final Short Deleted = 0;
+    @Transient
+    public static final Short ENABLED = 1;
+
     public Badge() {
     }
 

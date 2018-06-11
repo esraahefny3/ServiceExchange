@@ -45,16 +45,29 @@ public class Challenge implements Serializable {
     private Integer reward;
     @Column(name = "period")
     private BigInteger period;
+    @Transient
+    public static final Integer SUSBENDED = 0;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "challenge")
     private Collection<UserChallenge> userChallengeCollection;
     @JoinColumn(name = "added_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable addedBy;
+    @Transient
+    public static final Integer RESUMED = 1;
+    @Column(name = "is_suspended")
+    private Integer isSuspended;
 
     public Challenge() {
     }
 
+    public Integer getIsSuspended() {
+        return isSuspended;
+    }
+
+    public void setIsSuspended(Integer is_suspended) {
+        this.isSuspended = is_suspended;
+    }
     public Challenge(Integer id) {
         this.id = id;
     }

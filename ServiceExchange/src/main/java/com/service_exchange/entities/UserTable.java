@@ -7,6 +7,7 @@ package com.service_exchange.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -59,11 +60,11 @@ public class UserTable implements Serializable {
     private String accountType;
     @Column(name = "balance")
     private Integer balance;
-    public static final short ENABELED = 0;
+
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
     private Collection<Skill> skillCollection;
-    public static final short DISABLED = 1;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
     @JsonIgnore
     private Collection<Education> educationCollection;
@@ -105,7 +106,18 @@ public class UserTable implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<UserEmail> userEmailCollection;
-
+    @Transient
+    public static final short ENABELED = 0;
+    @Transient
+    public static final short DISABLED = 1;
+    @Transient
+    public static final String ONLINE = "online";
+    @Transient
+    public static final String OFFLINE = "offline";
+    @Transient
+    public static final String BUSY = "busy";
+    @Transient
+    private Boolean isFrist = Boolean.TRUE;
     public Boolean getFrist() {
         return isFrist;
     }
@@ -114,12 +126,11 @@ public class UserTable implements Serializable {
         isFrist = frist;
     }
 
-    @Transient
-    private Boolean isFrist = Boolean.TRUE;
 
     public UserTable() {
     }
 
+    @Nullable
     public Integer getBalance() {
         return balance;
     }
@@ -131,6 +142,7 @@ public class UserTable implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public Integer getId() {
         return id;
     }
@@ -139,6 +151,7 @@ public class UserTable implements Serializable {
         this.id = id;
     }
 
+    @Nullable
     public String getName() {
         return name;
     }
@@ -147,6 +160,7 @@ public class UserTable implements Serializable {
         this.name = name;
     }
 
+    @Nullable
     public String getImage() {
         return image;
     }
@@ -155,6 +169,7 @@ public class UserTable implements Serializable {
         this.image = image;
     }
 
+    @Nullable
     public String getStatus() {
         return status;
     }
@@ -163,6 +178,7 @@ public class UserTable implements Serializable {
         this.status = status;
     }
 
+    @Nullable
     public Date getBirthDate() {
         return birthDate;
     }
@@ -171,6 +187,7 @@ public class UserTable implements Serializable {
         this.birthDate = birthDate;
     }
 
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -179,6 +196,7 @@ public class UserTable implements Serializable {
         this.accountId = accountId;
     }
 
+    @Nullable
     public String getAccountType() {
         return accountType;
     }
@@ -187,6 +205,7 @@ public class UserTable implements Serializable {
         this.accountType = accountType;
     }
 
+    @Nullable
     public Short getIsEnabled() {
         return isEnabled;
     }
@@ -195,6 +214,7 @@ public class UserTable implements Serializable {
         this.isEnabled = isEnabled;
     }
 
+    @Nullable
     public Date getLastPasswordChanged() {
         return lastPasswordChanged;
     }
@@ -203,6 +223,7 @@ public class UserTable implements Serializable {
         this.lastPasswordChanged = lastPasswordChanged;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Skill> getSkillCollection() {
         return skillCollection;
@@ -212,6 +233,7 @@ public class UserTable implements Serializable {
         this.skillCollection = skillCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<UserEmail> getUserEmailCollection() {
         return userEmailCollection;
@@ -221,6 +243,7 @@ public class UserTable implements Serializable {
         this.userEmailCollection = userEmailCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Education> getEducationCollection() {
         return educationCollection;
@@ -230,6 +253,7 @@ public class UserTable implements Serializable {
         this.educationCollection = educationCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<UserTelephone> getUserTelephoneCollection() {
         return userTelephoneCollection;
@@ -239,6 +263,7 @@ public class UserTable implements Serializable {
         this.userTelephoneCollection = userTelephoneCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<UserNotification> getUserNotificationCollection() {
         return userNotificationCollection;
@@ -248,6 +273,7 @@ public class UserTable implements Serializable {
         this.userNotificationCollection = userNotificationCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Message> getMessageCollection() {
         return messageCollection;
@@ -257,6 +283,7 @@ public class UserTable implements Serializable {
         this.messageCollection = messageCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Message> getMessageCollection1() {
         return messageCollection1;
@@ -266,6 +293,7 @@ public class UserTable implements Serializable {
         this.messageCollection1 = messageCollection1;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<UserChallenge> getUserChallengeCollection() {
         return userChallengeCollection;
@@ -275,6 +303,7 @@ public class UserTable implements Serializable {
         this.userChallengeCollection = userChallengeCollection;
     }
 
+    @Nullable
     public UserAuthority getUserAuthority() {
         return userAuthority;
     }
@@ -283,6 +312,7 @@ public class UserTable implements Serializable {
         this.userAuthority = userAuthority;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Complaint> getComplaintCollection() {
         return complaintCollection;
@@ -292,6 +322,7 @@ public class UserTable implements Serializable {
         this.complaintCollection = complaintCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<UserBadge> getUserBadgeCollection() {
         return userBadgeCollection;
@@ -310,6 +341,7 @@ public class UserTable implements Serializable {
         this.reviewCollection = reviewCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<Service> getServiceCollection() {
         return serviceCollection;
@@ -319,6 +351,7 @@ public class UserTable implements Serializable {
         this.serviceCollection = serviceCollection;
     }
 
+    @Nullable
     @XmlTransient
     public Collection<TransactionInfo> getTransactionInfoCollection() {
         return transactionInfoCollection;
@@ -487,8 +520,12 @@ public class UserTable implements Serializable {
     }
 
     public Boolean removeService(Service service) {
-        if (serviceCollection.contains(service)) {
-            serviceCollection.remove(service);
+
+        assert service.getIsAvailable() != null;
+
+        if (serviceCollection.contains(service) && !service.getIsAvailable().equals(Service.DELETED)) {
+
+            service.setIsAvailable(Service.DELETED);
             return true;
         }
         return false;

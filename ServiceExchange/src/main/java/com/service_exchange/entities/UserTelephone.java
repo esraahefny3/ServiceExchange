@@ -28,7 +28,7 @@ public class UserTelephone implements Serializable {
     protected com.service_exchange.entities.UserTelephonePK userTelephonePK;
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private com.service_exchange.entities.UserTable userTable;
+    private UserTable userTable;
 
     public UserTelephone() {
     }
@@ -41,7 +41,7 @@ public class UserTelephone implements Serializable {
         this.userTelephonePK = new com.service_exchange.entities.UserTelephonePK(userId, telephone);
     }
 
-    public UserTelephone(int userId, String telephone, com.service_exchange.entities.UserTable userTable) {
+    public UserTelephone(int userId, String telephone, UserTable userTable) {
         this.userTelephonePK = new com.service_exchange.entities.UserTelephonePK(userId, telephone);
         this.userTable = userTable;
     }
@@ -54,11 +54,11 @@ public class UserTelephone implements Serializable {
         this.userTelephonePK = userTelephonePK;
     }
 
-    public com.service_exchange.entities.UserTable getUserTable() {
+    public UserTable getUserTable() {
         return userTable;
     }
 
-    public void setUserTable(com.service_exchange.entities.UserTable userTable) {
+    public void setUserTable(UserTable userTable) {
         this.userTable = userTable;
     }
 

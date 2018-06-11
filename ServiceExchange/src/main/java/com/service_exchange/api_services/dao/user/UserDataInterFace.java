@@ -5,6 +5,7 @@
  */
 package com.service_exchange.api_services.dao.user;
 
+import com.service_exchange.entities.Skill;
 import com.service_exchange.entities.UserTable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,16 +13,28 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author Altysh
  */
 @Repository
-public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,Integer>{
+public interface UserDataInterFace extends PagingAndSortingRepository<UserTable, Integer> {
 
     Page<UserTable> findByNameContains(String name, Pageable page);
 
     UserTable findByAccountIdEquals(String accountId);
 
+    Long countAllByIdIsNotNull();
+
+    Long countAllByStatusEquals(String status);
+
+
+}
+
+interface u extends PagingAndSortingRepository<Skill, Integer> {
+    Long countAllByIdIsNotNull();
+
+    Long countAllByParentSkillIdIsNull();
+
+    Long countAllByParentSkillId_IdEquals(Integer id);
 
 }
 

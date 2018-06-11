@@ -19,11 +19,14 @@ class UserTransactionImpl : UserTransactionInterFace {
 
     override fun getWorkingDuration(userId: Int?): Long? =
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()
-                    ?.mapToLong { t -> t.endDate.time - t.startDate.time }?.sum()
+                    ?.mapToLong { t -> t.endDate?.time ?: 0-(t.startDate?.time ?: 0) }?.sum()
 
     override fun getWoringDurtation(userId: Int?, start: Long, end: Long): Long? =
             userInterface.getUser(userId)?.transactionInfoCollection?.stream()
-                    ?.filter { t -> t.startDate.time >= start && t.endDate.time >= end && (t.state == onSuccess || t.state == onEnd) }
-                    ?.mapToLong { t -> t.endDate.time - t.startDate.time }?.sum()
+                    ?.filter { t ->
+                        t.startDate?.time ?: 0 >= start && (t.endDate?.time
+                                ?: 0) >= end && (t.state == onSuccess || t.state == onEnd)
+                    }
+                    ?.mapToLong { t -> t.endDate?.time ?: 0-(t.startDate?.time ?: 0) }?.sum()
 
 }

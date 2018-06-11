@@ -6,8 +6,8 @@
 package com.service_exchange.api_services.bussinesslayer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.service_exchange.api_services.dao.dto.NotificationDto;
 import com.service_exchange.api_services.dao.notification.NotificationDataInterface;
-import com.service_exchange.api_services.dao.notification.NotificationDto;
 import com.service_exchange.api_services.dao.notification.UserNotificationDataInterface;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;

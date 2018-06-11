@@ -7,12 +7,13 @@ package com.service_exchange.api_services.restcontrollers;
 
 import com.service_exchange.api_services.bussinesslayer.ChallangeService;
 import com.service_exchange.entities.Challenge;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  *
@@ -24,8 +25,8 @@ public class ChallangeRest {
     @Autowired
     ChallangeService service;
     @RequestMapping("/getAll")
-   private List<Challenge> getAllChanges(){
-        return service.getAllChallanges();
+    private List<Challenge> getAllChanges(Integer page) {
+        return service.getAllChallanges(page);
     }
     @RequestMapping(value = "/createChallange" ,method = RequestMethod.POST)
    private Challenge createChallange(@RequestBody Challenge challenge){
