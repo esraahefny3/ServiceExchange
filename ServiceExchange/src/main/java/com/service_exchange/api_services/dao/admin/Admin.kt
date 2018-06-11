@@ -2,6 +2,7 @@ package com.service_exchange.api_services.dao.admin
 
 import com.service_exchange.entities.AdminTable
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 
 interface AdminInterface {
@@ -9,6 +10,7 @@ interface AdminInterface {
     fun changeImage(image: String, adminId: String): Boolean
     fun getAdmin(adminId: String): AdminTable?
     fun save(admin: AdminTable): AdminTable
+    fun getAllAdmins(page: Int): List<AdminTable>
 
 }
 
@@ -27,6 +29,9 @@ private class Admin : AdminInterface {
         } else false
 
     }
+
+    override fun getAllAdmins(page: Int): List<AdminTable> =
+            admindata.findAll(PageRequest.of(page, 20)).map { it }.content
 
     override fun changeImage(image: String, adminId: String): Boolean {
         val admin = getAdmin(adminId)

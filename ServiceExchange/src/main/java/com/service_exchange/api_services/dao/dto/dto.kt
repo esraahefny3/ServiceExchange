@@ -353,6 +353,11 @@ class UserStatices {
     var userCount: Int? = null
 }
 
+class SkillStatistics {
+    var mainCount: Int? = null
+    var totalSkillCount: Int? = null
+}
+
 class ServiceStatices {
     var offeredCount: Int? = null
     var reqCount: Int? = null

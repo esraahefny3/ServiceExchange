@@ -24,6 +24,8 @@ interface AdminGettable {
     fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification>
     fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto>
     fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto>
+    fun getAllOpenedComplaints(page: Int): List<AdminComplaint>
+    fun getAlladmins(page: Int): List<AdminMain>
 }
 
 @Component
@@ -33,6 +35,11 @@ private class AdminGettableImpl : AdminGettable {
     @Autowired
     lateinit var complainInterface: ComplaintInterface
 
+    override fun getAlladmins(page: Int): List<AdminMain> =
+            adminInterface.getAllAdmins(page).map { it.convertAdmin() }
+
+    override fun getAllOpenedComplaints(page: Int): List<AdminComplaint> =
+            complainInterface.getUnseenComplaints(page).map { it.convertAdminComplaint() }
     override fun getAdminInfo(adminId: String): AdminMain? =
             adminInterface.getAdmin(adminId)?.convertAdmin()
 
@@ -43,7 +50,7 @@ private class AdminGettableImpl : AdminGettable {
                     ?: emptyList()
 
     override fun getAdminOpenComplains(adminId: String, page: Int): List<AdminComplaint> =
-            adminInterface.getAdmin(adminId)?.complaintCollection?.stream()?.map { it.convertAdminComplaint() }?.collect(Collectors.toList())
+            adminInterface.getAdmin(adminId)?.complaintCollection?.stream()?.filter { it.state != Complaint.COMPLETED }?.map { it.convertAdminComplaint() }?.collect(Collectors.toList())
                     ?.filterIndexed { index, adminChallange -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
