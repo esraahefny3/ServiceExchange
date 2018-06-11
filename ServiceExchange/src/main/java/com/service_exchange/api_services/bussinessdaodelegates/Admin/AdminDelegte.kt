@@ -369,13 +369,48 @@ private class AdminStaticImpl : AdminStatic {
             adminInterface.findAll(PageRequest.of(page, 20)).stream()
                     .map { it.convertNotifecationDTO() }.collect(Collectors.toList())
 
-    override fun getAllUsersWithSimpleDetails(page: Int): List<UserAdminInfo> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getAllUsersWithSimpleDetails(page: Int): List<UserAdminInfo> =
+            userInterface.getAllUser(page).stream().map {
+                val user = AppFactory.mapToDto(it, UserAdminInfo::class.java)
+                user.pointSpend = it.transactionInfoCollection?.stream()?.filter { it.type == Service.OFFERED && (it.state == TransactionInfo.COMPLETED_STATE || it.state == TransactionInfo.LATE_STATE) }?.mapToInt { value ->
+                    value.price ?: 0
+                }
+                        ?.sum()
+                user.PointEarned = it.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
+                        ?.mapToInt {
+                            it.transactionInfoCollection?.stream()?.filter { (it.state == TransactionInfo.COMPLETED_STATE || it.state == TransactionInfo.LATE_STATE) }
+                                    ?.mapToInt { it.price ?: 0 }?.sum() ?: 0
+                        }
+                        ?.sum()
+                user.reivews = it.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
+                        ?.mapToLong {
+                            it.transactionInfoCollection?.stream()?.filter { (it.state == TransactionInfo.COMPLETED_STATE || it.state == TransactionInfo.LATE_STATE) }
+                                    ?.count() ?: 0
+                        }
+                        ?.sum()?.toInt()
+                user.services = it.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
+                        ?.count()?.toInt()
+                user.requests = it.serviceCollection?.stream()?.filter { it.type == Service.REQUSETED }
+                        ?.count()?.toInt()
+                user
+            }.collect(Collectors.toList())
 
-    override fun getAllServiceWithSimpleDetails(page: Int, type: String): List<ServiceAdminInfo> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
+    override fun getAllServiceWithSimpleDetails(page: Int, type: String): List<ServiceAdminInfo> =
+            serviceInterface.getAll(page).stream().filter { it.type == type }.map {
+                val service = AppFactory.mapToDto(it, ServiceAdminInfo::class.java)
+                service.category = it.skillCollection?.stream()?.map { it.description }?.collect(Collectors.toList())?.joinToString(",")
+                service.ownerImage = it.madeBy?.image
+                service.ownerName = it.madeBy?.name
+                service.reviewsCount = it.transactionInfoCollection?.stream()?.filter {
+                    it.state == TransactionInfo.COMPLETED_STATE
+                            || it.state == TransactionInfo.LATE_STATE
+                }?.count()?.toInt()
+                service.startedDated = it.startDate?.time
+                service
+
+            }.collect(Collectors.toList())
+
 
 
 }

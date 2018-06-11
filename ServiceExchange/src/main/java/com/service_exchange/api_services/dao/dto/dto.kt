@@ -291,11 +291,12 @@ class NotificationDto {
 
 class UserAdminInfo {
     var name: String? = null
-    var userActiveNow: Boolean? = null
-    var pic: String? = null
+    var state: String? = null
+    var image: String? = null
     var reivews: Int? = null
     var requests: Int? = null
     var services: Int? = null
+    var balance: Int? = null
     var pointSpend: Int? = null
     var PointEarned: Int? = null
 }
@@ -303,7 +304,7 @@ class UserAdminInfo {
 class ServiceAdminInfo {
     var id: Int? = null
     var name: String? = null
-    var point: Int? = null
+    var price: Int? = null
     var reviewsCount: Int? = null
     var ownerName: String? = null
     var ownerImage: String? = null
