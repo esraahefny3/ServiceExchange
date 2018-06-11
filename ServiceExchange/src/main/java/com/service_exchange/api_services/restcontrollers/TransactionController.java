@@ -11,6 +11,8 @@ import java.util.List;
 @RequestMapping("/transaction")
 public class TransactionController {
 
+    ////////////////////////////Esraa////////////////////////////
+
     @Autowired
     TransactionServiceInterface transactionServiceImpl;
 
@@ -53,4 +55,55 @@ public class TransactionController {
         }
         return false;
     }
+
+    ////////////////////////////Esraa////////////////////////////
+
+    ////////////////////////////Nouran////////////////////////////
+
+    @Autowired
+    TransactionServiceInterface transactionServiceInterface;
+
+
+    @RequestMapping(value = "/makeTransactionOnService", method = RequestMethod.POST)
+    public TransactionDto makeTransactionOnService(@RequestBody TransactionDto transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.makeTransactionOnService(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+
+    @RequestMapping(value = "/completeTransaction", method = RequestMethod.POST)
+    public TransactionDto completeTransaction(@RequestBody TransactionDto transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.completeTransaction(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+
+    @RequestMapping(value = "/approveCompletedTransaction", method = RequestMethod.POST)
+    public TransactionDto approveCompletedTransaction(@RequestBody TransactionDto transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.approveCompletedTransaction(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+
+    @RequestMapping(value = "/rejectCompletedTransaction", method = RequestMethod.POST)
+    public TransactionDto rejectCompletedTransaction(@RequestBody TransactionDto transactionDto) {
+        if (transactionDto != null) {
+            return transactionServiceInterface.rejectCompletedTransaction(transactionDto);
+        } else {
+            return null;
+        }
+    }
+
+
+    ////////////////////////////Nouran////////////////////////////
+
 }
