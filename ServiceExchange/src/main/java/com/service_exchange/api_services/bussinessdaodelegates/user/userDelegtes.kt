@@ -1,6 +1,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
 
+import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.KotlinUtal.convertSkill
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.user.UserEducationInterface
@@ -180,7 +181,7 @@ private class UserDataSetImol : UserDataSet {
     override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
         return if (serviceDTO != null && serviceDTO.uO != null) {
             val service = AppFactory.mapToDto(serviceDTO, Service::class.java)
-            userService.addServiceToUser(serviceDTO.uO?.id, service)?.let { AppFactory.mapToDto(this, ServiceDTO::class.java) }
+            userService.addServiceToUser(serviceDTO.uO?.id, service)?.let { it.convertServie() }
         } else null
 
     }

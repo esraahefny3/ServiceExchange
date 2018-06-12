@@ -78,7 +78,9 @@ class UserDTO {
 
 
 class UserInfo(val userName: String?, val id: Int?, val image: String?) {
+    constructor() : this(null, null, null) {
 
+    }
 }
 
 class ServiceDTO {

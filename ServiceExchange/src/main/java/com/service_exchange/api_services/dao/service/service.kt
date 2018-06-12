@@ -71,6 +71,7 @@ private class ServiceImpl : ServiceInterface {
     }
 
     override fun getAll(start: Int, type: String): Page<Service> {
+        print("servie")
         return serviceData.findAllByTypeEqualsAndIsAvailableEquals(type, Service.AVALIBLE, PageRequest.of(start, 20))
     }
 

@@ -104,6 +104,34 @@ public class TransactionController {
     }
 
 
+    @RequestMapping(value = "/getUserActiveTransactions/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionDto> getUserActiveTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+
+        if (userId != null && pageNum != null) {
+            return transactionServiceImpl.getUserActiveTransactions(userId, pageNum);
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "/getUserCompletedTransactions/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionDto> getUserCompletedTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+
+        if (userId != null && pageNum != null) {
+            return transactionServiceImpl.getUserCompletedTransactions(userId, pageNum);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/getUserCompletedAndApprovedTransactions/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionDto> getUserCompletedAndApprovedTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+
+        if (userId != null && pageNum != null) {
+            return transactionServiceImpl.getUserCompletedAndApprovedTransactions(userId, pageNum);
+        }
+        return null;
+    }
+
     ////////////////////////////Nouran////////////////////////////
 
 }

@@ -22,14 +22,10 @@ import java.util.List;
 public class TransactionService implements TransactionServiceInterface {
 
 
-    ////////////////////////////Esraa////////////////////////////
-
     @Autowired
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
-
     @Autowired
     private UserDelegateInterface userDelegateInterfaceImpl;
-
     @Autowired
     TransactionDelegateInterface delegate;
     @Autowired
@@ -39,9 +35,8 @@ public class TransactionService implements TransactionServiceInterface {
     @Autowired
     UserDataInterFace userDataInterFace;
 
-    ////////////////////////////Esraa////////////////////////////
 
-    ////////////////////////////Nouran////////////////////////////
+    ////////////////////////////Esraa////////////////////////////
     @Autowired
     ServiceData serviceData;
 
@@ -115,6 +110,10 @@ public class TransactionService implements TransactionServiceInterface {
 
 
     }
+
+    ////////////////////////////Esraa////////////////////////////
+
+    ////////////////////////////Nouran////////////////////////////
 
     @Override
     public TransactionDto makeTransactionOnService(TransactionDto transactionDto) {
@@ -205,6 +204,37 @@ public class TransactionService implements TransactionServiceInterface {
 
         return null;
     }
+
+    @Override
+    public List<TransactionDto> getUserActiveTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserActiveTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<TransactionDto> getUserCompletedTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserCompletedTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<TransactionDto> getUserCompletedAndApprovedTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserCompletedAndApprovedTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
 
     ////////////////////////////Nouran////////////////////////////
 }
