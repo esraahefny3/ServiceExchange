@@ -22,14 +22,10 @@ import java.util.List;
 public class TransactionService implements TransactionServiceInterface {
 
 
-    ////////////////////////////Esraa////////////////////////////
-
     @Autowired
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
-
     @Autowired
     private UserDelegateInterface userDelegateInterfaceImpl;
-
     @Autowired
     TransactionDelegateInterface delegate;
     @Autowired
@@ -38,37 +34,9 @@ public class TransactionService implements TransactionServiceInterface {
     TransactionDaoInterface transactionDao;
     @Autowired
     UserDataInterFace userDataInterFace;
-    @Override
-    public TransactionDto userAcceptedThenApproveTransaction(TransactionDto transactionDto) {
-        //security will check that startedby user is the service maker user
-        TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
-        //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
-        if (transactionInfo != null) {
-            Service service = transactionInfo.getServiceId();
-            UserTable transactionStartedByUser = service.getMadeBy();
-            if (transactionDelegateInterfaceImpl.getAllUserAcceptedTransactionsOnService(service).isEmpty() == true)
-            //user can accept only one transaction
-            {
-                if (transactionStartedByUser != null && (transactionInfo.getState().equals(TransactionInfo.PENDING_STATE) == true || transactionInfo.getState().equals(TransactionInfo.POSTPONED) == true)) {
-                    //make sure an l user l start l transaction hoa hoa l user l m2dm l service aw 3mlha request
-                   // transactionInfo.setState(TransactionInfo.ACCEPTED_STATE);
-                    transactionInfo.setPrice(transactionDto.getPrice());
-                    transactionInfo.setStartedBy(transactionStartedByUser);
-                    transactionDto.setDuration(transactionDto.getDuration());
-                    transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
-                    transactionInfo.setStartDate(new Date());
-                    if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
-                        return transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
-                    }
-                }
-            }
-        }
-        return null;
-    }
+
 
     ////////////////////////////Esraa////////////////////////////
-
-    ////////////////////////////Nouran////////////////////////////
     @Autowired
     ServiceData serviceData;
 
@@ -142,6 +110,10 @@ public class TransactionService implements TransactionServiceInterface {
 
 
     }
+
+    ////////////////////////////Esraa////////////////////////////
+
+    ////////////////////////////Nouran////////////////////////////
 
     @Override
     public TransactionDto makeTransactionOnService(TransactionDto transactionDto) {
@@ -232,6 +204,17 @@ public class TransactionService implements TransactionServiceInterface {
 
         return null;
     }
+
+    @Override
+    public List<TransactionDto> getUserActiveTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserActiveTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
 
     ////////////////////////////Nouran////////////////////////////
 }

@@ -47,15 +47,6 @@ public class TransactionController {
         return null;
     }
 
-    @RequestMapping(value = "/userAcceptedThenAcceptTransaction", method = RequestMethod.POST)
-    public TransactionDto userAcceptedThenApproveTransaction(@RequestBody TransactionDto transactionDto) {
-
-        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
-            return transactionServiceImpl.userAcceptedThenApproveTransaction(transactionDto);
-        }
-        return null;
-    }
-
     @RequestMapping(value = "/userRejectTransaction", method = RequestMethod.POST)
     public boolean userRejectTransaction(@RequestBody TransactionDto transactionDto) {
 
@@ -110,6 +101,16 @@ public class TransactionController {
         } else {
             return null;
         }
+    }
+
+
+    @RequestMapping(value = "/getUserActiveTransactions/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionDto> getUserActiveTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+
+        if (userId != null && pageNum != null) {
+            return transactionServiceImpl.getUserActiveTransactions(userId, pageNum);
+        }
+        return null;
     }
 
 

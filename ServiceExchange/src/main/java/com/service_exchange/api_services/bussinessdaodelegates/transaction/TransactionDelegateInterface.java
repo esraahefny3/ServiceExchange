@@ -38,5 +38,7 @@ public interface TransactionDelegateInterface {
 
     boolean rejectCompletedTransaction(TransactionInfo transactionInfo);
 
+    List<TransactionDto> getUserActiveTransactions(UserTable user, Integer pageNumber);
+
     ////////////////////////////Nouran////////////////////////////
 }

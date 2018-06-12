@@ -12,7 +12,6 @@ public interface TransactionServiceInterface {
 
     TransactionDto userApproveAcceptedTransaction(TransactionDto transactionDto);
 
-    TransactionDto userAcceptedThenApproveTransaction(TransactionDto transactionDto);
     boolean userRejectTransaction(TransactionDto transactionDto);
 
     List<TransactionDto> getAllUserTransactions(Integer UserId, Integer pageNum);
@@ -28,6 +27,8 @@ public interface TransactionServiceInterface {
     TransactionDto approveCompletedTransaction(TransactionDto transactionDto);
 
     TransactionDto rejectCompletedTransaction(TransactionDto transactionDto);
+
+    List<TransactionDto> getUserActiveTransactions(Integer userId, Integer pageNum);
 
     ////////////////////////////Nouran////////////////////////////
 
