@@ -63,7 +63,14 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
         try{
             List<TransactionInfo> transactionInfoList= transactionDaoInterfaceImpl.findAllUserTransactions(user,PageRequest.of(pageNumber,size));
             List<TransactionDto>transactionDtoList=new ArrayList<>();
-            transactionInfoList.forEach(transactionInfo->transactionDtoList.add(AppFactory.mapToDto(transactionInfo,TransactionDto.class)));
+           // transactionInfoList.forEach(transactionInfo->transactionDtoList.add(AppFactory.mapToDto(transactionInfo,TransactionDto.class)));
+
+            for (TransactionInfo transactionInfo:transactionInfoList) {
+                TransactionDto transactionDto=AppFactory.mapToDto(transactionInfo,TransactionDto.class);
+                transactionDto.setServiceId(transactionInfo.getServiceId().getId());
+                transactionDto.setStartedByUser(transactionInfo.getStartedBy().getId());
+                transactionDtoList.add(transactionDto);
+            }
             return transactionDtoList;
         }catch (Exception e)
         {
