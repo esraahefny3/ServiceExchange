@@ -30,6 +30,10 @@ public interface TransactionServiceInterface {
 
     List<TransactionDto> getUserActiveTransactions(Integer userId, Integer pageNum);
 
+    List<TransactionDto> getUserCompletedTransactions(Integer userId, Integer pageNum);
+
+    List<TransactionDto> getUserCompletedAndApprovedTransactions(Integer userId, Integer pageNum);
+
     ////////////////////////////Nouran////////////////////////////
 
 }

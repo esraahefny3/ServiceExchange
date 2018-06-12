@@ -40,5 +40,9 @@ public interface TransactionDelegateInterface {
 
     List<TransactionDto> getUserActiveTransactions(UserTable user, Integer pageNumber);
 
+    List<TransactionDto> getUserCompletedTransactions(UserTable user, Integer pageNum);
+
+    List<TransactionDto> getUserCompletedAndApprovedTransactions(UserTable user, Integer pageNum);
+
     ////////////////////////////Nouran////////////////////////////
 }

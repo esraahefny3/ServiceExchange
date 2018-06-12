@@ -196,5 +196,73 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
 
     }
 
+    @Override
+    public List<TransactionDto> getUserCompletedTransactions(UserTable user, Integer pageNumber) {
+
+        try {
+            String state = TransactionInfo.COMPLETED_STATE;
+            List<TransactionInfo> userActiveTransactions = transactionDaoInterfaceImpl.findUserTransactionsByState(user, state, PageRequest.of(pageNumber, size));
+            List<TransactionDto> transactionDtoList = new ArrayList<>();
+            for (int i = 0; i < userActiveTransactions.size(); i++) {
+                TransactionDto transactionDto = AppFactory.mapToDto(userActiveTransactions.get(i), TransactionDto.class);
+                TransactionInfo userTransaction = userActiveTransactions.get(i);
+                Integer userId = userTransaction.getStartedBy().getId();
+                transactionDtoList.add(transactionDto);
+                transactionDto.setStartedByUser(userId);
+                transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                if (userId == user.getId()) {
+                    transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                } else {
+                    transactionDto.setOtherUserName(user.getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                }
+            }
+            return transactionDtoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<TransactionDto> getUserCompletedAndApprovedTransactions(UserTable user, Integer pageNumber) {
+
+        try {
+            String state = TransactionInfo.COMPLETED_APPROVED_STATE;
+            List<TransactionInfo> userActiveTransactions = transactionDaoInterfaceImpl.findUserTransactionsByState(user, state, PageRequest.of(pageNumber, size));
+            List<TransactionDto> transactionDtoList = new ArrayList<>();
+            for (int i = 0; i < userActiveTransactions.size(); i++) {
+                TransactionDto transactionDto = AppFactory.mapToDto(userActiveTransactions.get(i), TransactionDto.class);
+                TransactionInfo userTransaction = userActiveTransactions.get(i);
+                Integer userId = userTransaction.getStartedBy().getId();
+                transactionDtoList.add(transactionDto);
+                transactionDto.setStartedByUser(userId);
+                transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                if (userId == user.getId()) {
+                    transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                } else {
+                    transactionDto.setOtherUserName(user.getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                }
+            }
+            return transactionDtoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     ////////////////////////////Nouran////////////////////////////
 }

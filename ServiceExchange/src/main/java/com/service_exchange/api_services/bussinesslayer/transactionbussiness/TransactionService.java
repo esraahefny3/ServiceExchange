@@ -215,6 +215,26 @@ public class TransactionService implements TransactionServiceInterface {
         }
     }
 
+    @Override
+    public List<TransactionDto> getUserCompletedTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserCompletedTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<TransactionDto> getUserCompletedAndApprovedTransactions(Integer userId, Integer pageNum) {
+        UserTable user = userDelegateInterfaceImpl.getUserById(userId);
+        if (user != null) {
+            return transactionDelegate.getUserCompletedAndApprovedTransactions(user, pageNum);
+        } else {
+            return null;
+        }
+    }
+
 
     ////////////////////////////Nouran////////////////////////////
 }
