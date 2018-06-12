@@ -61,6 +61,10 @@ public class UserTable implements Serializable {
     @Column(name = "balance")
     private Integer balance;
 
+    @Column(name = "firebase_authorization_key")
+    private String firebaseAuthorizationKey;
+
+
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
     private Collection<Skill> skillCollection;
@@ -359,6 +363,16 @@ public class UserTable implements Serializable {
 
     public void setTransactionInfoCollection(Collection<TransactionInfo> transactionInfoCollection) {
         this.transactionInfoCollection = transactionInfoCollection;
+    }
+
+
+    @Nullable
+    public String getFirebaseAuthorizationKey() {
+        return firebaseAuthorizationKey;
+    }
+
+    public void setFirebaseAuthorizationKey(String firebaseAuthorizationKey) {
+        this.firebaseAuthorizationKey = firebaseAuthorizationKey;
     }
 
     @Override
