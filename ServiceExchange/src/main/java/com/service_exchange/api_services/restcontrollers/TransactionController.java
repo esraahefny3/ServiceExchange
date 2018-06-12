@@ -47,15 +47,6 @@ public class TransactionController {
         return null;
     }
 
-    @RequestMapping(value = "/userAcceptedThenAcceptTransaction", method = RequestMethod.POST)
-    public TransactionDto userAcceptedThenApproveTransaction(@RequestBody TransactionDto transactionDto) {
-
-        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
-            return transactionServiceImpl.userAcceptedThenApproveTransaction(transactionDto);
-        }
-        return null;
-    }
-
     @RequestMapping(value = "/userRejectTransaction", method = RequestMethod.POST)
     public boolean userRejectTransaction(@RequestBody TransactionDto transactionDto) {
 
