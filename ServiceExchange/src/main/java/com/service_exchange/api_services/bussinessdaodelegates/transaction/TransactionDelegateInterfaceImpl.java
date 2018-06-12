@@ -171,9 +171,22 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
             List<TransactionDto> transactionDtoList = new ArrayList<>();
             for (int i = 0; i < userActiveTransactions.size(); i++) {
                 TransactionDto transactionDto = AppFactory.mapToDto(userActiveTransactions.get(i), TransactionDto.class);
-                Integer userId = userActiveTransactions.get(i).getStartedBy().getId();
+                TransactionInfo userTransaction = userActiveTransactions.get(i);
+                Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
                 transactionDto.setStartedByUser(userId);
+                transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                if (userId == user.getId()) {
+                    transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                } else {
+                    transactionDto.setOtherUserName(user.getName());
+                    if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
+                        transactionDto.setServiceProvider(true);
+                    }
+                }
             }
             return transactionDtoList;
         } catch (Exception e) {
