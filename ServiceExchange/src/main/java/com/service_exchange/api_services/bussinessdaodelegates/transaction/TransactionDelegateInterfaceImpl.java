@@ -24,49 +24,43 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
 
     ////////////////////////////Esraa////////////////////////////
 
-    private int size=20;
-     @Autowired
-   private TransactionDaoInterface transactionDaoInterfaceImpl;
+    private int size = 20;
+    @Autowired
+    private TransactionDaoInterface transactionDaoInterfaceImpl;
 
     @Override
     public TransactionInfo checkIfTransactionExist(Integer transactionId) {
-        Optional<TransactionInfo> transactionInfoOptional=transactionDaoInterfaceImpl.findById(transactionId);
-        if(transactionInfoOptional.isPresent()==true)
-        {
+        Optional<TransactionInfo> transactionInfoOptional = transactionDaoInterfaceImpl.findById(transactionId);
+        if (transactionInfoOptional.isPresent() == true) {
             return transactionInfoOptional.get();
-        }
-        else{
-            return  null;
+        } else {
+            return null;
         }
     }
 
     @Override
     public TransactionDto saveTransaction(TransactionInfo transactionInfo) {
         try {
-            if(transactionInfo!=null)
-            {
-                transactionInfo=transactionDaoInterfaceImpl.save(transactionInfo);
-                return AppFactory.mapToDto(transactionInfo,TransactionDto.class);
+            if (transactionInfo != null) {
+                transactionInfo = transactionDaoInterfaceImpl.save(transactionInfo);
+                return AppFactory.mapToDto(transactionInfo, TransactionDto.class);
             }
             return null;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public List<TransactionDto> getAllUserTransactions(UserTable user,Integer pageNumber ) {
+    public List<TransactionDto> getAllUserTransactions(UserTable user, Integer pageNumber) {
 
-        try{
-            List<TransactionInfo> transactionInfoList= transactionDaoInterfaceImpl.findAllUserTransactions(user,PageRequest.of(pageNumber,size));
-            List<TransactionDto>transactionDtoList=new ArrayList<>();
-            transactionInfoList.forEach(transactionInfo->transactionDtoList.add(AppFactory.mapToDto(transactionInfo,TransactionDto.class)));
+        try {
+            List<TransactionInfo> transactionInfoList = transactionDaoInterfaceImpl.findAllUserTransactions(user, PageRequest.of(pageNumber, size));
+            List<TransactionDto> transactionDtoList = new ArrayList<>();
+            transactionInfoList.forEach(transactionInfo -> transactionDtoList.add(AppFactory.mapToDto(transactionInfo, TransactionDto.class)));
             return transactionDtoList;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -75,11 +69,9 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
 
     @Override
     public List<TransactionInfo> getAllUserAcceptedTransactionsOnService(Service service) {
-        try{
-            return transactionDaoInterfaceImpl.findAllUserTransactionsOnServiceWithState(service,TransactionInfo.ACCEPTED_STATE);
-        }
-        catch (Exception e)
-        {
+        try {
+            return transactionDaoInterfaceImpl.findAllUserTransactionsOnServiceWithState(service, TransactionInfo.ACCEPTED_STATE);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -87,11 +79,9 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
 
     @Override
     public int postponeAllOtherUserPindingTransactionOnService(Service service) {
-        try{
-             return transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service,TransactionInfo.PENDING_STATE,TransactionInfo.POSTPONED);
-        }
-        catch (Exception e)
-        {
+        try {
+            return transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service, TransactionInfo.PENDING_STATE, TransactionInfo.POSTPONED);
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
@@ -99,11 +89,9 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
 
     @Override
     public int rejectAcceptedTransactionOnService(Service service) {
-        try{
-            return transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service,TransactionInfo.ACCEPTED_STATE,TransactionInfo.REJECTED_STATE);
-        }
-        catch (Exception e)
-        {
+        try {
+            return transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service, TransactionInfo.ACCEPTED_STATE, TransactionInfo.REJECTED_STATE);
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
@@ -172,6 +160,27 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<TransactionDto> getUserActiveTransactions(UserTable user, Integer pageNumber) {
+
+        try {
+            String state = TransactionInfo.ACCEPTED_STATE;
+            List<TransactionInfo> userActiveTransactions = transactionDaoInterfaceImpl.findUserTransactionsByState(user, state, PageRequest.of(pageNumber, size));
+            List<TransactionDto> transactionDtoList = new ArrayList<>();
+            for (int i = 0; i < userActiveTransactions.size(); i++) {
+                TransactionDto transactionDto = AppFactory.mapToDto(userActiveTransactions.get(i), TransactionDto.class);
+                Integer userId = userActiveTransactions.get(i).getStartedBy().getId();
+                transactionDtoList.add(transactionDto);
+                transactionDto.setStartedByUser(userId);
+            }
+            return transactionDtoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     ////////////////////////////Nouran////////////////////////////

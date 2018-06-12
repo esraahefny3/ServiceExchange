@@ -104,6 +104,16 @@ public class TransactionController {
     }
 
 
+    @RequestMapping(value = "/getUserActiveTransactions/{userId}/{pageNum}", method = RequestMethod.GET)
+    public List<TransactionDto> getUserActiveTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
+
+        if (userId != null && pageNum != null) {
+            return transactionServiceImpl.getUserActiveTransactions(userId, pageNum);
+        }
+        return null;
+    }
+
+
     ////////////////////////////Nouran////////////////////////////
 
 }

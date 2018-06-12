@@ -40,7 +40,7 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
 
     ////////////////////////////Esraa////////////////////////////
 
-    
+
     //mubarak//
     Long countAllByIdIsNotNull();
 
@@ -51,6 +51,9 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
     ////////////////////////////Nouran////////////////////////////
 
     List<TransactionInfo> findByServiceId(Service service);
+
+    @Query("select t from TransactionInfo t where (t.startedBy= :user or t.serviceId.madeBy= :user) and (t.state= :state)")
+    List<TransactionInfo> findUserTransactionsByState(@Param("user") UserTable user, @Param("state") String state, Pageable page);
 
     ////////////////////////////Nouran////////////////////////////
 

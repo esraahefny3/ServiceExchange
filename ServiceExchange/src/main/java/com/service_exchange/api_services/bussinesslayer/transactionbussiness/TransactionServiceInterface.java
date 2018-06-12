@@ -28,6 +28,8 @@ public interface TransactionServiceInterface {
 
     TransactionDto rejectCompletedTransaction(TransactionDto transactionDto);
 
+    List<TransactionDto> getUserActiveTransactions(Integer userId, Integer pageNum);
+
     ////////////////////////////Nouran////////////////////////////
 
 }
