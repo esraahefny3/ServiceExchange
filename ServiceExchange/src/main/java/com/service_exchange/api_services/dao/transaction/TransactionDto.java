@@ -15,6 +15,7 @@ public class TransactionDto {
     private String serviceName;
     private String otherUserName;
     private boolean isServiceProvider;
+    private String jopFile;
 //    private String typeOfPayment;
 
     private Integer serviceId;
@@ -122,5 +123,13 @@ public class TransactionDto {
 
     public void setStartedByUser(Integer startedByUser) {
         this.startedByUser = startedByUser;
+    }
+
+    public String getJopFile() {
+        return jopFile;
+    }
+
+    public void setJopFile(String jopFile) {
+        this.jopFile = jopFile;
     }
 }
