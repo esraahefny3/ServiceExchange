@@ -96,7 +96,7 @@ class ServiceDTO {
 
     var description: String? = null
 
-    var isAvailable: String? = null
+    var available: String? = null
 
     var skillList: List<Int>? = null
 

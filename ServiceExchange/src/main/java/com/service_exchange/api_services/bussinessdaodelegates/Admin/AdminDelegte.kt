@@ -22,8 +22,8 @@ interface AdminGettable {
     fun getAdminChallanges(adminId: String, page: Int): List<AdminChallange>
     fun getAdminOpenComplains(adminId: String, page: Int): List<AdminComplaint>
     fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification>
-    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto>
-    fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto>
+    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageGeneralDto>
+    fun getAllComlaintChat(compaintId: Int): List<MessageGeneralDto>
     fun getAllOpenedComplaints(page: Int): List<AdminComplaint>
     fun getAlladmins(page: Int): List<AdminMain>
 }
@@ -46,12 +46,12 @@ private class AdminGettableImpl : AdminGettable {
     override fun getAdminChallanges(adminId: String, page: Int): List<AdminChallange> =
             adminInterface.getAdmin(adminId)?.challengeCollection?.stream()?.map { it.convertAdminChallenge() }
                     ?.collect(Collectors.toList())
-                    ?.filterIndexed { index, adminChallange -> (index < (page * 20) + 20) && (index >= page * 20) }
+                    ?.filterIndexed { index, _ -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
     override fun getAdminOpenComplains(adminId: String, page: Int): List<AdminComplaint> =
             adminInterface.getAdmin(adminId)?.complaintCollection?.stream()?.filter { it.state != Complaint.COMPLETED }?.map { it.convertAdminComplaint() }?.collect(Collectors.toList())
-                    ?.filterIndexed { index, adminChallange -> (index < (page * 20) + 20) && (index >= page * 20) }
+                    ?.filterIndexed { index, _ -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
     override fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification> =
@@ -59,12 +59,12 @@ private class AdminGettableImpl : AdminGettable {
                     ?.collect(Collectors.toList())?.filterIndexed { index, adminChallange -> (index < (page * 20) + 20) && (index >= page * 20) }
                     ?: emptyList()
 
-    override fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto> =
-            complainInterface.getComplaintById(compaintId)?.transactionId?.messageCollection?.stream()?.map { t -> t.convertToTransaction() }
+    override fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageGeneralDto> =
+            complainInterface.getComplaintById(compaintId)?.transactionId?.messageCollection?.stream()?.map { t -> t.convertToDefult() }
                     ?.collect(Collectors.toList()) ?: emptyList()
 
-    override fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto> =
-            complainInterface.getComplaintById(compaintId)?.messageCollection?.stream()?.map { t -> t.convertToComplain() }
+    override fun getAllComlaintChat(compaintId: Int): List<MessageGeneralDto> =
+            complainInterface.getComplaintById(compaintId)?.messageCollection?.stream()?.map { t -> t.convertToDefult() }
                     ?.collect(Collectors.toList()) ?: emptyList()
 }
 
@@ -156,7 +156,7 @@ private class AdminAcceptImpl : AdminAccept {
 
     override fun enableService(serviceId: Int): Boolean {
         serviceInterface.getService(serviceId)?.let {
-            it.isAvailable = Service.AVALIBLE
+            it.available = Service.AVALIBLE
             serviceInterface.modifieService(it)
             return true
         }
@@ -224,8 +224,8 @@ private class AdminCancelImpl : AdminCancel {
     lateinit var skillInterface: SkillInterface
 
     override fun disableService(serviceId: Int): Boolean {
-        serviceInterface.getService(serviceId)?.takeIf { it.isAvailable != Service.DELETED }?.let {
-            it.isAvailable = Service.PAUSED
+        serviceInterface.getService(serviceId)?.takeIf { it.available != Service.DELETED }?.let {
+            it.available = Service.PAUSED
             serviceInterface.modifieService(it)
             return true
         }

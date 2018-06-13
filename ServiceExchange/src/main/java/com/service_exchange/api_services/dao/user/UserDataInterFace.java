@@ -30,7 +30,9 @@ public interface UserDataInterFace extends PagingAndSortingRepository<UserTable,
 }
 
 interface u extends PagingAndSortingRepository<Service, Integer> {
-    Long countAllByIsAvailableEquals(String isavailbe);
+    Page<Service> findAllByTypeEqualsAndAvailableEquals(String type, String avalibe, Pageable page);
+
+    Long countAllByAvailableEquals(String avalive);
 
 }
 

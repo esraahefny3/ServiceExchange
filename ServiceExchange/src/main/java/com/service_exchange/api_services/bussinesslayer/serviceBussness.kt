@@ -17,6 +17,7 @@ interface ServiceBussness {
     fun getPublerService(size: Int): List<ServiceDTO>
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
+
 }
 
 @Component
