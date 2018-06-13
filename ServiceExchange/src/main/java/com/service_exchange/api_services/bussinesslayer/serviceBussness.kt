@@ -1,12 +1,16 @@
 package com.service_exchange.api_services.bussinesslayer
 
+import com.service_exchange.api_services.KotlinUtal.convert
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceAddAble
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable
 import com.service_exchange.api_services.dao.dto.ServiceDTO
+import com.service_exchange.api_services.dao.transaction.TransactionDto
 import com.service_exchange.entities.Service
+import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.stream.Collectors
 
 interface ServiceBussness {
     fun getService(servieId: Int): ServiceDTO?
@@ -17,16 +21,17 @@ interface ServiceBussness {
     fun getPublerService(size: Int): List<ServiceDTO>
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
-    fun getAllTransactionOnServiceFilteredByState(servieId: Int, type: String): List<ServiceDTO>
+    fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionDto>
 
 }
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
-    override fun getAllTransactionOnServiceFilteredByState(servieId: Int, type: String): List<ServiceDTO> {
-        type.takeIf { s -> s == "any" }?.let { serviceGet.getService(servieId)?.transactionInfoCollection }
-                ?.map { it }
-        return emptyList()
+    override fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionDto> {
+        return serviceGet.getService(servieId)?.transactionInfoCollection
+                ?.stream()?.filter { it.state == TransactionInfo.PENDING_STATE || it.state == TransactionInfo.POSTPONED }
+                ?.map { it.convert() }?.collect(Collectors.toList()) ?: emptyList()
+
 
     }
 

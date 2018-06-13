@@ -2,6 +2,7 @@ package com.service_exchange.api_services.KotlinUtal
 
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
+import com.service_exchange.api_services.dao.transaction.TransactionDto
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.*
@@ -54,6 +55,12 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
 
             ob
         }
+
+fun TransactionInfo.convert(): TransactionDto =
+        AppFactory.mapToDto(this, TransactionDto::class.java).apply {
+
+        }
+
 
 fun Skill.convertSkill(): SkillDTO {
 

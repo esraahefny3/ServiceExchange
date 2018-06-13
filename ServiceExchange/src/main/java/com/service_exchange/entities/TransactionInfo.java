@@ -69,16 +69,6 @@ public class TransactionInfo implements Serializable {
     @Column(name = "jop_file")
     @Nullable
     private String jopFile;
-
-    @Nullable
-    public String getDescrption() {
-        return descrption;
-    }
-
-    public void setDescrption(@Nullable String descrption) {
-        this.descrption = descrption;
-    }
-
     @Column(name = "descrption")
     @Nullable
     private String descrption;
@@ -138,6 +128,14 @@ public class TransactionInfo implements Serializable {
         this.id = id;
     }
 
+    @Nullable
+    public String getDescrption() {
+        return descrption;
+    }
+
+    public void setDescrption(@Nullable String descrption) {
+        this.descrption = descrption;
+    }
     @Nullable
     public Integer getId() {
         return id;
