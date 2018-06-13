@@ -113,11 +113,11 @@ class AdminRest {
             adminCrud.rejectComplaint(complaintId)
 
     @RequestMapping(value = ["/getComplaintChat"], method = [(RequestMethod.GET)])
-    fun getComplaintChat(@RequestBody complaintId: Int): List<MessageComplaintDto> =
+    fun getComplaintChat(@RequestBody complaintId: Int): List<MessageGeneralDto> =
             adminGet.getAllComlaintChat(complaintId)
 
     @RequestMapping(value = ["/getComplaintTransactionChat"], method = [(RequestMethod.GET)])
-    fun getComplaintTransactionChat(@RequestBody complaintId: Int): List<MessageTransactionDto> =
+    fun getComplaintTransactionChat(@RequestBody complaintId: Int): List<MessageGeneralDto> =
             adminGet.getAllComlaintsTransactionChat(complaintId)
 
     @RequestMapping(value = ["/getAllAdminOpenedComplaint"], method = [(RequestMethod.GET)])

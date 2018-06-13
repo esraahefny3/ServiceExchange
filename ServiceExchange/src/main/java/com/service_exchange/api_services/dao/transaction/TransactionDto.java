@@ -12,6 +12,10 @@ public class TransactionDto {
     private Date endDate;
     private BigInteger duration;
     private Integer price;
+    private String serviceName;
+    private String otherUserName;
+    private boolean isServiceProvider;
+    private String jopFile;
 //    private String typeOfPayment;
 
     private Integer serviceId;
@@ -73,7 +77,31 @@ public class TransactionDto {
         this.price = price;
     }
 
-//    public String getTypeOfPayment() {
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getOtherUserName() {
+        return otherUserName;
+    }
+
+    public void setOtherUserName(String otherUserName) {
+        this.otherUserName = otherUserName;
+    }
+
+    public boolean isServiceProvider() {
+        return isServiceProvider;
+    }
+
+    public void setServiceProvider(boolean serviceProvider) {
+        isServiceProvider = serviceProvider;
+    }
+
+    //    public String getTypeOfPayment() {
 //        return typeOfPayment;
 //    }
 //
@@ -95,5 +123,13 @@ public class TransactionDto {
 
     public void setStartedByUser(Integer startedByUser) {
         this.startedByUser = startedByUser;
+    }
+
+    public String getJopFile() {
+        return jopFile;
+    }
+
+    public void setJopFile(String jopFile) {
+        this.jopFile = jopFile;
     }
 }

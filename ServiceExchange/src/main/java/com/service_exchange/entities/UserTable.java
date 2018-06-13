@@ -61,6 +61,10 @@ public class UserTable implements Serializable {
     @Column(name = "balance")
     private Integer balance;
 
+    @Column(name = "firebase_authorization_key")
+    private String firebaseAuthorizationKey;
+
+
     @ManyToMany(mappedBy = "userTableCollection")
     @JsonIgnore
     private Collection<Skill> skillCollection;
@@ -361,6 +365,16 @@ public class UserTable implements Serializable {
         this.transactionInfoCollection = transactionInfoCollection;
     }
 
+
+    @Nullable
+    public String getFirebaseAuthorizationKey() {
+        return firebaseAuthorizationKey;
+    }
+
+    public void setFirebaseAuthorizationKey(String firebaseAuthorizationKey) {
+        this.firebaseAuthorizationKey = firebaseAuthorizationKey;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -521,11 +535,11 @@ public class UserTable implements Serializable {
 
     public Boolean removeService(Service service) {
 
-        assert service.getIsAvailable() != null;
+        assert service.getAvailable() != null;
 
-        if (serviceCollection.contains(service) && !service.getIsAvailable().equals(Service.DELETED)) {
+        if (serviceCollection.contains(service) && !service.getAvailable().equals(Service.DELETED)) {
 
-            service.setIsAvailable(Service.DELETED);
+            service.setAvailable(Service.DELETED);
             return true;
         }
         return false;

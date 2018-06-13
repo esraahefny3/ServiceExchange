@@ -10,6 +10,8 @@ import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.Complaint;
 import com.service_exchange.entities.UserTable;
+import com.service_exchange.utal.firebasenotificationsutil.NotificationData;
+import com.service_exchange.utal.firebasenotificationsutil.NotificationRequestModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -71,5 +73,15 @@ public class AppFactory {
     }
     public static Badge getBadgeInstance(){
         return  new Badge();
+    }
+
+    public static NotificationRequestModel getNotificationRequestModelInstance()
+    {
+        return new NotificationRequestModel();
+    }
+
+    public static NotificationData getNotificationDataInstance()
+    {
+        return new NotificationData();
     }
 }

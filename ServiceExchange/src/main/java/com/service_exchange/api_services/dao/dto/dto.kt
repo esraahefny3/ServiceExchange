@@ -78,7 +78,9 @@ class UserDTO {
 
 
 class UserInfo(val userName: String?, val id: Int?, val image: String?) {
+    constructor() : this(null, null, null) {
 
+    }
 }
 
 class ServiceDTO {
@@ -94,7 +96,7 @@ class ServiceDTO {
 
     var description: String? = null
 
-    var isAvailable: String? = null
+    var available: String? = null
 
     var skillList: List<Int>? = null
 

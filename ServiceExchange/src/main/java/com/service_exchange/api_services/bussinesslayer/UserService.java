@@ -228,7 +228,9 @@ public class UserService {
     }
 
     public ServiceDTO addService(ServiceDTO serviceDTO) {
-        return userDataSet.addServiceToUser(serviceDTO);
+        ServiceDTO s = userDataSet.addServiceToUser(serviceDTO);
+
+        return s;
     }
 
     public Boolean addTelephone(String telephone, Integer userId) {

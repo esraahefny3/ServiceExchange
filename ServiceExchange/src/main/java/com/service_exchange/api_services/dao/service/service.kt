@@ -21,13 +21,13 @@ interface ServiceData : PagingAndSortingRepository<Service, Int> {
     @Query("select s from Service s join s.skillCollection t where t in (?1) group by s having count(t) >= (select count(t2) from Skill t2 where t2 in (?1))")
     fun findIfSubsetOfSkillExists(skills: List<Skill>, page: Pageable): List<Service>
 
-    fun findAllByTypeEqualsAndIsAvailableEquals(type: String, isAvalible: String, pageable: Pageable): Page<Service>
+    fun findAllByTypeEqualsAndAvailableEquals(type: String, isAvalible: String, pageable: Pageable): Page<Service>
 
     fun findAllByMadeByEquals(userTable: UserTable): List<Service>
 
     fun countAllByIdIsNotNull(): Long
     fun countAllByTypeEquals(type: String): Long
-    fun countAllByIsAvailableEquals(isavailbe: String): Long
+    fun countAllByAvailableEquals(isavailbe: String): Long
 
 
 }
@@ -71,7 +71,8 @@ private class ServiceImpl : ServiceInterface {
     }
 
     override fun getAll(start: Int, type: String): Page<Service> {
-        return serviceData.findAllByTypeEqualsAndIsAvailableEquals(type, Service.AVALIBLE, PageRequest.of(start, 20))
+
+        return serviceData.findAllByTypeEqualsAndAvailableEquals(type, Service.AVALIBLE, PageRequest.of(start, 20))
     }
 
     override fun createService(service: Service?): Service? =
@@ -88,8 +89,8 @@ private class ServiceImpl : ServiceInterface {
 
 
     override fun disableService(serviceId: Int): Boolean {
-        getService(serviceId)?.takeIf { it.isAvailable != Service.DELETED }?.let {
-            it.isAvailable = Service.PAUSED
+        getService(serviceId)?.takeIf { it.available != Service.DELETED }?.let {
+            it.available = Service.PAUSED
             return true
         }
         return false
@@ -155,6 +156,6 @@ private class ServiceImpl : ServiceInterface {
                     .take(size)
 
     override fun countAllBaseOnIsAvalibe(isavailbe: String): Long =
-            serviceData.countAllByIsAvailableEquals(isavailbe)
+            serviceData.countAllByAvailableEquals(isavailbe)
 
 }

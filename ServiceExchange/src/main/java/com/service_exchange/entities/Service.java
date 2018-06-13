@@ -28,7 +28,7 @@ import java.util.Date;
         , @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price")
         , @NamedQuery(name = "Service.findByType", query = "SELECT s FROM Service s WHERE s.type = :type")
         , @NamedQuery(name = "Service.findByDescription", query = "SELECT s FROM Service s WHERE s.description = :description")
-        , @NamedQuery(name = "Service.findByIsAvailable", query = "SELECT s FROM Service s WHERE s.isAvailable = :isAvailable")})
+        , @NamedQuery(name = "Service.findByIsAvailable", query = "SELECT s FROM Service s WHERE s.available = :isAvailable")})
 public class Service implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,13 +63,13 @@ public class Service implements Serializable {
     private Date endDate;
     @Column(name = "duration")
     @Nullable
-    private Date duration;
+    private Integer duration;
     @Column(name = "description")
     @Nullable
     private String description;
     @Column(name = "is_available")
     @Nullable
-    private String isAvailable;
+    private String available;
     @Transient
     public static final String OFFERED = "offerd";
     @Transient
@@ -124,11 +124,11 @@ public class Service implements Serializable {
     }
 
     @Nullable
-    public Date getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Date duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -178,12 +178,12 @@ public class Service implements Serializable {
     }
 
     @Nullable
-    public String getIsAvailable() {
-        return isAvailable;
+    public String getAvailable() {
+        return available;
     }
 
-    public void setIsAvailable(String isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setAvailable(String isAvailable) {
+        this.available = isAvailable;
     }
 
     @Nullable
