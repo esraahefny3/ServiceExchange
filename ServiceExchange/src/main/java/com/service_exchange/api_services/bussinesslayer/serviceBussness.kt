@@ -17,11 +17,19 @@ interface ServiceBussness {
     fun getPublerService(size: Int): List<ServiceDTO>
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
+    fun getAllTransactionOnServiceFilteredByState(servieId: Int, type: String): List<ServiceDTO>
 
 }
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
+    override fun getAllTransactionOnServiceFilteredByState(servieId: Int, type: String): List<ServiceDTO> {
+        type.takeIf { s -> s == "any" }?.let { serviceGet.getService(servieId)?.transactionInfoCollection }
+                ?.map { it }
+        return emptyList()
+
+    }
+
     @Autowired
     lateinit var serviceGet: ServiceGettable
     @Autowired
