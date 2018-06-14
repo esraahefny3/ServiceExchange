@@ -26,7 +26,7 @@ public class TransactionCustomImpl implements TransactionCustomInterface {
 
                 "inner join " + tableName2 + " s " +
 
-                "where t.started_by=? or s.made_by=? & group by  m.transaction_id order by max(m.date) desc ");
+                "where t.started_by=? or s.made_by=?  group by  m.transaction_id order by max(m.date) desc ");
         query.setParameter(1, userId.intValue());
         query.setParameter(2, userId.intValue());
 
