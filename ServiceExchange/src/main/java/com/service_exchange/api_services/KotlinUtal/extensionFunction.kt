@@ -2,6 +2,7 @@ package com.service_exchange.api_services.KotlinUtal
 
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
+import com.service_exchange.api_services.dao.transaction.TransactionDto
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.api_services.factories.AppFactory
 import com.service_exchange.entities.*
@@ -11,6 +12,7 @@ import java.util.stream.Collectors
 fun Service.convertServie(): ServiceDTO =
         this.let { t ->
             val ob = AppFactory.mapToDto(t, ServiceDTO::class.java)
+            ob.available = t.available
             ob.skillList = t.skillCollection?.stream()?.map { it.id }?.collect(Collectors.toList())
             ob.uO = com.service_exchange.api_services.dao.dto.UserInfo(t.madeBy?.name, t.madeBy?.id, t.madeBy?.image)
             ob.numberOfTransaction = t.transactionInfoCollection?.stream()?.filter({
@@ -22,7 +24,7 @@ fun Service.convertServie(): ServiceDTO =
                         it.reviewCollection?.stream()
                                 ?.mapToDouble { it.rating?.toDouble() ?: 0.0 }?.average()?.orElse(0.0) ?: 0.0
                     }?.average()?.orElse(0.0)
-            ob.expectDur = t.duration?.time
+            ob.expectDur = t.duration?.toLong()
             ob.revList = kotlin.collections.mutableListOf()
             t.transactionInfoCollection?.stream()?.map {
                 it.reviewCollection?.stream()?.map { it.convertReview() }?.forEach { ob.revList?.add(it) }
@@ -46,11 +48,19 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
             val ob = AppFactory.mapToDto(t, Service::class.java)
             ob.skillCollection = t.skillList?.stream()?.map { skillInterface.getSkillById(it) }
                     ?.collect(Collectors.toList()) ?: kotlin.collections.emptyList()
-            ob.madeBy = userInterface.getUser(t.id)
+            ob.madeBy = userInterface.getUser(t.uO?.id)
             t.expectDur?.let { l -> ob.startDate = java.util.Date(l) }
-            t.duration?.let { ob.duration = java.util.Date(it) }
+            t.duration?.let { ob.duration = it.toInt() }
+            ob.available = t.available
+
             ob
         }
+
+fun TransactionInfo.convert(): TransactionDto =
+        AppFactory.mapToDto(this, TransactionDto::class.java).apply {
+
+        }
+
 
 fun Skill.convertSkill(): SkillDTO {
 
@@ -74,8 +84,15 @@ fun Notification.convertAdminNotifecation() =
 fun Notification.convertNotifecationDTO() =
         AppFactory.mapToDto(this, NotificationDto::class.java)
 
-fun Message.convertToTransaction() =
-        AppFactory.mapToDto(this, MessageTransactionDto::class.java)
+fun Message.convertToDefult() =
+        AppFactory.mapToDto(this, MessageGeneralDto::class.java).apply {
+            transactionId = this@convertToDefult.transactionId?.id
+            receiverId = this@convertToDefult.receiverId?.id
+            senderId = this@convertToDefult.senderId?.id
+            userReadIt = this@convertToDefult.isSeen
+            readDate = this@convertToDefult.seenDate
+            complaintId = this@convertToDefult.complaintId?.id
+        }
 
 fun Message.convertToComplain() =
         AppFactory.mapToDto(this, MessageComplaintDto::class.java)

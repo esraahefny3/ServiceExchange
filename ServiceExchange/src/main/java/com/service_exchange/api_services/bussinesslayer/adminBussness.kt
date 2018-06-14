@@ -73,8 +73,8 @@ interface AdminBussnessGettable {
     fun getAdminChallanges(adminId: String, page: Int): List<AdminChallange>
     fun getAdminOpenComplains(adminId: String, page: Int): List<AdminComplaint>
     fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification>
-    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto>
-    fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto>
+    fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageGeneralDto>
+    fun getAllComlaintChat(compaintId: Int): List<MessageGeneralDto>
     fun getAllUnReviewedComplaint(page: Int): List<AdminComplaint>
     fun getAllAdmins(page: Int): List<AdminMain>
 }
@@ -113,10 +113,10 @@ private class AdminBussnessGettableImpl : AdminBussnessGettable {
     override fun getAdminNotifecation(adminId: String, page: Int): List<AdminNotification> =
             adminGettable.getAdminNotifecation(adminId, page)
 
-    override fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageTransactionDto> =
+    override fun getAllComlaintsTransactionChat(compaintId: Int): List<MessageGeneralDto> =
             adminGettable.getAllComlaintsTransactionChat(compaintId)
 
-    override fun getAllComlaintChat(compaintId: Int): List<MessageComplaintDto> =
+    override fun getAllComlaintChat(compaintId: Int): List<MessageGeneralDto> =
             adminGettable.getAllComlaintChat(compaintId)
 
 }

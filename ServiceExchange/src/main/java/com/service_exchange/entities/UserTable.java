@@ -535,11 +535,11 @@ public class UserTable implements Serializable {
 
     public Boolean removeService(Service service) {
 
-        assert service.getIsAvailable() != null;
+        assert service.getAvailable() != null;
 
-        if (serviceCollection.contains(service) && !service.getIsAvailable().equals(Service.DELETED)) {
+        if (serviceCollection.contains(service) && !service.getAvailable().equals(Service.DELETED)) {
 
-            service.setIsAvailable(Service.DELETED);
+            service.setAvailable(Service.DELETED);
             return true;
         }
         return false;

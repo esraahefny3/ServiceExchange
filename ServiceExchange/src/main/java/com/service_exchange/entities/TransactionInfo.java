@@ -69,6 +69,9 @@ public class TransactionInfo implements Serializable {
     @Column(name = "jop_file")
     @Nullable
     private String jopFile;
+    @Column(name = "descrption")
+    @Nullable
+    private String descrption;
     @OneToMany(mappedBy = "transactionId")
     @Nullable
     private Collection<Message> messageCollection;
@@ -93,6 +96,7 @@ public class TransactionInfo implements Serializable {
     @ManyToOne
     @Nullable
     private UserTable startedBy;
+
 
     @Transient
     public static final String PENDING_STATE = "pending";
@@ -124,6 +128,14 @@ public class TransactionInfo implements Serializable {
         this.id = id;
     }
 
+    @Nullable
+    public String getDescrption() {
+        return descrption;
+    }
+
+    public void setDescrption(@Nullable String descrption) {
+        this.descrption = descrption;
+    }
     @Nullable
     public Integer getId() {
         return id;

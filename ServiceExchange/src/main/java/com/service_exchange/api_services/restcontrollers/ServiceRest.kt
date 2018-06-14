@@ -2,6 +2,7 @@ package com.service_exchange.api_services.restcontrollers
 
 import com.service_exchange.api_services.bussinesslayer.ServiceBussness
 import com.service_exchange.api_services.dao.dto.ServiceDTO
+import com.service_exchange.api_services.dao.transaction.TransactionDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -37,6 +38,10 @@ class ServiceRestfull {
     @RequestMapping(value = ["/getPub"], method = arrayOf(RequestMethod.GET))
     fun getPub(@RequestParam size: Int): List<ServiceDTO> =
             serviceBussness.getAllService(size)
+
+    @RequestMapping(value = ["/getAllRequstOnService"], method = arrayOf(RequestMethod.GET))
+    fun getAllRequstOnService(serviceId: Int): List<TransactionDto> =
+            serviceBussness.getAllPreStartTransactionOnService(serviceId)
 
 
 }
