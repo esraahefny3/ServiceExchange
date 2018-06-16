@@ -33,7 +33,7 @@ class ServiceBussnessImpl : ServiceBussness {
                 ?.map {
 
                     TransactionEslam(UserInfo(userName = it.startedBy?.name, id = it.startedBy?.id, image = it.startedBy?.image)
-                            , descrption = it.descrption, numberOfDays = it.duration?.toInt())
+                            , descrption = it.descrption, numberOfDays = it.duration?.toInt(), date = it.startDate)
                 }?.collect(Collectors.toList()) ?: emptyList()
 
 
