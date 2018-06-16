@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.NotificationService;
 import com.service_exchange.api_services.dao.dto.NotificationDto;
+import com.service_exchange.utal.firebasenotificationsutil.FirebaseNotificationMessageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,30 @@ public class NotificationController {
             }
 
         } catch (IOException ex) {
+            Logger.getLogger(NotificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/notifications/sendFirebase")
+    private boolean sendNotificationToUserFirebase(@RequestBody NotificationDto notificationDto) {
+        try {
+
+//            if (myJson != null) {
+//                ObjectMapper mapper = new ObjectMapper();
+//                JsonNode node = mapper.readTree(myJson);
+//
+//                NotificationDto notificationDto = mapper.convertValue(node.get("notificationDto"), NotificationDto.class);
+//
+//                List<Integer> usersIds = mapper.convertValue(node.get("users"), List.class);
+//
+//                notificationService.sendNotificationToUser(notificationDto, usersIds);
+            String user="d6VMhwiEjAY:APA91bH6bcdMBsKig1Y5f7354wcbW0zZsAAqaQnU_7vo8xPoAzUCLF1Y8KViFG_nDUcE70w-XAwXFtUFb20JntCagBr3iPEy4LtbaCaZFqPk-RFMgTHSpjncJiusWWjubjHZIenZ2cPm";
+            FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto,user);
+                return true;
+
+
+        } catch (Exception ex) {
             Logger.getLogger(NotificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;

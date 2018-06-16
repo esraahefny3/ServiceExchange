@@ -8,7 +8,7 @@ import com.service_exchange.api_services.dao.dto.NotificationDto;
 @SuppressWarnings("unused")
 public class NotificationData {
 
-    @SerializedName("detail")
+    @SerializedName("body")
     private NotificationDto notificationDtoDetail;
 
     @SerializedName("title")
