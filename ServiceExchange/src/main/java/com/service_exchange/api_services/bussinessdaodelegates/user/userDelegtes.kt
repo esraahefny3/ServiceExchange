@@ -3,6 +3,7 @@ package com.service_exchange.api_services.bussinessdaodelegates.user
 
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.KotlinUtal.convertSkill
+import com.service_exchange.api_services.KotlinUtal.convertToServiceHoda
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.user.UserEducationInterface
@@ -32,6 +33,14 @@ interface UserDataGet {
     fun getAllUser(start: Int): List<UserDTO>
     fun getAllUser(): List<UserDTO>
     fun getUserById(userId: Int?): UserTable?
+    fun getUserByID(userId: Int?): UserDTO?
+    fun getUserInfoByID(userId: Int?): UserInfo?
+    fun getLastActiveService(userId: Int?): ServiceHoda?
+    fun getLastPausedService(userId: Int?): ServiceHoda?
+    fun getLastActiveReq(userId: Int?): ServiceHoda?
+    fun getLastCompletedReq(userId: Int?): ServiceHoda?
+    fun getTopUser(size: Int?): List<UserDTO>
+
 
 }
 
@@ -46,6 +55,14 @@ fun UserTable.convertUser(): UserDTO {
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
+
+
+    override fun getUserInfoByID(userId: Int?): UserInfo? =
+            userInterface.getUser(userId)?.let {
+                UserInfo(id = it.id, userName = it.name, image = it.image)
+            }
+
+
     @Autowired
     lateinit var userInterface: UserInterFace
     @Autowired
@@ -59,7 +76,70 @@ private open class UserDataGetImpl : UserDataGet {
     @Autowired
     lateinit var userBadgeInterFace: UserBadgesInterface
 
+    override fun getLastActiveService(userId: Int?): ServiceHoda? =
+            userService.getUserServices(userId)?.stream()?.filter { it.type == Service.OFFERED }
+                    ?.filter { it.available == Service.AVALIBLE }?.sorted(compareBy { it.startDate?.time })
+                    ?.findFirst()?.let { optional ->
+                        if (optional.isPresent)
+                            return@let optional.get().convertToServiceHoda()
+                        else null
+                    }
 
+    override fun getLastPausedService(userId: Int?): ServiceHoda? =
+            userService.getUserServices(userId)?.stream()?.filter { it.type == Service.OFFERED }
+                    ?.filter { it.available == Service.PAUSED }?.sorted(compareBy { it.startDate?.time })
+                    ?.findFirst()?.let { optional ->
+                        if (optional.isPresent)
+                            return@let optional.get().convertToServiceHoda()
+                        else null
+                    }
+
+    override fun getLastActiveReq(userId: Int?): ServiceHoda? =
+            userService.getUserServices(userId)?.stream()?.filter { it.type == Service.REQUSETED && it.available == Service.AVALIBLE }
+                    ?.filter {
+                        if (it?.transactionInfoCollection?.size == 0)
+                            return@filter true
+                        it?.transactionInfoCollection?.stream()
+                                ?.anyMatch { t -> t.state != TransactionInfo.COMPLETED_STATE || t.state != TransactionInfo.LATE_STATE }
+                                ?: true
+                    }?.sorted(compareBy { it.startDate?.time })
+                    ?.findFirst()?.let { optional ->
+                        if (optional.isPresent)
+                            return@let optional.get().convertToServiceHoda()
+                        else null
+                    }
+
+    override fun getLastCompletedReq(userId: Int?): ServiceHoda? =
+            userService.getUserServices(userId)?.stream()?.filter { it.type == Service.REQUSETED }
+                    ?.filter {
+                        it?.transactionInfoCollection?.stream()
+                                ?.anyMatch { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE }
+                                ?: false
+                    }?.sorted(compareBy { it.startDate?.time })
+                    ?.findFirst()?.let { optional ->
+                        if (optional.isPresent)
+                            return@let optional.get().convertToServiceHoda()
+                        else null
+                    }
+
+    override fun getTopUser(size: Int?): List<UserDTO> =
+            userInterface.allUser.stream().filter { it.transactionInfoCollection?.size ?: 0 > 0 }
+                    ?.sorted(compareByDescending {
+                        it.transactionInfoCollection?.stream()
+                                ?.mapToDouble { value ->
+                                    value.reviewCollection?.stream()
+                                            ?.mapToDouble { it.rating?.toDouble() ?: 0.0 }?.average()
+                                            ?.let { if (it.isPresent) it.asDouble else 0.0 } ?: 0.0
+                                }
+                                ?.average().let {
+                                    if (it != null && it.isPresent)
+                                        it.asDouble
+                                    else 0.0
+                                }
+                    })?.map { it.convertUser() }?.collect(Collectors.toList())?.take(size ?: 0) ?: emptyList()
+
+    override fun getUserByID(userId: Int?): UserDTO? =
+            userInterface.getUser(userId)?.convertUser()
     override fun getUserById(userId: Int?): UserTable? =
             userInterface.getUser(userId)
     override fun getAllUser(start: Int): List<UserDTO> {
@@ -87,8 +167,11 @@ private open class UserDataGetImpl : UserDataGet {
                         user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
 
                         retVal.userAuthority = UserAuthority()
-                        retVal.userAuthority?.authority = "User"
+                        retVal.userAuthority?.authority = "ROLE_User"
                         retVal.userAuthority?.userId = retVal.id
+                        retVal.balance = 25
+                        retVal.enabled = UserTable.ENABELED
+                        retVal.lastPasswordChanged = Date()
                         userBadgeInterFace.assignBadgeToUser(retVal.id ?: 0, 1);
                         retVal = userInterface.updateUser(retVal);
 
@@ -133,6 +216,7 @@ interface UserDataSet {
     fun addSkillToUser(skillDTO: SkillDTO?, userId: Int?): Boolean
     fun addTelephonToUser(telephone: String?, userId: Int?): Boolean
     fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO?
+    fun setUserFirebase(userId: Int?, firebase: String?): Boolean
 }
 
 @Component
@@ -151,6 +235,16 @@ private class UserDataSetImol : UserDataSet {
     lateinit var userInterFace: UserInterFace
     @Autowired
     lateinit var skillINterface: SkillInterface
+
+    override fun setUserFirebase(userId: Int?, firebase: String?): Boolean =
+            if (userId != null)
+                userInterFace.getUser(userId)?.let {
+                    it.firebaseAuthorizationKey = firebase
+                    userInterFace.updateUser(it)
+                    true
+                } ?: false
+            else
+                false
 
     override fun addEmailToUser(email: String?, userId: Int?): Boolean =
             if (userId != null && email != null) {
@@ -186,6 +280,7 @@ private class UserDataSetImol : UserDataSet {
     override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
         return if (serviceDTO != null && serviceDTO.uO != null) {
             val service = serviceDTO.convertServie(skillINterface, userInterface = userInterFace)
+            service.available = Service.AVALIBLE
             userService.addServiceToUser(serviceDTO.uO?.id, service)?.convertServie()
         } else null
 

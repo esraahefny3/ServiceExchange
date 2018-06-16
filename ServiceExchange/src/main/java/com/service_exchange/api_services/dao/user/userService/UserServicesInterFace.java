@@ -7,6 +7,7 @@ package com.service_exchange.api_services.dao.user.userService;
 
 import com.service_exchange.entities.Service;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public interface UserServicesInterFace {
     @Nullable
     List<Service> getUserServices(Integer userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     Service addServiceToUser(Integer userId, Service service);
 
     Boolean removeServiceForUser(Integer userId, Integer serviceId, Boolean forced);

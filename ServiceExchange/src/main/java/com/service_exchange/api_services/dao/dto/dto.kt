@@ -361,3 +361,16 @@ class TransactionStatices {
     var lateCompletedCount: Int? = null
     var caneledCount: Int? = null
 }
+
+data class TransactionEslam(var userInfo: UserInfo?, var descrption: String?, var numberOfDays: Int?) {
+    constructor() : this(null, null, null)
+}
+
+data class ServiceHoda(var id: Int?, var name: String?, var userINf: UserInfo?,
+                       var price: Int?, var catagory: List<SkillDTO>?, var reviewCount: Int?,
+                       var ratingAvg: Double?, var RevList: List<ReviewDTO>?, var CompletedtransActionCout: Int?) {
+    constructor() : this(null, null, null, null, null, null, null, null, null)
+}
+
+class HodaProfile(val lastActiveService: ServiceHoda?, val lastPousedServiceHoda: ServiceHoda?,
+                  val lastReqActive: ServiceHoda?, val lastCompletedReq: ServiceHoda?)

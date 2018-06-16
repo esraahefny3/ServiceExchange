@@ -15,13 +15,13 @@ import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.Objects;
 
 /**
  *
@@ -113,7 +113,7 @@ public class MessagService implements MessageServiceInterface{
                        transactionChatDto.setTransactionChatMessagesList(messageDelegateInterface.getAllTransactionMessages(transactionId, pageNum));
                        TransactionInfo transactionInfo=transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionId);
                        UserTable user=transactionInfo.getStartedBy();
-                       if(user!=null&&user.getId()!=userId)
+                   if (user != null && !Objects.equals(user.getId(), userId))
                        {
                            //hoa da l user l tany
                            transactionChatDto.setUserId(user.getId());
@@ -125,8 +125,9 @@ public class MessagService implements MessageServiceInterface{
                            transactionChatDto.setServiceName(service.getName());
                            transactionChatDtosList.add(transactionChatDto);
                        }
-                       else
-                       {   user=transactionInfo.getServiceId().getMadeBy();
+                       else {
+                       if (transactionInfo.getServiceId() != null)
+                           user = transactionInfo.getServiceId().getMadeBy();
                            if(user!=null)
                            {   transactionChatDto.setUserId(user.getId());
                                transactionChatDto.setUserName(user.getName());

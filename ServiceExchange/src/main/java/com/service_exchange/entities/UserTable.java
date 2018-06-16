@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
         , @NamedQuery(name = "UserTable.findByBirthDate", query = "SELECT u FROM UserTable u WHERE u.birthDate = :birthDate")
         , @NamedQuery(name = "UserTable.findByAccountId", query = "SELECT u FROM UserTable u WHERE u.accountId = :accountId")
         , @NamedQuery(name = "UserTable.findByAccountType", query = "SELECT u FROM UserTable u WHERE u.accountType = :accountType")
-        , @NamedQuery(name = "UserTable.findByIsEnabled", query = "SELECT u FROM UserTable u WHERE u.isEnabled = :isEnabled")})
+        , @NamedQuery(name = "UserTable.findByIsEnabled", query = "SELECT u FROM UserTable u WHERE u.Enabled = :isEnabled")})
 public class UserTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -106,7 +106,7 @@ public class UserTable implements Serializable {
     private Collection<TransactionInfo> transactionInfoCollection;
     @JsonIgnore
     @Column(name = "is_enabled")
-    private Short isEnabled = 0;
+    private Short Enabled = 0;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable", fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<UserEmail> userEmailCollection;
@@ -210,12 +210,12 @@ public class UserTable implements Serializable {
     }
 
     @Nullable
-    public Short getIsEnabled() {
-        return isEnabled;
+    public Short getEnabled() {
+        return Enabled;
     }
 
-    public void setIsEnabled(Short isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setEnabled(Short isEnabled) {
+        this.Enabled = isEnabled;
     }
 
     @Nullable
@@ -557,8 +557,8 @@ public class UserTable implements Serializable {
     }
 
     public Boolean isEnabled() {
-        if (isEnabled != null)
-            return isEnabled == ENABELED;
+        if (Enabled != null)
+            return Enabled == ENABELED;
         else return true;
     }
 

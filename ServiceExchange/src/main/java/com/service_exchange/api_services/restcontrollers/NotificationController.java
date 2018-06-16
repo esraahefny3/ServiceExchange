@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.NotificationService;
 import com.service_exchange.api_services.dao.dto.NotificationDto;
+import com.service_exchange.utal.firebasenotificationsutil.FirebaseNotificationMessageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,4 +65,27 @@ public class NotificationController {
         return false;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/notifications/sendFirebase")
+    private boolean sendNotificationToUserFirebase(@RequestBody String myJson) {
+        try {
+
+            if (myJson != null) {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode node = mapper.readTree(myJson);
+
+                NotificationDto notificationDto = mapper.convertValue(node.get("notificationDto"), NotificationDto.class);
+                System.out.println(notificationDto.getBody());
+                String user= mapper.convertValue(node.get("userToken"), String.class);
+                String authKey= mapper.convertValue(node.get("authKey"), String.class);
+                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto, user,authKey);
+                return true;
+            }
+
+
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
