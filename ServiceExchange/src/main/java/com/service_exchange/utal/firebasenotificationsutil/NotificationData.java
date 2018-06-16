@@ -1,8 +1,9 @@
 package com.service_exchange.utal.firebasenotificationsutil;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 import com.service_exchange.api_services.dao.dto.NotificationDto;
+
+import javax.annotation.Generated;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")

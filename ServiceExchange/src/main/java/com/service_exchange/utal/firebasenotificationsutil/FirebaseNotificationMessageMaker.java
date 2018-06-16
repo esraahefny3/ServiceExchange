@@ -1,6 +1,6 @@
 package com.service_exchange.utal.firebasenotificationsutil;
+
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.service_exchange.api_services.dao.dto.NotificationDto;
 import com.service_exchange.entities.UserTable;
@@ -9,14 +9,14 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 public class FirebaseNotificationMessageMaker {
 
-   private static String  firebaseSendUrlString="https://fcm.googleapis.com/fcm/send";
-   private static String firebaseApplicationAuthorizationKeyString="AIzaSyBmT6CUc3S0UDzYyANcZE8D2DMVVZxrQms";
+    private static String firebaseSendUrlString = "https://fcm.googleapis.com/fcm/send";
+    private static String firebaseApplicationAuthorizationKeyString = "AIzaSyBmT6CUc3S0UDzYyANcZE8D2DMVVZxrQms";
 
     public static int sendFirebaseNotificationMessageToUser(NotificationDto notificationDto, UserTable userTable)
     {
@@ -78,8 +78,7 @@ public class FirebaseNotificationMessageMaker {
 
     }
 
-    public static int sendFirebaseNotificationMessageToTopic(NotificationDto notificationDto, UserTable userTable,String topic)
-    {
+    public static int sendFirebaseNotificationMessageToTopic(NotificationDto notificationDto, UserTable userTable, String topic) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
@@ -138,8 +137,7 @@ public class FirebaseNotificationMessageMaker {
 
     }
 
-    public static int sendFirebaseNotificationMessageToUserTry(NotificationDto notificationDto, String user,String authKey)
-    {
+    public static int sendFirebaseNotificationMessageToUserTry(NotificationDto notificationDto, String user, String authKey) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
@@ -170,7 +168,7 @@ public class FirebaseNotificationMessageMaker {
             // server key of your firebase project goes here in header field.
             // You can get it from firebase console.
 
-            postRequest.addHeader("Authorization", "key="+authKey);
+            postRequest.addHeader("Authorization", "key=" + authKey);
             postRequest.setEntity(input);
             HttpResponse response = httpClient.execute(postRequest);
 

@@ -124,8 +124,7 @@ public class MessagService implements MessageServiceInterface{
                            transactionChatDto.setServiceId(service.getId());
                            transactionChatDto.setServiceName(service.getName());
                            transactionChatDtosList.add(transactionChatDto);
-                       }
-                       else {
+                       } else {
                        if (transactionInfo.getServiceId() != null)
                            user = transactionInfo.getServiceId().getMadeBy();
                            if(user!=null)
