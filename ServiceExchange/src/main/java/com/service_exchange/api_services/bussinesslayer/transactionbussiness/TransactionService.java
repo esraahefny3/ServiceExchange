@@ -167,8 +167,6 @@ public class TransactionService implements TransactionServiceInterface {
                 transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto.setStartedByUser(userId);
 
-                System.out.println(transactionDao.findByServiceId(service));
-
                 return transactionDto;
             }
         }
