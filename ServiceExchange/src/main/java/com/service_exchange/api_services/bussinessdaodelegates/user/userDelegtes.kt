@@ -281,6 +281,7 @@ private class UserDataSetImol : UserDataSet {
         return if (serviceDTO != null && serviceDTO.uO != null) {
             val service = serviceDTO.convertServie(skillINterface, userInterface = userInterFace)
             service.available = Service.AVALIBLE
+            service.startDate = Date()
             userService.addServiceToUser(serviceDTO.uO?.id, service)?.convertServie()
         } else null
 

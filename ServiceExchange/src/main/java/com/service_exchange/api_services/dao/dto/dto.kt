@@ -362,8 +362,8 @@ class TransactionStatices {
     var caneledCount: Int? = null
 }
 
-data class TransactionEslam(var userInfo: UserInfo?, var descrption: String?, var numberOfDays: Int?) {
-    constructor() : this(null, null, null)
+data class TransactionEslam(var userInfo: UserInfo?, var descrption: String?, var numberOfDays: Int?, var date: Date?) {
+    constructor() : this(null, null, null, null)
 }
 
 data class ServiceHoda(var id: Int?, var name: String?, var userINf: UserInfo?,
