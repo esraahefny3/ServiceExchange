@@ -4,6 +4,7 @@ package com.service_exchange.api_services.bussinessdaodelegates.user
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.KotlinUtal.convertSkill
 import com.service_exchange.api_services.dao.dto.*
+import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.user.UserEducationInterface
 import com.service_exchange.api_services.dao.user.UserEmailInterface
 import com.service_exchange.api_services.dao.user.UserInterFace
@@ -75,7 +76,7 @@ private open class UserDataGetImpl : UserDataGet {
                 val userDTO = AppFactory.mapToDto(user, UserTable::class.java)
 
                 userDTO.birthDate = user.bD?.let { Date(user.bD ?: 0) }
-                println(userDTO.birthDate)
+
                 userDTO.userEmailCollection = mutableListOf()
                 userDTO.userTelephoneCollection = mutableListOf()
 
@@ -120,7 +121,7 @@ private open class UserDataGetImpl : UserDataGet {
     }
 
     override fun getUserServices(userId: Int?): List<ServiceDTO> {
-        return userService.getUserServices(userId)?.stream()?.filter { it.isAvailable != null && it.isAvailable != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
+        return userService.getUserServices(userId)?.stream()?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
                 ?: emptyList()
     }
 
@@ -146,6 +147,10 @@ private class UserDataSetImol : UserDataSet {
     lateinit var userEdcation: UserEducationInterface
     @Autowired
     lateinit var userTelephone: UserTelephoneInterface
+    @Autowired
+    lateinit var userInterFace: UserInterFace
+    @Autowired
+    lateinit var skillINterface: SkillInterface
 
     override fun addEmailToUser(email: String?, userId: Int?): Boolean =
             if (userId != null && email != null) {
@@ -180,8 +185,8 @@ private class UserDataSetImol : UserDataSet {
 
     override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
         return if (serviceDTO != null && serviceDTO.uO != null) {
-            val service = AppFactory.mapToDto(serviceDTO, Service::class.java)
-            userService.addServiceToUser(serviceDTO.uO?.id, service)?.let { it.convertServie() }
+            val service = serviceDTO.convertServie(skillINterface, userInterface = userInterFace)
+            userService.addServiceToUser(serviceDTO.uO?.id, service)?.convertServie()
         } else null
 
     }

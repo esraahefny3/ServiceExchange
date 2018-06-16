@@ -176,13 +176,16 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionDtoList.add(transactionDto);
                 transactionDto.setStartedByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
                     transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    transactionDto.setOtherUserImage(userTransaction.getServiceId().getMadeBy().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
                         transactionDto.setServiceProvider(true);
                     }
                 } else {
                     transactionDto.setOtherUserName(user.getName());
+                    transactionDto.setOtherUserImage(user.getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
                         transactionDto.setServiceProvider(true);
                     }
@@ -210,13 +213,16 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionDtoList.add(transactionDto);
                 transactionDto.setStartedByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
                     transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    transactionDto.setOtherUserImage(userTransaction.getServiceId().getMadeBy().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
                         transactionDto.setServiceProvider(true);
                     }
                 } else {
                     transactionDto.setOtherUserName(user.getName());
+                    transactionDto.setOtherUserImage(user.getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
                         transactionDto.setServiceProvider(true);
                     }
@@ -244,13 +250,16 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionDtoList.add(transactionDto);
                 transactionDto.setStartedByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
+                transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
                     transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
+                    transactionDto.setOtherUserImage(userTransaction.getServiceId().getMadeBy().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {
                         transactionDto.setServiceProvider(true);
                     }
                 } else {
                     transactionDto.setOtherUserName(user.getName());
+                    transactionDto.setOtherUserImage(user.getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
                         transactionDto.setServiceProvider(true);
                     }

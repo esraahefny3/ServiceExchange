@@ -15,6 +15,9 @@ public class TransactionDto {
     private String serviceName;
     private String otherUserName;
     private boolean isServiceProvider;
+    private String jopFile;
+    private String otherUserImage;
+    private String serviceDescription;
 //    private String typeOfPayment;
 
     private Integer serviceId;
@@ -122,5 +125,29 @@ public class TransactionDto {
 
     public void setStartedByUser(Integer startedByUser) {
         this.startedByUser = startedByUser;
+    }
+
+    public String getJopFile() {
+        return jopFile;
+    }
+
+    public void setJopFile(String jopFile) {
+        this.jopFile = jopFile;
+    }
+
+    public String getOtherUserImage() {
+        return otherUserImage;
+    }
+
+    public void setOtherUserImage(String otherUserImage) {
+        this.otherUserImage = otherUserImage;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 }

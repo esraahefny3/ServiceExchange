@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
@@ -41,6 +42,8 @@ public class Review implements Serializable {
     private String comment;
     @Column(name = "rating")
     private Integer rating;
+    @Column(name = "date")
+    private Date date;
     @JoinColumn(name = "transaction_id", referencedColumnName = "id")
     @ManyToOne
     private TransactionInfo transactionId;
