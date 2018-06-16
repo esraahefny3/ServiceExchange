@@ -138,7 +138,7 @@ public class FirebaseNotificationMessageMaker {
 
     }
 
-    public static int sendFirebaseNotificationMessageToUserTry(NotificationDto notificationDto, String user)
+    public static int sendFirebaseNotificationMessageToUserTry(NotificationDto notificationDto, String user,String authKey)
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
@@ -170,7 +170,7 @@ public class FirebaseNotificationMessageMaker {
             // server key of your firebase project goes here in header field.
             // You can get it from firebase console.
 
-            postRequest.addHeader("Authorization", "key="+firebaseApplicationAuthorizationKeyString);
+            postRequest.addHeader("Authorization", "key="+authKey);
             postRequest.setEntity(input);
             HttpResponse response = httpClient.execute(postRequest);
 

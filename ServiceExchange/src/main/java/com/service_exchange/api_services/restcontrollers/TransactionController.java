@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
-
     ////////////////////////////Esraa////////////////////////////
 
     @Autowired
@@ -27,15 +26,14 @@ public class TransactionController {
     public List<TransactionDto> getAllUserTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
 
         if (userId != null && pageNum != null) {
-            return transactionServiceImpl.getAllUserTransactions(userId, pageNum);
+            return transactionServiceImpl.getAllUserTransactions(userId,pageNum);
         }
         return null;
     }
-
     @RequestMapping(value = "/userAcceptTransaction", method = RequestMethod.POST)
     public TransactionDto userAcceptTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null && transactionDto.getId() != null && transactionDto.getPrice() != null && transactionDto.getDuration() != null) {
+        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
             return transactionServiceImpl.userAcceptTransaction(transactionDto);
         }
         return null;
@@ -44,8 +42,17 @@ public class TransactionController {
     @RequestMapping(value = "/userApproveAcceptedTransaction", method = RequestMethod.POST)
     public TransactionDto userApproveAcceptedTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null && transactionDto.getId() != null) {
+        if (transactionDto != null&&transactionDto.getId()!=null) {
             return transactionServiceImpl.userApproveAcceptedTransaction(transactionDto);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/userAcceptedThenAcceptTransaction", method = RequestMethod.POST)
+    public TransactionDto userAcceptedThenApproveTransaction(@RequestBody TransactionDto transactionDto) {
+
+        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
+            return transactionServiceImpl.userAcceptedThenApproveTransaction(transactionDto);
         }
         return null;
     }
@@ -53,7 +60,7 @@ public class TransactionController {
     @RequestMapping(value = "/userRejectTransaction", method = RequestMethod.POST)
     public boolean userRejectTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null && transactionDto.getId() != null) {
+        if (transactionDto != null&&transactionDto.getId()!=null) {
             return transactionServiceImpl.userRejectTransaction(transactionDto);
         }
         return false;
