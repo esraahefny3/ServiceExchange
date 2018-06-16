@@ -42,7 +42,7 @@ public class TransactionController {
     @RequestMapping(value = "/userApproveAcceptedTransaction", method = RequestMethod.POST)
     public TransactionDto userApproveAcceptedTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null&&transactionDto.getId()!=null) {
+        if (transactionDto != null && transactionDto.getId() != null) {
             return transactionServiceImpl.userApproveAcceptedTransaction(transactionDto);
         }
         return null;
@@ -51,7 +51,7 @@ public class TransactionController {
     @RequestMapping(value = "/userAcceptedThenAcceptTransaction", method = RequestMethod.POST)
     public TransactionDto userAcceptedThenApproveTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
+        if (transactionDto != null && transactionDto.getId() != null && transactionDto.getPrice() != null && transactionDto.getDuration() != null) {
             return transactionServiceImpl.userAcceptedThenApproveTransaction(transactionDto);
         }
         return null;
