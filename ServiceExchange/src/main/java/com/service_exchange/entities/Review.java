@@ -147,6 +147,14 @@ public class Review implements Serializable {
         return true;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "com.service_exchange.Review[ id=" + id + " ]";

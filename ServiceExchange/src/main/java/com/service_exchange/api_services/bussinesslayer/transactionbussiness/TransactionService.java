@@ -21,7 +21,6 @@ import java.util.List;
 @Component
 public class TransactionService implements TransactionServiceInterface {
 
-    ////////////////////////////Esraa////////////////////////////
 
     @Autowired
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
@@ -31,12 +30,20 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Autowired
     TransactionDelegateInterface delegate;
+
     @Autowired
     TransactionDelegateInterface transactionDelegate;
+
     @Autowired
     TransactionDaoInterface transactionDao;
+
     @Autowired
     UserDataInterFace userDataInterFace;
+
+    @Autowired
+    ServiceData serviceData;
+
+    ////////////////////////////Esraa////////////////////////////
 
     @Override
     public TransactionDto userAcceptedThenApproveTransaction(TransactionDto transactionDto) {
@@ -66,9 +73,6 @@ public class TransactionService implements TransactionServiceInterface {
         return null;
     }
 
-    ////////////////////////////Esraa////////////////////////////
-    @Autowired
-    ServiceData serviceData;
 
     @Override
     public TransactionDto userAcceptTransaction(TransactionDto transactionDto) {//service maker or requester can only accept

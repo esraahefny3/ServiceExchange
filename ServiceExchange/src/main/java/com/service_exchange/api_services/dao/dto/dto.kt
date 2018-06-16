@@ -144,6 +144,8 @@ class ReviewDTO {
 
     var userInfo: UserInfo? = null
 
+    var madeBy: Int? = null
+
     var reviewDate: Long? = null
 
 }
