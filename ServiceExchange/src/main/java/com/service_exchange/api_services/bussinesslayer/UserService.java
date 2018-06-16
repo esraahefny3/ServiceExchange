@@ -15,35 +15,35 @@ import com.service_exchange.api_services.dao.dto.*;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
-import org.jetbrains.annotations.Nullable;
+import com.service_exchange.securty.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Altysh
  */
-@Service
+@Component
 public class UserService {
-    @Autowired
-    private UserDaoImpl daoImpl;
+    private final UserDaoImpl daoImpl;
 
 
     //---user badge
-    @Autowired
-    private UserBadgesSelegateInterface userBadgesInterface;
-    @Autowired
-    private MessageServiceInterface messageInterface;
-    private int pageSize = 20;
-
-    public UserTable createUser(UserTable user) {
-        return daoImpl.createUser(user);
-    }
+    private final UserBadgesSelegateInterface userBadgesInterface;
+    private final MessageServiceInterface messageInterface;
+    //--user badge
+    //mubarak//
+    private final UserDataGet userDataGet;
+    private final UserStaticsGetter userStaticsGetter;
+    //mubarak//
+    private final UserDataSet userDataSet;
 
     public String getSome() {
         if (daoImpl == null)
@@ -51,70 +51,54 @@ public class UserService {
         else return "good";
     }
 
-
-    //--user badge
-    //mubarak//
+    private final UserDataDelete userDataDelete;
+    private int pageSize = 20;
     @Autowired
-    private UserDataGet userDataGet;
+    public UserService(UserDaoImpl daoImpl, UserBadgesSelegateInterface userBadgesInterface, MessageServiceInterface messageInterface, UserDataGet userDataGet, UserStaticsGetter userStaticsGetter, UserDataSet userDataSet, UserDataDelete userDataDelete) {
+        this.daoImpl = daoImpl;
+        this.userBadgesInterface = userBadgesInterface;
+        this.messageInterface = messageInterface;
+        this.userDataGet = userDataGet;
+        this.userStaticsGetter = userStaticsGetter;
+        this.userDataSet = userDataSet;
+        this.userDataDelete = userDataDelete;
+    }
 
+    @Secured({"ROLE_Admin"})
+    public UserTable createUser(UserTable user) {
+        return daoImpl.createUser(user);
+    }
+
+    @Secured({"ROLE_Admin"})
+    public UserDTO getUser(int userId) {
+        return userDataGet.getUserByID(userId);
+    }
+
+    @Secured({"ROLE_Admin"})
     public List<UserDTO> getAllUser() {
         return userDataGet.getAllUser();
     }
 
-    public UserTable updateUser(UserTable user) {
-        return daoImpl.updateUser(user);
-    }
-
-    public Boolean checkEmailAvalible(Integer email) {
-        return daoImpl.checkEmailAvalible(email);
-    }
     //static
-
-    public Page<UserTable> scerchUserByName(String name, int start) {
-        return daoImpl.scerchUserByName(name, start);
-    }
-
-    @Autowired
-    private UserStaticsGetter userStaticsGetter;
-
-    @Nullable
-    public String getUserLevel(int userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        String level = null;
-        if (userTable != null) {
-            level = userTable.getUserBadgeCollection().stream().filter(userBadge -> {
-                        Badge b = userBadge.getBadge().getNextLevel();
-                        if (b != null) {
-
-                            return b.getUserBadgeCollection().stream().noneMatch(userBadge1 -> userBadge1.getUserBadgePK().getUserId() == userId);
-                        } else
-                            return true;
-                    }
-            ).findFirst().map(userBadge -> userBadge.getBadge().getName()).orElse("not found");
-
+    public List<Badge> getAllUserBadges(Integer userId, Integer pageNum) {
+        if (userId != null && pageNum != null) {
+            UserTable userNew = userBadgesInterface.checkIfUserExist(userId);
+            if (userNew != null) {
+                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of(pageNum, pageSize));
+            }
         }
-        return level;
+        return null;
     }
 
-    @Nullable
-    public String getUserNextLevel(int userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        String level = null;
-        if (userTable != null) {
-            level = userTable.getUserBadgeCollection().stream().filter(userBadge -> {
-                        Badge b = userBadge.getBadge().getNextLevel();
-                        if (b != null) {
-
-                            return b.getUserBadgeCollection().stream().noneMatch(userBadge1 -> userBadge1.getUserBadgePK().getUserId() == userId);
-                        } else
-                            return false;
-                    }
-            ).findFirst().map(userBadge -> userBadge.getBadge().getNextLevel().getDescription()).orElse("not found");
-
+    public boolean assignBadgeToUser(UserTable user, Badge badge) {
+        if (user != null && user.getId() != null && badge != null && badge.getId() != null) {
+            return userBadgesInterface.assignBadgeToUser(user, badge);
+        } else {
+            return false;
         }
-        return level;
     }
 
+    @Secured({"ROLE_Admin", "ROLE_User"})
     public UserStatics getUserStatic(int userId) {
         if (userDataGet.getUserById(userId) != null) {
             Calendar calendar = Calendar.getInstance();
@@ -137,52 +121,6 @@ public class UserService {
         }
         return null;
     }
-    /*
-     Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-    */
-
-    public List<EarningListObject> getEaringList(Integer userId) {
-        UserTable userTable = userDataGet.getUserById(userId);
-        final List<EarningListObject> list = new ArrayList<>();
-//        if (userTable != null) {
-//            userTable.getServiceCollection().stream().filter(service -> service.getType().equals(com.service_exchange.entities.Service.OFFERED))
-//                    .forEach(service ->
-//                            service.getTransactionInfoCollection().stream().filter(transactionInfo -> transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE)
-//                                    || transactionInfo.getState().equals(TransactionInfo.COMPLETED_STATE) || transactionInfo.getState().equals(TransactionInfo.LATE_STATE))
-//                                    .forEach(transactionInfo -> list.add(new EarningListObject(transactionInfo.getId(),
-//                                            transactionInfo.getServiceId().getName()
-//                                            , transactionInfo.getStartDate().getTime()
-//                                            + transactionInfo.getDuration().longValue(), transactionInfo.getPrice())))
-//                    );
-//
-//        }
-        return userStaticsGetter.getEaringList(userId);
-    }
-
-    //static
-    public List<Badge> getAllUserBadges(Integer userId, Integer pageNum) {
-        if (userId != null && pageNum != null) {
-            UserTable userNew = userBadgesInterface.checkIfUserExist(userId);
-            if (userNew != null) {
-                return userBadgesInterface.getAllUserBadges(userNew, PageRequest.of(pageNum, pageSize));
-            }
-        }
-        return null;
-    }
-
-    public boolean assignBadgeToUser(UserTable user, Badge badge) {
-        if (user != null && user.getId() != null && badge != null && badge.getId() != null) {
-            return userBadgesInterface.assignBadgeToUser(user, badge);
-        } else {
-            return false;
-        }
-    }
-
-    public List<UserDTO> getAllUser(int start) {
-
-        return userDataGet.getAllUser(start);
-    }
 
     public List<Badge> getAllUserBadges(Integer userId) {
         if (userId != null) {
@@ -195,11 +133,22 @@ public class UserService {
 
     }
 
-    //mubarak//
-    @Autowired
-    private UserDataSet userDataSet;
-    @Autowired
-    private UserDataDelete userDataDelete;
+    /*
+     Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+    */
+    @Secured({"ROLE_Admin", "ROLE_User"})
+    public List<EarningListObject> getEaringList(Integer userId) {
+        UserTable userTable = userDataGet.getUserById(userId);
+        final List<EarningListObject> list = new ArrayList<>();
+        return userStaticsGetter.getEaringList(userId);
+    }
+
+    @Secured("ROLE_Admin")
+    public List<UserDTO> getAllUser(int start) {
+
+        return userDataGet.getAllUser(start);
+    }
 
 
     public UserDTO logInORSignUp(UserDTO userDTO) {
@@ -218,39 +167,66 @@ public class UserService {
         return userDataGet.getUserServices(userId);
     }
 
-
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addEmail(String email, Integer userId) {
         return userDataSet.addEmailToUser(email, userId);
     }
 
+    public boolean isUser(Object principal, Integer userId) {
+        if (principal instanceof UserSercurity) {
+            return Objects.equals(((UserSercurity) principal).getId(), userId);
+        }
+
+        return false;
+    }
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addSkill(SkillDTO skillDTO, Integer userId) {
         return userDataSet.addSkillToUser(skillDTO, userId);
     }
 
     public ServiceDTO addService(ServiceDTO serviceDTO) {
-        ServiceDTO s = userDataSet.addServiceToUser(serviceDTO);
 
-        return s;
+        return userDataSet.addServiceToUser(serviceDTO);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addTelephone(String telephone, Integer userId) {
         return userDataSet.addTelephonToUser(telephone, userId);
     }
 
+    @Secured("ROLE_User")
     public Boolean removeTelephone(String telephone, Integer userId) {
         return userDataDelete.removeTelePhoneFormUser(telephone, userId);
     }
 
+    @Secured("ROLE_User")
     public Boolean removeEmail(String email, Integer userId) {
         return userDataDelete.removeEmailFormUser(email, userId);
     }
 
+    @Secured("ROLE_User")
     public Boolean removeSkill(Integer skillId, Integer userId) {
         return userDataDelete.removeSkillFormUser(skillId, userId);
     }
 
+    @Secured("ROLE_User")
     public Boolean removeService(Integer service, Integer userId, Boolean forced) {
         return userDataDelete.removeServiceToUser(userId, service, forced);
+    }
+
+    public UserInfo getUserInfo(int userId) {
+        return userDataGet.getUserInfoByID(userId);
+    }
+
+    public Boolean setUserFireBase(int userId, String firebaseId) {
+        return userDataSet.setUserFirebase(userId, firebaseId);
+    }
+
+    public HodaProfile getData(int userId) {
+        return new HodaProfile(userDataGet.getLastActiveService(userId)
+                , userDataGet.getLastPausedService(userId), userDataGet.getLastActiveReq(userId)
+                , userDataGet.getLastCompletedReq(userId));
     }
 
 

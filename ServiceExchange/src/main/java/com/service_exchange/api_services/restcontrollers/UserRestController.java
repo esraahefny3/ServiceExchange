@@ -14,6 +14,7 @@ import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Map;
 
@@ -25,21 +26,31 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserRestController {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
+    @Autowired
+    public UserRestController(UserService service) {
+        System.out.println("this is constructor");
+        if (service == null)
+            System.out.println("null");
+        this.service = service;
+    }
+
+    //  @PreAuthorize("hasRole('admin_view')")
     @RequestMapping(value = "/getAll", method = RequestMethod.GET, params = "start")
     private List<UserDTO> getAllChanges(Integer start) {
 
         return service.getAllUser(start);
     }
 
+    //@PreAuthorize("hasRole('admin_view')")
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     private List<UserDTO> getAllChanges() {
 
         return service.getAllUser();
     }
 
+    //@PreAuthorize("hasRole('admin_view')")
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     private UserTable createUser(@RequestBody UserDTO user) {
 
@@ -59,13 +70,14 @@ public class UserRestController {
 //    }
 
      //---userBadge services
-    
+     @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getAllUserBadges/{userId}", method = RequestMethod.GET)
     private List<Badge> getAllUserBadges(@PathVariable Integer userId) {
         
         return service.getAllUserBadges(userId);
     }
-    
+
+    @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getAllUserBadges/{userId}/{pageNum}", method = RequestMethod.GET)
     private List<Badge> getAllUserBadges(@PathVariable Integer userId,@PathVariable Integer pageNum) {
         
@@ -90,19 +102,25 @@ return false;
 
         return service.logInORSignUp(user);
     }
+
+    @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
     private List<ServiceDTO> getUserServices(@RequestParam Integer userId) {
         return service.getUserService(userId);
     }
 
+    @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserSkills", method = RequestMethod.GET)
     private List<SkillDTO> getUserSkills(@RequestParam Integer userId) {
         return service.getUserSkill(userId);
     }
 
+    @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserEducation", method = RequestMethod.GET)
     private List<EdcationDTO> getUserEducation(@RequestParam Integer userId) {
+
         return service.getUserEdcation(userId);
+
     }
 
     @RequestMapping(value = "/addEmail", method = RequestMethod.POST)
@@ -159,5 +177,21 @@ return false;
         return service.getEaringList(userId);
     }
 
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    private UserInfo getUserInfo(@RequestParam Integer userId) {
+        return service.getUserInfo(userId);
+    }
+
+    @RequestMapping(value = "/setUserFirebaseId", method = RequestMethod.POST)
+    private Boolean setUserFirebaseId(@RequestBody Map<String, Object> map) {
+
+        return service.setUserFireBase((Integer) map.get("userId"), (String) map.get("firebaseId"));
+    }
+
+    @RequestMapping(value = "/getUserProfileData", method = RequestMethod.GET)
+    private HodaProfile getUserProfileData(Integer userId) {
+
+        return service.getData(userId);
+    }
     //mubarak//
 }

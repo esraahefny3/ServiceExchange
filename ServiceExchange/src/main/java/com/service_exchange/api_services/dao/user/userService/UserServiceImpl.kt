@@ -20,7 +20,7 @@ import java.util.stream.Collectors
   Created on May 29, 2018
 */
 @Component
-class UserServiceImpl : UserServicesInterFace {
+open class UserServiceImpl : UserServicesInterFace {
     @Autowired
     lateinit var userInterface: UserInterFace;
     @Autowired

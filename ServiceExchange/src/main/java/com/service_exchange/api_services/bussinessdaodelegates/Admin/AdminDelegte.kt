@@ -147,7 +147,7 @@ private class AdminAcceptImpl : AdminAccept {
 
     override fun enableUser(userId: Int): Boolean {
         userInterface.getUser(userId)?.let {
-            it.setIsEnabled(UserTable.ENABELED)
+            it.setEnabled(UserTable.ENABELED)
             userInterface.updateUser(it)
             return true
         }
@@ -243,7 +243,7 @@ private class AdminCancelImpl : AdminCancel {
 
     override fun disableUser(userId: Int): Boolean {
         userInterface.getUser(userId)?.let {
-            it.setIsEnabled(UserTable.DISABLED)
+            it.setEnabled(UserTable.DISABLED)
             userInterface.updateUser(it)
             return false
         }

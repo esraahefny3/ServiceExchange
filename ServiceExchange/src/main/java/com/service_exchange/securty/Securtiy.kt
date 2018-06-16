@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -91,7 +92,7 @@ class JwtFactory {
         fun create(user: UserTable): UserSercurity {
             val email = user.userEmailCollection?.elementAt(0)
             val authority = listOf(user.userAuthority?.authority)
-            val u = UserSercurity(id = user.id, email = user.name, authortys = mapToGrantedAuthorities(authority.requireNoNulls())
+            val u = UserSercurity(id = user.id, email = user.name, authortys = mapToGrantedAuthorities(authority.filterNotNull())
                     , enabled = user.isEnabled(), password = user.accountId, username = email?.userEmailPK?.email)
 
             return u
@@ -232,6 +233,7 @@ class JwtAuthorizationTokenFilter(private val userDetailsService: UserDetailsSer
 
         var username: String? = null
         var authToken: String? = null
+        println(requestHeader)
         if (requestHeader != null && requestHeader.startsWith(":")) {
             authToken = requestHeader.substring(1)
             println(authToken + " filter")
@@ -322,7 +324,7 @@ class UserDetailService : UserDetailsService {
             user.accountId = passwordEncoder.encode(user.accountId)
             return JwtFactory.create(user)
 
-        } else throw UsernameNotFoundException(String.format("No user found with username '%s'.", username))
+        } else throw UsernameNotFoundException(String.format("No user found with username '%s'.", username)) as Throwable
     }
 
 
@@ -412,7 +414,8 @@ class AuthenticationRestController {
 //config
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableAspectJAutoProxy
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
@@ -466,10 +469,11 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .authorizeRequests()
 
 
-                .antMatchers("/hello").authenticated()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/**", "/auth", "/user/logInOrSignup").permitAll()
+        //.antMatchers("/**").authenticated()
 
         // Custom JWT based security filter
+        println(tokenHeader)
         val authenticationTokenFilter = JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader)
         httpSecurity
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -489,6 +493,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers(
                         HttpMethod.POST,
                         authenticationPath!!
+
                 )
 
                 // allow anonymous resource requests

@@ -1,11 +1,11 @@
 package com.service_exchange.api_services.bussinesslayer
 
-import com.service_exchange.api_services.KotlinUtal.convert
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceAddAble
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable
 import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.transaction.TransactionDto
+import com.service_exchange.api_services.dao.dto.TransactionEslam
+import com.service_exchange.api_services.dao.dto.UserInfo
 import com.service_exchange.entities.Service
 import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,16 +21,20 @@ interface ServiceBussness {
     fun getPublerService(size: Int): List<ServiceDTO>
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
-    fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionDto>
+    fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam>
 
 }
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
-    override fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionDto> {
+    override fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam> {
         return serviceGet.getService(servieId)?.transactionInfoCollection
                 ?.stream()?.filter { it.state == TransactionInfo.PENDING_STATE || it.state == TransactionInfo.POSTPONED }
-                ?.map { it.convert() }?.collect(Collectors.toList()) ?: emptyList()
+                ?.map {
+
+                    TransactionEslam(UserInfo(userName = it.startedBy?.name, id = it.startedBy?.id, image = it.startedBy?.image)
+                            , descrption = it.descrption, numberOfDays = it.duration?.toInt())
+                }?.collect(Collectors.toList()) ?: emptyList()
 
 
     }
