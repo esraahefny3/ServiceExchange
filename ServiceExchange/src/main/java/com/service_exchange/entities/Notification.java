@@ -44,6 +44,11 @@ public class Notification implements Serializable {
     @JoinColumn(name = "sent_by", referencedColumnName = "email")
     @ManyToOne
     private AdminTable sentBy;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "type_id")
+    private Integer typeId;
+
 
     public Notification() {
     }
@@ -112,6 +117,22 @@ public class Notification implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     @Override

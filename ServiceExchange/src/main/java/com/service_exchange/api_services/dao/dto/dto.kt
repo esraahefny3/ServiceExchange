@@ -300,6 +300,8 @@ class NotificationDto {
     var body: String? = null
     var notifecationDate: Date? = null
     var sentBy: String? = null
+    var type: String? = null
+    var type_id: Int? = null
 
 }
 
