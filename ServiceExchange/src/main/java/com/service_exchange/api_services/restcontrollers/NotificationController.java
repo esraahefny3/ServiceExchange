@@ -27,11 +27,10 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/notifications/{userId}")
-    private List<NotificationDto> getAllUserNotificaions(@PathVariable("userId") Integer userId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/notifications/{userId}/{pageNum}")
+    private List<NotificationDto> getAllUserNotifications(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
         if (userId != null) {
-            return notificationService.getAllUserNotifications(userId);
-
+            return notificationService.getAllUserNotifications(userId, pageNum);
         }
         return null;
     }
