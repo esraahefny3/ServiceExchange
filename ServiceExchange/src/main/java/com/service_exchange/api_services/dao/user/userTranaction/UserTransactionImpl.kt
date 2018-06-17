@@ -7,8 +7,17 @@ import org.springframework.stereotype.Component
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
+
+public interface UserTransactionInterFace {
+    fun getSuccsfullTransaction(userId: Int?): List<TransactionInfo>
+
+    fun getWorkingDuration(userId: Int?): Long?
+
+    fun getWoringDurtation(user: Int?, start: Long, end: Long): Long?
+}
+
 @Component
-class UserTransactionImpl : UserTransactionInterFace {
+private open class UserTransactionImpl : UserTransactionInterFace {
     val onSuccess = "sucsesfull";
     val onEnd = "ended"
     @Autowired

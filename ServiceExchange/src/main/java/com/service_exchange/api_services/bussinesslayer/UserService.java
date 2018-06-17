@@ -13,6 +13,7 @@ import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.use
 import com.service_exchange.api_services.bussinesslayer.messagebussiness.MessageServiceInterface;
 import com.service_exchange.api_services.dao.dto.*;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
+import com.service_exchange.api_services.dao.user.userTranaction.UserTransactionInterFace;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
 import com.service_exchange.securty.UserSercurity;
@@ -53,6 +54,7 @@ public class UserService {
 
     private final UserDataDelete userDataDelete;
     private int pageSize = 20;
+    UserTransactionInterFace u;
     @Autowired
     public UserService(UserDaoImpl daoImpl, UserBadgesSelegateInterface userBadgesInterface, MessageServiceInterface messageInterface, UserDataGet userDataGet, UserStaticsGetter userStaticsGetter, UserDataSet userDataSet, UserDataDelete userDataDelete) {
         this.daoImpl = daoImpl;
@@ -62,6 +64,7 @@ public class UserService {
         this.userStaticsGetter = userStaticsGetter;
         this.userDataSet = userDataSet;
         this.userDataDelete = userDataDelete;
+
     }
 
     @Secured({"ROLE_Admin"})

@@ -28,6 +28,7 @@ public class UserRestController {
 
     private final UserService service;
 
+
     @Autowired
     public UserRestController(UserService service) {
 
