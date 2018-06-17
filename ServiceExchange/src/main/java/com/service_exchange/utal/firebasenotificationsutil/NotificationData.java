@@ -10,26 +10,38 @@ import javax.annotation.Generated;
 public class NotificationData {
 
     @SerializedName("body")
-    private NotificationDto notificationDtoDetail;
+    private Object objectData;
 
-    @SerializedName("title")
-    private String mTitle;
+    @SerializedName("type")
+    private String type;
 
-    public NotificationDto getNotificationDtoDetail() {
-        return notificationDtoDetail;
+    @SerializedName("userNameOfMessage")
+    private String userNameOfMessage;
+
+    public static String transactionType="transactionType";
+    public static String messageType="messageType";
+
+    public Object getObjectData() {
+        return objectData;
     }
 
-    public void setNotificationDtoDetail(NotificationDto notificationDtoDetail) {
-        this.notificationDtoDetail = notificationDtoDetail;
+    public void setObjectData(Object objectData) {
+        this.objectData = objectData;
     }
 
-    public String getmTitle() {
-        return mTitle;
+    public String getType() {
+        return type;
     }
 
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setType(String type) {
+        this.type = type;
     }
 
+    public String getUserNameOfMessage() {
+        return userNameOfMessage;
+    }
 
+    public void setUserNameOfMessage(String userNameOfMessage) {
+        this.userNameOfMessage = userNameOfMessage;
+    }
 }

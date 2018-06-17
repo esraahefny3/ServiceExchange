@@ -77,7 +77,7 @@ public class NotificationController {
                 System.out.println(notificationDto.getBody());
                 String user = mapper.convertValue(node.get("userToken"), String.class);
                 String authKey = mapper.convertValue(node.get("authKey"), String.class);
-                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto, user, authKey);
+                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto,"try", user, authKey);
                 return true;
             }
 
