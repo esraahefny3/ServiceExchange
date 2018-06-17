@@ -30,10 +30,12 @@ public class UserRestController {
 
     @Autowired
     public UserRestController(UserService service) {
-        System.out.println("this is constructor");
+
         if (service == null)
             System.out.println("null");
         this.service = service;
+
+
     }
 
     //  @PreAuthorize("hasRole('admin_view')")

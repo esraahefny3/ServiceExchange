@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import java.io.Serializable
+import java.security.Principal
 import java.util.*
 import java.util.function.Function
 import java.util.stream.Collectors
@@ -144,14 +145,12 @@ class JwtTokenUtil : Serializable {
 
     private fun isTokenExpired(token: String): Boolean {
         val expiration = getExpirationDateFromToken(token)
-        println(expiration.before(clock.now()))
+
         return expiration.before(clock.now())
     }
 
     private fun isCreatedBeforeLastPasswordReset(created: Date, lastPasswordReset: Date?): Boolean {
-        println(lastPasswordReset)
-        println(created.before(lastPasswordReset))
-        println(lastPasswordReset != null && created.before(lastPasswordReset))
+
         return lastPasswordReset != null && created.before(lastPasswordReset)
     }
 
@@ -341,7 +340,6 @@ class JwtAuthenticationResponse(val token: String) : Serializable {
 
 //restControllers
 class AuthenticationException(message: String, cause: Throwable) : RuntimeException(message, cause)
-
 @RestController
 class AuthenticationRestController {
 
@@ -387,6 +385,12 @@ class AuthenticationRestController {
         }
     }
 
+    @RequestMapping("/face")
+    fun user(principal: Principal?): Principal? {
+        return principal
+    }
+
+
     @ExceptionHandler(AuthenticationException::class)
     fun handleAuthenticationException(e: AuthenticationException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.message)
@@ -431,6 +435,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Value("\${jwt.header}")
     lateinit var tokenHeader: String
 
+
     @Value("\${jwt.route.authentication.path}")
     private val authenticationPath: String? = null
 
@@ -470,9 +475,10 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
 
                 .antMatchers("/**", "/auth", "/user/logInOrSignup").permitAll()
+
         //.antMatchers("/**").authenticated()
 
-        // Custom JWT based security filter
+
         println(tokenHeader)
         val authenticationTokenFilter = JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader)
         httpSecurity
@@ -515,5 +521,15 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .ignoring()
                 .antMatchers("/h2-console/**/**")
     }
+
+
 }
+
+
+///////////////social
+
+
+
+
+
 

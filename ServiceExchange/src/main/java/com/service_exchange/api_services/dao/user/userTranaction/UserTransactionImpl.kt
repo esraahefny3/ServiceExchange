@@ -3,9 +3,11 @@ package com.service_exchange.api_services.dao.user.userTranaction
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
+@Component
 class UserTransactionImpl : UserTransactionInterFace {
     val onSuccess = "sucsesfull";
     val onEnd = "ended"
