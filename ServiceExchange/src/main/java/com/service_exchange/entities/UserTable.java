@@ -49,8 +49,24 @@ public class UserTable implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "bio")
+    private String bio;
+
+    @Column(name = "address")
+    private String address;
+
+
     @Column(name = "last_password_changed")
+    @Temporal(TemporalType.DATE)
     private Date lastPasswordChanged;
+
+    @Column(name = "signUpDate")
+    @Temporal(TemporalType.DATE)
+    private Date signUpDate;
+
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -61,8 +77,8 @@ public class UserTable implements Serializable {
     @Column(name = "balance")
     private Integer balance;
 
-    @Column(name = "firebase_authorization_key")
-    private String firebaseAuthorizationKey;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTable")
+    private Collection<UserFirebaseToken> userFirebaseTokenCollection;
 
 
     @ManyToMany(mappedBy = "userTableCollection")
@@ -228,6 +244,15 @@ public class UserTable implements Serializable {
     }
 
     @Nullable
+    public Date getSignUpDate() {
+        return signUpDate;
+    }
+
+    public void setSignUpDate(Date signUpDate) {
+        this.signUpDate = signUpDate;
+    }
+
+    @Nullable
     @XmlTransient
     public Collection<Skill> getSkillCollection() {
         return skillCollection;
@@ -322,8 +347,37 @@ public class UserTable implements Serializable {
         return complaintCollection;
     }
 
+    @Nullable
     public void setComplaintCollection(Collection<Complaint> complaintCollection) {
         this.complaintCollection = complaintCollection;
+    }
+
+    @Nullable
+    public String getDescription() {
+        return description;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Nullable
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    @Nullable
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Nullable
@@ -335,6 +389,7 @@ public class UserTable implements Serializable {
     public void setUserBadgeCollection(Collection<UserBadge> userBadgeCollection) {
         this.userBadgeCollection = userBadgeCollection;
     }
+
 
     @XmlTransient
     public Collection<Review> getReviewCollection() {
@@ -366,13 +421,14 @@ public class UserTable implements Serializable {
     }
 
 
-    @Nullable
-    public String getFirebaseAuthorizationKey() {
-        return firebaseAuthorizationKey;
+
+    @XmlTransient
+    public Collection<UserFirebaseToken> getUserFirebaseTokenCollection() {
+        return userFirebaseTokenCollection;
     }
 
-    public void setFirebaseAuthorizationKey(String firebaseAuthorizationKey) {
-        this.firebaseAuthorizationKey = firebaseAuthorizationKey;
+    public void setUserFirebaseTokenCollection(Collection<UserFirebaseToken> userFirebaseTokenCollection) {
+        this.userFirebaseTokenCollection = userFirebaseTokenCollection;
     }
 
     @Override
@@ -570,6 +626,7 @@ public class UserTable implements Serializable {
         }
         return false;
     }
+
 
 
     //-------esraaa--------------

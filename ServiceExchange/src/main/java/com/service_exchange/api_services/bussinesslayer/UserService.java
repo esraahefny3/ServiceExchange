@@ -219,8 +219,8 @@ public class UserService {
         return userDataGet.getUserInfoByID(userId);
     }
 
-    public Boolean setUserFireBase(int userId, String firebaseId) {
-        return userDataSet.setUserFirebase(userId, firebaseId);
+    public Boolean setUserFireBase(int userId, String firebaseId,String type) {
+        return userDataSet.setUserFirebase(userId, firebaseId,type);
     }
 
     public HodaProfile getData(int userId) {

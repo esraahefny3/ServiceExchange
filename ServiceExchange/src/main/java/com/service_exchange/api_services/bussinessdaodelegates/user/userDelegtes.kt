@@ -216,7 +216,7 @@ interface UserDataSet {
     fun addSkillToUser(skillDTO: SkillDTO?, userId: Int?): Boolean
     fun addTelephonToUser(telephone: String?, userId: Int?): Boolean
     fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO?
-    fun setUserFirebase(userId: Int?, firebase: String?): Boolean
+    fun setUserFirebase(userId: Int?, firebase: String?,type: String?): Boolean
 }
 
 @Component
@@ -236,10 +236,14 @@ private class UserDataSetImol : UserDataSet {
     @Autowired
     lateinit var skillINterface: SkillInterface
 
-    override fun setUserFirebase(userId: Int?, firebase: String?): Boolean =
+    override fun setUserFirebase(userId: Int?, firebase: String?,type: String?): Boolean =
             if (userId != null)
                 userInterFace.getUser(userId)?.let {
-                    it.firebaseAuthorizationKey = firebase
+                    var userFirebaseToken:UserFirebaseToken=UserFirebaseToken()
+                    userFirebaseToken.userTable.id=userId
+                    userFirebaseToken.userFirebaseTokenPK.type=type
+                    userFirebaseToken.userFirebaseTokenPK.token=firebase
+                    it.userFirebaseTokenCollection.add(userFirebaseToken)
                     userInterFace.updateUser(it)
                     true
                 } ?: false
