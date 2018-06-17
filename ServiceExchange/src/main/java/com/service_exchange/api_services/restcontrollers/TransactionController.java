@@ -1,17 +1,22 @@
 package com.service_exchange.api_services.restcontrollers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.service_exchange.api_services.bussinesslayer.reviewbusiness.ReviewServiceInterface;
 import com.service_exchange.api_services.bussinesslayer.transactionbussiness.TransactionServiceInterface;
 import com.service_exchange.api_services.dao.dto.ReviewDTO;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
+
     ////////////////////////////Esraa////////////////////////////
 
     @Autowired
@@ -26,14 +31,15 @@ public class TransactionController {
     public List<TransactionDto> getAllUserTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
 
         if (userId != null && pageNum != null) {
-            return transactionServiceImpl.getAllUserTransactions(userId,pageNum);
+            return transactionServiceImpl.getAllUserTransactions(userId, pageNum);
         }
         return null;
     }
+
     @RequestMapping(value = "/userAcceptTransaction", method = RequestMethod.POST)
     public TransactionDto userAcceptTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null&&transactionDto.getId()!=null&&transactionDto.getPrice()!=null&&transactionDto.getDuration()!=null) {
+        if (transactionDto != null && transactionDto.getId() != null && transactionDto.getPrice() != null && transactionDto.getDuration() != null) {
             return transactionServiceImpl.userAcceptTransaction(transactionDto);
         }
         return null;
@@ -60,7 +66,7 @@ public class TransactionController {
     @RequestMapping(value = "/userRejectTransaction", method = RequestMethod.POST)
     public boolean userRejectTransaction(@RequestBody TransactionDto transactionDto) {
 
-        if (transactionDto != null&&transactionDto.getId()!=null) {
+        if (transactionDto != null && transactionDto.getId() != null) {
             return transactionServiceImpl.userRejectTransaction(transactionDto);
         }
         return false;
@@ -73,6 +79,8 @@ public class TransactionController {
     @Autowired
     TransactionServiceInterface transactionServiceInterface;
 
+    @Autowired
+    ReviewServiceInterface reviewServiceInterface;
 
     @RequestMapping(value = "/makeTransactionOnService", method = RequestMethod.POST)
     public TransactionDto makeTransactionOnService(@RequestBody TransactionDto transactionDto) {
@@ -94,16 +102,6 @@ public class TransactionController {
     }
 
 
-//    @RequestMapping(value = "/approveCompletedTransaction", method = RequestMethod.POST)
-//    public TransactionDto approveCompletedTransaction(@RequestBody TransactionDto transactionDto) {
-//        if (transactionDto != null) {
-//            return transactionServiceInterface.approveCompletedTransaction(transactionDto);
-//        } else {
-//            return null;
-//        }
-//    }
-
-
     @RequestMapping(value = "/rejectCompletedTransaction", method = RequestMethod.POST)
     public TransactionDto rejectCompletedTransaction(@RequestBody TransactionDto transactionDto) {
         if (transactionDto != null) {
@@ -118,7 +116,7 @@ public class TransactionController {
     public List<TransactionDto> getUserActiveTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
 
         if (userId != null && pageNum != null) {
-            return transactionServiceImpl.getUserActiveTransactions(userId, pageNum);
+            return transactionServiceInterface.getUserActiveTransactions(userId, pageNum);
         }
         return null;
     }
@@ -128,7 +126,7 @@ public class TransactionController {
     public List<TransactionDto> getUserCompletedTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
 
         if (userId != null && pageNum != null) {
-            return transactionServiceImpl.getUserCompletedTransactions(userId, pageNum);
+            return transactionServiceInterface.getUserCompletedTransactions(userId, pageNum);
         }
         return null;
     }
@@ -137,22 +135,34 @@ public class TransactionController {
     public List<TransactionDto> getUserCompletedAndApprovedTransactions(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
 
         if (userId != null && pageNum != null) {
-            return transactionServiceImpl.getUserCompletedAndApprovedTransactions(userId, pageNum);
+            return transactionServiceInterface.getUserCompletedAndApprovedTransactions(userId, pageNum);
         }
         return null;
     }
 
 
     @RequestMapping(value = "/approveCompletedTransaction", method = RequestMethod.POST)
-    public TransactionDto approveCompletedTransaction(@RequestBody Map<String, Object> mapData) {
-        TransactionDto transactionDto = (TransactionDto) mapData.get("transaction");
-        ReviewDTO reviewDTO = (ReviewDTO) mapData.get("review");
+    public TransactionDto approveCompletedTransaction(@RequestBody String str) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        try {
+            node = mapper.readTree(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TransactionDto transactionDto = mapper.convertValue(node.get("transaction"), TransactionDto.class);
+        ReviewDTO reviewDTO = mapper.convertValue(node.get("review"), ReviewDTO.class);
         if (transactionDto != null && reviewDTO != null) {
-
-            return transactionServiceInterface.approveCompletedTransaction(transactionDto);
+            boolean reviewAdded = reviewServiceInterface.submitReviewOnTransaction(reviewDTO, transactionDto.getId());
+            transactionDto = transactionServiceInterface.approveCompletedTransaction(transactionDto);
+            if (transactionDto != null) {
+                transactionDto.setReviewAdded(reviewAdded);
+                return transactionDto;
+            }
         } else {
             return null;
         }
+        return null;
     }
 
     ////////////////////////////Nouran////////////////////////////

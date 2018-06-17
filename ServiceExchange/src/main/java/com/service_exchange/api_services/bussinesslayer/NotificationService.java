@@ -15,6 +15,7 @@ import com.service_exchange.entities.Notification;
 import com.service_exchange.entities.UserNotification;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,10 +37,11 @@ public class NotificationService {
     @Autowired
     private UserDataInterFace userDataInterFace;
 
-    public List<NotificationDto> getAllUserNotifications(Integer userId) {
-        List<NotificationDto> notifications = new ArrayList<>();
-        List<UserNotification> userNotifications = new ArrayList<>(userNotificationDataInterface.findByUserNotificationPK_UserId(userId));
+    private int size = 20;
 
+    public List<NotificationDto> getAllUserNotifications(Integer userId, Integer pageNum) {
+        List<NotificationDto> notifications = new ArrayList<>();
+        List<UserNotification> userNotifications = new ArrayList<>(userNotificationDataInterface.findByUserNotificationPK_UserId(userId, PageRequest.of(pageNum, size)));
         for (UserNotification userNotification : userNotifications) {
             Notification notification = userNotification.getNotification();
             NotificationDto notificationDto = AppFactory.mapToDto(notification, NotificationDto.class);

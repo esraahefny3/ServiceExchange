@@ -8,6 +8,7 @@ package com.service_exchange.api_services.dao.notification;
 
 import com.service_exchange.entities.UserNotification;
 import com.service_exchange.entities.UserNotificationPK;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @Repository
 public interface UserNotificationDataInterface extends CrudRepository<UserNotification, UserNotificationPK> {
 
-    List<UserNotification> findByUserNotificationPK_UserId(Integer userId);
+    List<UserNotification> findByUserNotificationPK_UserId(Integer userId, Pageable page);
 
     List<UserNotification> findByNotificationId(Integer notificationId);
 }

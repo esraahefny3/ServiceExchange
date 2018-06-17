@@ -21,7 +21,6 @@ import java.util.List;
 @Component
 public class TransactionService implements TransactionServiceInterface {
 
-    ////////////////////////////Esraa////////////////////////////
 
     @Autowired
     private TransactionDelegateInterface transactionDelegateInterfaceImpl;
@@ -31,12 +30,20 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Autowired
     TransactionDelegateInterface delegate;
+
     @Autowired
     TransactionDelegateInterface transactionDelegate;
+
     @Autowired
     TransactionDaoInterface transactionDao;
+
     @Autowired
     UserDataInterFace userDataInterFace;
+
+    @Autowired
+    ServiceData serviceData;
+
+    ////////////////////////////Esraa////////////////////////////
 
     @Override
     public TransactionDto userAcceptedThenApproveTransaction(TransactionDto transactionDto) {
@@ -66,9 +73,6 @@ public class TransactionService implements TransactionServiceInterface {
         return null;
     }
 
-    ////////////////////////////Esraa////////////////////////////
-    @Autowired
-    ServiceData serviceData;
 
     @Override
     public TransactionDto userAcceptTransaction(TransactionDto transactionDto) {//service maker or requester can only accept
@@ -151,21 +155,30 @@ public class TransactionService implements TransactionServiceInterface {
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
                 Service service = serviceData.findById(transactionDto.getServiceId()).get();
+                Boolean hasOnProgressTransactions = false;
+                List<TransactionInfo> onProgressTransactionsOnService = transactionDao.findOnProgressTransactionsOnService(service);
+                if (onProgressTransactionsOnService.isEmpty()) {
+                    hasOnProgressTransactions = true;
+                } else {
+                    hasOnProgressTransactions = false;
+                }
+                UserTable user = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
+                List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user);
+                if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
+                    Integer userId = transactionDto.getStartedByUser();
+                    TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
+                    transactionInfo.setType(service.getType());
+                    transactionInfo.setState(TransactionInfo.PENDING_STATE);
+                    transactionInfo.setStartDate(new Date());
 
-                Integer userId = transactionDto.getStartedByUser();
-                TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
-                transactionInfo.setType(service.getType());
-                transactionInfo.setState(transactionInfo.PENDING_STATE);
-                transactionInfo.setStartDate(new Date());
+                    transactionDao.save(transactionInfo);
+                    transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
+                    transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                    transactionDto.setStartedByUser(userId);
 
-                transactionDao.save(transactionInfo);
-                transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
-                transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                transactionDto.setStartedByUser(userId);
+                    return transactionDto;
+                }
 
-                System.out.println(transactionDao.findByServiceId(service));
-
-                return transactionDto;
             }
         }
 

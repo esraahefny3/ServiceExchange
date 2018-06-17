@@ -18,6 +18,7 @@ public class TransactionDto {
     private String jopFile;
     private String otherUserImage;
     private String serviceDescription;
+    private boolean reviewAdded;
 //    private String typeOfPayment;
 
     private Integer serviceId;
@@ -149,5 +150,13 @@ public class TransactionDto {
 
     public void setServiceDescription(String serviceDescription) {
         this.serviceDescription = serviceDescription;
+    }
+
+    public boolean isReviewAdded() {
+        return reviewAdded;
+    }
+
+    public void setReviewAdded(boolean reviewAdded) {
+        this.reviewAdded = reviewAdded;
     }
 }

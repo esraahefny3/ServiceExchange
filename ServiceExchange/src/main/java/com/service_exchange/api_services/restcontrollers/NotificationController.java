@@ -27,11 +27,10 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/notifications/{userId}")
-    private List<NotificationDto> getAllUserNotificaions(@PathVariable("userId") Integer userId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/notifications/{userId}/{pageNum}")
+    private List<NotificationDto> getAllUserNotifications(@PathVariable("userId") Integer userId, @PathVariable("pageNum") Integer pageNum) {
         if (userId != null) {
-            return notificationService.getAllUserNotifications(userId);
-
+            return notificationService.getAllUserNotifications(userId, pageNum);
         }
         return null;
     }
@@ -77,7 +76,7 @@ public class NotificationController {
                 System.out.println(notificationDto.getBody());
                 String user = mapper.convertValue(node.get("userToken"), String.class);
                 String authKey = mapper.convertValue(node.get("authKey"), String.class);
-                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto, user, authKey);
+                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserTry(notificationDto,"try", user, authKey);
                 return true;
             }
 
