@@ -63,7 +63,7 @@ public class UserTable implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date lastPasswordChanged;
 
-    @Column(name = "signUpDate")
+    @Column(name = "sign_up_date")
     @Temporal(TemporalType.DATE)
     private Date signUpDate;
 
