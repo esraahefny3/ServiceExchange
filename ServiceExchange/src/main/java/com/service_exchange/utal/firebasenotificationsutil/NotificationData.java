@@ -15,8 +15,9 @@ public class NotificationData {
     @SerializedName("type")
     private String type;
 
-    @SerializedName("userNameOfMessage")
-    private String userNameOfMessage;
+
+    @SerializedName("description")
+    private String description;
 
     public static String transactionType="transactionType";
     public static String messageType="messageType";
@@ -37,11 +38,12 @@ public class NotificationData {
         this.type = type;
     }
 
-    public String getUserNameOfMessage() {
-        return userNameOfMessage;
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setUserNameOfMessage(String userNameOfMessage) {
-        this.userNameOfMessage = userNameOfMessage;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

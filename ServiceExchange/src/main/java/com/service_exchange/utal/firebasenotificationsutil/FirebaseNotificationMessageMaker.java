@@ -79,7 +79,7 @@ public class FirebaseNotificationMessageMaker {
 
     }
 
-    public static int sendFirebaseNotificationMessageToTopicAndroid(Object objectData,String userToken,String typeData, String topic) {
+    public static int sendFirebaseNotificationMessageToTopic(Object objectData,String typeData, String topic) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
@@ -93,7 +93,7 @@ public class FirebaseNotificationMessageMaker {
         notificationData.setObjectData(objectData);
         notificationData.setType(typeData);
         notificationRequestModel.setData(notificationData);
-        notificationRequestModel.setTo(userToken);
+        notificationRequestModel.setTo(topic);
 
 
         Gson gson = new Gson();
