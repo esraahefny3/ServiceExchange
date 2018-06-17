@@ -19,7 +19,7 @@ public class FirebaseNotificationMessageMaker {
     private static String firebaseApplicationAuthorizationKeyStringAndroid = "AIzaSyD_1-Un77E_MzwikLPBMll1YTYMY6c4tAo";
     private static String firebaseApplicationAuthorizationKeyStringWeb = "";
 
-    public static int sendFirebaseNotificationMessageToUser(Object objectData, UserTable userTable,String typeData)
+    public static int sendFirebaseNotificationMessageToUser(Object objectData, String userToken,String typeData)
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
@@ -34,7 +34,7 @@ public class FirebaseNotificationMessageMaker {
         notificationData.setObjectData(objectData);
         notificationData.setType(typeData);
         notificationRequestModel.setData(notificationData);
-        notificationRequestModel.setTo(userTable.getFirebaseAuthorizationKey());
+        notificationRequestModel.setTo(userToken);
 
 
         Gson gson = new Gson();
@@ -79,7 +79,7 @@ public class FirebaseNotificationMessageMaker {
 
     }
 
-    public static int sendFirebaseNotificationMessageToTopicAndroid(Object objectData, UserTable userTable,String typeData, String topic) {
+    public static int sendFirebaseNotificationMessageToTopicAndroid(Object objectData,String userToken,String typeData, String topic) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
@@ -93,7 +93,7 @@ public class FirebaseNotificationMessageMaker {
         notificationData.setObjectData(objectData);
         notificationData.setType(typeData);
         notificationRequestModel.setData(notificationData);
-        notificationRequestModel.setTo(userTable.getFirebaseAuthorizationKey());
+        notificationRequestModel.setTo(userToken);
 
 
         Gson gson = new Gson();

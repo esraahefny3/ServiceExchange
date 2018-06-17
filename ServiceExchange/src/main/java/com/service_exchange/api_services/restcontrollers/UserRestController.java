@@ -185,7 +185,7 @@ return false;
     @RequestMapping(value = "/setUserFirebaseId", method = RequestMethod.POST)
     private Boolean setUserFirebaseId(@RequestBody Map<String, Object> map) {
 
-        return service.setUserFireBase((Integer) map.get("userId"), (String) map.get("firebaseId"));
+        return service.setUserFireBase((Integer) map.get("userId"), (String) map.get("firebaseId"),(String) map.get("type"));
     }
 
     @RequestMapping(value = "/getUserProfileData", method = RequestMethod.GET)
