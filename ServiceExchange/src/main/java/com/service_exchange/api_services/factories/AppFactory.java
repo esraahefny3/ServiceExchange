@@ -5,7 +5,12 @@
  */
 package com.service_exchange.api_services.factories;
 
+import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable;
+import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegate;
+import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegateInterface;
+import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesDelegateImpl;
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
+import com.service_exchange.api_services.dao.service.ServiceData;
 import com.service_exchange.entities.AdminTable;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.Complaint;
@@ -30,7 +35,13 @@ public class AppFactory {
    private static AppFactory appFactory;
    @Autowired
     private  ModelMapper modelMapper;
+    @Autowired
+    private  UserDelegateInterface userDelegateInterfaceImpl;
+    private  static  UserDelegateInterface userDelegateInterfaceImplStatic;
 
+    @Autowired
+    private  ServiceData serviceData;
+    private  static ServiceData serviceDataStatic;
     public ModelMapper getModelMapper() {
         return modelMapper;
     }
@@ -42,6 +53,8 @@ public class AppFactory {
     @PostConstruct
     public void registerInstance() {
         this.appFactory = this;
+        this.userDelegateInterfaceImplStatic = userDelegateInterfaceImpl;
+        this.serviceDataStatic=serviceData;
     }
    public static <T,M> M mapToDto(T t,Class<M> m)
    {
@@ -83,5 +96,16 @@ public class AppFactory {
     public static NotificationData getNotificationDataInstance()
     {
         return new NotificationData();
+    }
+    public static UserDelegateInterface getuserDelegateInterfaceInstance()
+    {
+        return userDelegateInterfaceImplStatic;
+
+    }
+
+    public static ServiceData getServiceDataInstance()
+    {
+        return serviceDataStatic;
+
     }
 }

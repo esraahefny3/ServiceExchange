@@ -162,35 +162,43 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
 
     @Override
     public MessageGeneralDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer transactionId) {
-   
-        try{
-        TransactionInfo transactionInfo=transactionDaoInterfaceImpl.findById(transactionId).get();
-        UserTable sender=userDataInterface.findById(senderId).get();
-        UserTable receiver=userDataInterface.findById(recieverId).get();
-        if(sender!=null &&receiver!=null&&transactionInfo!=null
-                &&checkUsersInTransaction(senderId,recieverId,transactionInfo)==true)
-        {
-            message.setSenderId(sender);
-            message.setReceiverId(receiver);
-            message.setTransactionId(transactionInfo);
-            message.setDate(new Date());
-            Short isSeen=0;//not seen yet
-            message.setIsSeen(isSeen);
-            message=messageInterface.save(message);
-            MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
-            messageGeneralDto.setSenderId(senderId);
-            messageGeneralDto.setReceiverId(recieverId);
-            messageGeneralDto.setTransactionId(transactionId);
-            messageGeneralDto.setDate(message.getDate().getTime());
-            return messageGeneralDto;
-        }
-        return null;
-        }
+
+
+        try {
+            Optional<TransactionInfo> transactionInfoOptional = transactionDaoInterfaceImpl.findById(transactionId);
+            if (transactionInfoOptional.isPresent()) { System.out.println("heree0");
+                TransactionInfo transactionInfo = transactionInfoOptional.get();
+                Optional<UserTable> senderOptional = userDataInterface.findById(senderId);
+                Optional<UserTable> receiverOptional = userDataInterface.findById(recieverId);
+                if (senderOptional.isPresent() == true && receiverOptional.isPresent() == true) {
+                    UserTable sender=senderOptional.get();
+                    UserTable receiver=receiverOptional.get();
+                    if (sender != null && receiver != null && transactionInfo != null
+                            && checkUsersInTransaction(senderId, recieverId, transactionInfo) == true) {
+                        message.setSenderId(sender);
+                        message.setReceiverId(receiver);
+                        message.setTransactionId(transactionInfo);
+                        message.setDate(new Date());
+                        Short isSeen = 0;//not seen yet
+                        message.setIsSeen(isSeen);
+                        message = messageInterface.save(message);
+                        MessageGeneralDto messageGeneralDto = AppFactory.mapToDto(message, MessageGeneralDto.class);
+                        messageGeneralDto.setSenderId(senderId);
+                        messageGeneralDto.setReceiverId(recieverId);
+                        messageGeneralDto.setTransactionId(transactionId);
+                        messageGeneralDto.setDate(message.getDate().getTime());
+                        return messageGeneralDto;
+                    }
+                }
+            }
+                return null;
+            }
         catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+            {
+                e.printStackTrace();
+                return null;
+            }
+
     }
 
     @Override

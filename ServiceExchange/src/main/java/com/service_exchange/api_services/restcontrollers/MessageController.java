@@ -110,19 +110,20 @@ public class MessageController {
         return null;
     }
     @RequestMapping(value = "/sendTransactionMessage", method = RequestMethod.POST)
-    public MessageGeneralDto sendTransactionMessage(@RequestBody MessageGeneralDto messageTransactionDto) {
+    public MessageGeneralDto sendTransactionMessage(@RequestBody MessageGeneralDto messageGeneralDto) {
 
-        if (messageTransactionDto != null) {
-            Integer senderId = (Integer) messageTransactionDto.getSenderId();
-            Integer receiverId = (Integer) messageTransactionDto.getReceiverId();
-            Integer transactionId = (Integer) messageTransactionDto.getTransactionId();
-            Integer complaintId = (Integer) messageTransactionDto.getComplaintId();
+        if (messageGeneralDto != null) {
+            Integer senderId = (Integer) messageGeneralDto.getSenderId();
+            Integer receiverId = (Integer) messageGeneralDto.getReceiverId();
+            Integer transactionId = (Integer) messageGeneralDto.getTransactionId();
+            Integer complaintId = (Integer) messageGeneralDto.getComplaintId();
 //            //b7wl l obj fl map lno3o
 //            ObjectMapper mapper = new ObjectMapper();
 //            Message message = mapper.convertValue(dataMap.get("message"), Message.class);
-            Message message=AppFactory.mapToEntity(messageTransactionDto,Message.class);
+            Message message=AppFactory.mapToEntity(messageGeneralDto,Message.class);
             if ( senderId != null && receiverId != null && transactionId != null && message != null&&complaintId==null&&senderId!=receiverId) {
-                return messageServiceInterfaceImpl.sendTransactionMessage(senderId, receiverId, message, transactionId);
+                return  messageServiceInterfaceImpl.sendTransactionMessage(senderId, receiverId, message, transactionId);
+
             }
         }
 
