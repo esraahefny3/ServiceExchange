@@ -232,6 +232,7 @@ public class TransactionService implements TransactionServiceInterface {
                 transactionInfo.getServiceId() != null) {
             Boolean done = delegate.completeTransaction(transactionInfo);
             if (done) {
+                transactionInfo.setEndDate(new Date());
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
@@ -253,7 +254,7 @@ public class TransactionService implements TransactionServiceInterface {
                 transactionInfo.getServiceId() != null) {
             Boolean done = delegate.approveCompletedTransaction(transactionInfo);
             if (done) {
-                transactionInfo.setEndDate(new Date());
+//                transactionInfo.setEndDate(new Date());
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
