@@ -166,8 +166,8 @@ public class UserService {
         return userDataGet.getUserEdcation(userId);
     }
 
-    public List<ServiceDTO> getUserService(Integer userId) {
-        return userDataGet.getUserServices(userId);
+    public List<ServiceDTO> getUserService(Integer userId, String type) {
+        return userDataGet.getUserServices(userId, type);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")

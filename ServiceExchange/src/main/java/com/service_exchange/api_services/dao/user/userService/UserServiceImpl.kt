@@ -40,11 +40,11 @@ open class UserServiceImpl : UserServicesInterFace {
 
     override fun updateService(service: Service?): Boolean =
             serviceInterFace.modifieService(service).let {
-                it?.let {
-                    println("hmada")
-                    return true
-                }
-                return false
+                return@let it?.let {
+
+                    true
+                } ?: false
+
             }
 
 
