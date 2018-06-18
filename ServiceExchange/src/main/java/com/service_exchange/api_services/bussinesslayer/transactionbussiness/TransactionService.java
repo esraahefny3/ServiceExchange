@@ -51,7 +51,6 @@ public class TransactionService implements TransactionServiceInterface {
         TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
         if (transactionInfo != null) {
-            System.out.println("Duration: " + transactionDto.getDuration());
             Service service = transactionInfo.getServiceId();
             UserTable transactionStartedByUser = service.getMadeBy();
             if (transactionDelegateInterfaceImpl.getAllUserAcceptedTransactionsOnService(service).isEmpty() == true)
