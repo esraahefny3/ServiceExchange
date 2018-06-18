@@ -5,17 +5,11 @@ package com.service_exchange.entities;/*
  */
 
 
-import com.service_exchange.entities.UserTable;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
@@ -49,6 +43,7 @@ public class UserFirebaseToken implements Serializable {
         this.userFirebaseTokenPK = new UserFirebaseTokenPK(userId, token, type);
     }
 
+    @Nullable
     public UserFirebaseTokenPK getUserFirebaseTokenPK() {
         return userFirebaseTokenPK;
     }
@@ -57,6 +52,7 @@ public class UserFirebaseToken implements Serializable {
         this.userFirebaseTokenPK = userFirebaseTokenPK;
     }
 
+    @Nullable
     public UserTable getUserTable() {
         return userTable;
     }

@@ -3,7 +3,7 @@ package com.service_exchange.api_services.dao.user.userTranaction
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -16,7 +16,7 @@ public interface UserTransactionInterFace {
     fun getWoringDurtation(user: Int?, start: Long, end: Long): Long?
 }
 
-@Component
+@Service
 private open class UserTransactionImpl : UserTransactionInterFace {
     val onSuccess = "sucsesfull";
     val onEnd = "ended"
