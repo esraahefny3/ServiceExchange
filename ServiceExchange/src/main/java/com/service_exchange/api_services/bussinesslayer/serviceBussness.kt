@@ -21,13 +21,13 @@ interface ServiceBussness {
     fun getPublerService(size: Int): List<ServiceDTO>
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
-    fun getAllPreStartTransactionOnService(servieId: Int, type: String?): List<TransactionEslam>
+    fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam>
 
 }
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
-    override fun getAllPreStartTransactionOnService(servieId: Int, type: String?): List<TransactionEslam> {
+    override fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam> {
         return serviceGet.getService(servieId)?.transactionInfoCollection
                 ?.stream()?.filter { it.state == TransactionInfo.PENDING_STATE || it.state == TransactionInfo.POSTPONED }
                 ?.map {

@@ -29,7 +29,7 @@ interface UserDataGet {
     fun loginOrSignUp(user: UserDTO?): UserDTO?
     fun getUserSkill(userId: Int?): List<SkillDTO>
     fun getUserEdcation(userId: Int?): List<EdcationDTO>
-    fun getUserServices(userId: Int?): List<ServiceDTO>
+    fun getUserServices(userId: Int?, type: String?): List<ServiceDTO>
     fun getAllUser(start: Int): List<UserDTO>
     fun getAllUser(): List<UserDTO>
     fun getUserById(userId: Int?): UserTable?
@@ -197,8 +197,9 @@ private open class UserDataGetImpl : UserDataGet {
                 ?: emptyList()
     }
 
-    override fun getUserServices(userId: Int?): List<ServiceDTO> {
-        return userService.getUserServices(userId)?.stream()?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
+    override fun getUserServices(userId: Int?, type: String?): List<ServiceDTO> {
+        return userService.getUserServices(userId)?.stream()?.filter { it.type == type }
+                ?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
                 ?: emptyList()
     }
 

@@ -108,8 +108,8 @@ return false;
 
     @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
-    private List<ServiceDTO> getUserServices(@RequestParam Integer userId) {
-        return service.getUserService(userId);
+    private List<ServiceDTO> getUserServices(@RequestParam Integer userId, @RequestParam String type) {
+        return service.getUserService(userId, type);
     }
 
     @RolesAllowed({"admin_view", "User"})
