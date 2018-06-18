@@ -3,11 +3,13 @@ package com.service_exchange.api_services.bussinesslayer.transactionbussiness;
 
 import com.service_exchange.api_services.bussinessdaodelegates.transaction.TransactionDelegateInterface;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegateInterface;
+import com.service_exchange.api_services.bussinesslayer.messagebussiness.MessageServiceInterface;
 import com.service_exchange.api_services.dao.service.ServiceData;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
+import com.service_exchange.entities.Message;
 import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -42,6 +45,9 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Autowired
     ServiceData serviceData;
+
+    @Autowired
+    private  MessageServiceInterface messageServiceInterfaceImpl;
 
     ////////////////////////////Esraa////////////////////////////
 
@@ -93,7 +99,21 @@ public class TransactionService implements TransactionServiceInterface {
                         userDataInterFace.save(serviceBuyer);
 
                         if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
-                            return transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
+                            TransactionDto transactionDtoNew= transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
+
+                            //start message
+                                Optional<UserTable>userTableOptional=userDataInterFace.findById(service.getMadeBy().getId());
+                            System.out.println("sjd"+service.getMadeBy().getId());
+                                if(userTableOptional.isPresent())
+                                {System.out.println(userTableOptional.get().getId());
+                                    UserTable sender=userTableOptional.get();
+                                    String messageText = sender.getName()+ " is waving you...";
+                                    Message message=AppFactory.getMessageInstance();
+                                    message.setText(messageText);
+                                    messageServiceInterfaceImpl.sendTransactionMessage(sender.getId(),transactionDtoNew.getsByUser(),message,transactionDtoNew.getId());
+                                    return transactionDtoNew;
+                                }
+
                         }
                     }
                 }
