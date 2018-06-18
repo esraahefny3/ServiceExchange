@@ -36,7 +36,7 @@ interface SkillGettable {
 private class SkillGettableImpl : SkillGettable {
     @Autowired
     lateinit var skillInterface: SkillInterface
-
+    var pagesize = 50
     override fun getMainSkills(): List<SkillDTO> =
             skillInterface.getMainSkills()?.stream()?.map { it.convertSkillAlone() }?.collect(Collectors.toList())
                     ?: emptyList()
@@ -62,8 +62,9 @@ private class SkillGettableImpl : SkillGettable {
     override fun getServiceUnderSkill(skillId: Int, type: String, page: Int): List<ServiceDTO> =
             skillInterface.getSkillById(skillId)?.serviceCollection?.stream()?.filter {
                 it.type == type
-            }?.map { it.convertServie() }?.collect(Collectors.toList())?.filterIndexed { index, serviceDTO -> (index < (page * 20) + 20) && (index >= page * 20) }
+            }?.map { it.convertServie() }?.collect(Collectors.toList())?.filterIndexed { index, serviceDTO -> (index < (page * pagesize) + pagesize) && (index >= page * pagesize) }
                     ?: emptyList()
+
 
     override fun getUserWtihSkill(skillId: Int, page: Int): List<UserDTO> =
             skillInterface.getSkillById(skillId)?.userTableCollection?.stream()?.map { it.convertUser() }?.collect(Collectors.toList())
