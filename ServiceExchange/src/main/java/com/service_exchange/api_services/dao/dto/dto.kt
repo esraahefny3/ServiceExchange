@@ -77,6 +77,9 @@ class UserDTO {
     var address: String? = null
     var joinedDate: Long? = null
     var descrption: String? = null
+    override fun toString(): String {
+        return "UserDTO(id=$id, name=$name, image=$image, status=$status, bD=$bD, accountType=$accountType, accountId=$accountId, balance=$balance, userEmailCollection=$userEmailCollection, UserTelephone=$UserTelephone, isFrist=$isFrist, uSkills=$uSkills, bio=$bio, address=$address, joinedDate=$joinedDate, descrption=$descrption)"
+    }
 
 
 }

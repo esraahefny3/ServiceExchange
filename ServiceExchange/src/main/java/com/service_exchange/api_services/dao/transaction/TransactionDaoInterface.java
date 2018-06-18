@@ -56,12 +56,13 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
     List<TransactionInfo> findUserTransactionsByState(@Param("user") UserTable user, @Param("state") String state, Pageable page);
 
     @Query("select t from TransactionInfo t where (t.startedBy= :user) and " +
+            "t.serviceId= :service and " +
             "(t.state= 'accepted' or" +
             " t.state= 'pending' or " +
             "t.state= 'on_progress' or " +
             "t.state= 'postpone' or " +
             "t.state= 'completed')")
-    List<TransactionInfo> findUserUnavailableTransactions(@Param("user") UserTable user);
+    List<TransactionInfo> findUserUnavailableTransactions(@Param("user") UserTable user, @Param("service") Service service);
 
     @Query("select t from TransactionInfo t where (t.serviceId= :service) and t.state= 'on_progress' ")
     List<TransactionInfo> findOnProgressTransactionsOnService(@Param("service") Service service);
