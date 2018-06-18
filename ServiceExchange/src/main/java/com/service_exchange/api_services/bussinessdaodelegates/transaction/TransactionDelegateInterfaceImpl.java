@@ -43,7 +43,9 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
         try {
             if (transactionInfo != null) {
                 transactionInfo = transactionDaoInterfaceImpl.save(transactionInfo);
-                return AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                TransactionDto transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto.setsByUser(transactionInfo.getStartedBy().getId());
+                return transactionDto;
             }
             return null;
         } catch (Exception e) {
