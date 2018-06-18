@@ -23,10 +23,13 @@ public class TransactionCustomImpl implements TransactionCustomInterface {
         Query query = entityManager.createNativeQuery("select  m.transaction_id,max(m.date) " +
                 "from " + tableName1 + " t " +
                 "inner join " + tableName3 + " m " +
+
                 "inner join " + tableName2 + " s " +
-                "where t.started_by=? or  s.made_by=?  group by  m.transaction_id order by max(m.date) desc ");
+
+                "where t.started_by=? or s.made_by=?  group by  m.transaction_id order by max(m.date) desc ");
         query.setParameter(1, userId.intValue());
         query.setParameter(2, userId.intValue());
+
 //select m.transaction_id,max(m.date) from transaction_info t inner join message m inner join service s where t.started_by=1 or  s.made_by=1 group by m.transaction_id order by max(m.date) desc
 //        //Paginering
         query.setFirstResult(pageNum * limit);

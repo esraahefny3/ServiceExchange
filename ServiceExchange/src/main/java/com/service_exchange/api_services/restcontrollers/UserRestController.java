@@ -103,8 +103,11 @@ return false;
     //mubarak//
     @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
     private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
-        System.out.println("hello");
-        return service.logInORSignUp(user);
+        System.out.println(user);
+
+        UserDTO user2 = service.logInORSignUp(user);
+        System.out.println(user2);
+        return user2;
     }
 
     @RolesAllowed({"admin_view", "User"})
