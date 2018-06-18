@@ -239,10 +239,12 @@ private class UserDataSetImol : UserDataSet {
     override fun setUserFirebase(userId: Int?, firebase: String?,type: String?): Boolean =
             if (userId != null)
                 userInterFace.getUser(userId)?.let {
-                    var userFirebaseToken:UserFirebaseToken=UserFirebaseToken()
-                    userFirebaseToken.userTable.id=userId
-                    userFirebaseToken.userFirebaseTokenPK.type=type
-                    userFirebaseToken.userFirebaseTokenPK.token=firebase
+                    val userFirebaseToken = UserFirebaseToken()
+                    userFirebaseToken.userTable = it
+                    userFirebaseToken.userFirebaseTokenPK = UserFirebaseTokenPK()
+                    userFirebaseToken.userFirebaseTokenPK?.type = type
+                    userFirebaseToken.userFirebaseTokenPK?.token = firebase
+                    userFirebaseToken.userFirebaseTokenPK?.userId = userId
                     it.userFirebaseTokenCollection.add(userFirebaseToken)
                     userInterFace.updateUser(it)
                     true
