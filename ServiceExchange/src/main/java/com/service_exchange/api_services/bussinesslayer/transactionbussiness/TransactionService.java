@@ -180,13 +180,13 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Override
     public TransactionDto makeTransactionOnService(TransactionDto transactionDto) {
-        if ((delegate.checkIfUserExists(transactionDto.getStartedByUser()) != null) &&
+        if ((delegate.checkIfUserExists(transactionDto.getsByUser()) != null) &&
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
                 Service service = serviceData.findById(transactionDto.getServiceId()).get();
                 UserTable serviceBuyer;
                 if (service.getType().equals(Service.OFFERED)) {
-                    serviceBuyer = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
+                    serviceBuyer = userDataInterFace.findById(transactionDto.getsByUser()).get();
                 } else {
                     serviceBuyer = service.getMadeBy();
                 }
@@ -198,10 +198,10 @@ public class TransactionService implements TransactionServiceInterface {
                     } else {
                         hasOnProgressTransactions = false;
                     }
-                    UserTable user = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
+                    UserTable user = userDataInterFace.findById(transactionDto.getsByUser()).get();
                     List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user);
                     if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
-                        Integer userId = transactionDto.getStartedByUser();
+                        Integer userId = transactionDto.getsByUser();
                         TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
 
                         transactionInfo.setType(service.getType());
@@ -212,7 +212,7 @@ public class TransactionService implements TransactionServiceInterface {
                         transactionDao.save(transactionInfo);
                         transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
                         transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                        transactionDto.setStartedByUser(userId);
+                        transactionDto.setsByUser(userId);
 
                         return transactionDto;
                     }
@@ -234,7 +234,7 @@ public class TransactionService implements TransactionServiceInterface {
             if (done) {
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
                 return transactionDto2;
             }
 
@@ -256,7 +256,7 @@ public class TransactionService implements TransactionServiceInterface {
                 transactionInfo.setEndDate(new Date());
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
                 return transactionDto2;
             }
 
@@ -276,7 +276,7 @@ public class TransactionService implements TransactionServiceInterface {
             if (done) {
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                transactionDto2.setStartedByUser((transactionInfo.getStartedBy()).getId());
+                transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
                 return transactionDto2;
             }
 

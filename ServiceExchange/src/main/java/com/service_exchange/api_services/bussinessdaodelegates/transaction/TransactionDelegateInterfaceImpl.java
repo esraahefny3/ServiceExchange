@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -195,7 +194,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
@@ -232,7 +231,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
@@ -269,7 +268,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {

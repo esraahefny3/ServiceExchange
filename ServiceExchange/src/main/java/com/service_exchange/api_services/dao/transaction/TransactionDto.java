@@ -22,7 +22,7 @@ public class TransactionDto {
 //    private String typeOfPayment;
 
     private Integer serviceId;
-    private Integer startedByUser;
+    private Integer sByUser;
 
     public Integer getId() {
         return id;
@@ -120,12 +120,12 @@ public class TransactionDto {
         this.serviceId = serviceId;
     }
 
-    public Integer getStartedByUser() {
-        return startedByUser;
+    public Integer getsByUser() {
+        return sByUser;
     }
 
-    public void setStartedByUser(Integer startedByUser) {
-        this.startedByUser = startedByUser;
+    public void setsByUser(Integer sByUser) {
+        this.sByUser = sByUser;
     }
 
     public String getJopFile() {
