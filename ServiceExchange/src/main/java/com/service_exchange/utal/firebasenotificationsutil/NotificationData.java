@@ -61,17 +61,17 @@ public class NotificationData {
     public  String createMessageFirebaseDescription(MessageGeneralDto messageGeneralDto)
     {
         UserDelegateInterface userDelegateInterfaceImpl=AppFactory.getuserDelegateInterfaceInstance();
-        UserTable reciever=userDelegateInterfaceImpl.getUserById(messageGeneralDto.getReceiverId());
+        UserTable sender=userDelegateInterfaceImpl.getUserById(messageGeneralDto.getSenderId());
         if(messageGeneralDto.getText().length()>30) {
 //            StringBuilder result = new StringBuilder();
 //            result.append("Message from ");
 //            result.append(reciever.getName());
 //            result.append("/n")
-            return "Message from " + reciever.getName() + "\n" +
+            return "Message from " + sender.getName() + "\n" +
                     messageGeneralDto.getText().substring(0, 30) + "...";
         }
         else {
-            return "Message from " + reciever.getName() + "\n" +
+            return "Message from " + sender.getName() + "\n" +
                     messageGeneralDto.getText();
         }
     }

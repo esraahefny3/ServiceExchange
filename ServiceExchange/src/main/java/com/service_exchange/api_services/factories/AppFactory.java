@@ -11,10 +11,7 @@ import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegate
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesDelegateImpl;
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.api_services.dao.service.ServiceData;
-import com.service_exchange.entities.AdminTable;
-import com.service_exchange.entities.Badge;
-import com.service_exchange.entities.Complaint;
-import com.service_exchange.entities.UserTable;
+import com.service_exchange.entities.*;
 import com.service_exchange.utal.firebasenotificationsutil.NotificationData;
 import com.service_exchange.utal.firebasenotificationsutil.NotificationRequestModel;
 import org.modelmapper.ModelMapper;
@@ -107,5 +104,10 @@ public class AppFactory {
     {
         return serviceDataStatic;
 
+    }
+
+    public static Message getMessageInstance()
+    {
+        return new Message();
     }
 }
