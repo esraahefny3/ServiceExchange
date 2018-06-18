@@ -51,6 +51,7 @@ public class TransactionService implements TransactionServiceInterface {
         TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
         if (transactionInfo != null) {
+            System.out.println("Duration: " + transactionDto.getDuration());
             Service service = transactionInfo.getServiceId();
             UserTable transactionStartedByUser = service.getMadeBy();
             if (transactionDelegateInterfaceImpl.getAllUserAcceptedTransactionsOnService(service).isEmpty() == true)
@@ -61,7 +62,7 @@ public class TransactionService implements TransactionServiceInterface {
                     // transactionInfo.setState(TransactionInfo.ACCEPTED_STATE);
                     transactionInfo.setPrice(transactionDto.getPrice());
                     transactionInfo.setStartedBy(transactionStartedByUser);
-                    transactionDto.setDuration(transactionDto.getDuration());
+                    transactionInfo.setDuration(transactionDto.getDuration());
                     transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
                     transactionInfo.setStartDate(new Date());
                     if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
@@ -154,31 +155,34 @@ public class TransactionService implements TransactionServiceInterface {
         if ((delegate.checkIfUserExists(transactionDto.getStartedByUser()) != null) &&
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
-                Service service = serviceData.findById(transactionDto.getServiceId()).get();
-                Boolean hasOnProgressTransactions = false;
-                List<TransactionInfo> onProgressTransactionsOnService = transactionDao.findOnProgressTransactionsOnService(service);
-                if (onProgressTransactionsOnService.isEmpty()) {
-                    hasOnProgressTransactions = true;
-                } else {
-                    hasOnProgressTransactions = false;
+                if (userDataInterFace.findById(transactionDto.getStartedByUser()).get().getBalance() >= transactionDto.getPrice()) {
+                    Service service = serviceData.findById(transactionDto.getServiceId()).get();
+                    Boolean hasOnProgressTransactions = false;
+                    List<TransactionInfo> onProgressTransactionsOnService = transactionDao.findOnProgressTransactionsOnService(service);
+                    if (onProgressTransactionsOnService.isEmpty()) {
+                        hasOnProgressTransactions = true;
+                    } else {
+                        hasOnProgressTransactions = false;
+                    }
+                    UserTable user = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
+                    List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user);
+                    if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
+                        Integer userId = transactionDto.getStartedByUser();
+                        TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
+
+                        transactionInfo.setType(service.getType());
+                        transactionInfo.setState(TransactionInfo.PENDING_STATE);
+                        transactionInfo.setStartDate(new Date());
+                        transactionInfo.setStartedBy(user);
+
+                        transactionDao.save(transactionInfo);
+                        transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
+                        transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                        transactionDto.setStartedByUser(userId);
+
+                        return transactionDto;
+                    }
                 }
-                UserTable user = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
-                List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user);
-                if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
-                    Integer userId = transactionDto.getStartedByUser();
-                    TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
-                    transactionInfo.setType(service.getType());
-                    transactionInfo.setState(TransactionInfo.PENDING_STATE);
-                    transactionInfo.setStartDate(new Date());
-
-                    transactionDao.save(transactionInfo);
-                    transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
-                    transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-                    transactionDto.setStartedByUser(userId);
-
-                    return transactionDto;
-                }
-
             }
         }
 
