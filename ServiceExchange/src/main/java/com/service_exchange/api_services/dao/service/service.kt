@@ -36,7 +36,7 @@ interface ServiceInterface {
     fun createService(service: Service?): Service?
     fun modifieService(service: Service?): Service?
     fun disableService(serviceId: Int): Boolean
-    fun getService(serviceId: Int): Service?
+    fun getService(serviceId: Int?): Service?
     fun getUserwithIt(serviceId: Int): List<UserTable>
     fun getAllServiceWtihSkill(skills: List<Skill>?, page: Int): List<Service>
     fun getAllServiceMadeByUser(userid: Int?): List<Service>?
@@ -96,11 +96,14 @@ private class ServiceImpl : ServiceInterface {
         return false
     }
 
-    override fun getService(serviceId: Int): Service? {
-        val service = serviceData.findById(serviceId)
-        return if (service.isPresent) {
-            service.get()
-        } else null
+    override fun getService(serviceId: Int?): Service? {
+        serviceId?.let {
+            val service = serviceData.findById(serviceId)
+            return if (service.isPresent) {
+                service.get()
+            } else null
+        }
+        return null
     }
 
     override fun getUserwithIt(serviceId: Int): List<UserTable> {

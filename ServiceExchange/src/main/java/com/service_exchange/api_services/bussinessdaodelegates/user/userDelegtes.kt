@@ -2,8 +2,8 @@ package com.service_exchange.api_services.bussinessdaodelegates.user
 
 
 import com.service_exchange.api_services.KotlinUtal.convertServie
-import com.service_exchange.api_services.KotlinUtal.convertSkill
 import com.service_exchange.api_services.KotlinUtal.convertToServiceHoda
+import com.service_exchange.api_services.KotlinUtal.convertUser
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.user.UserEducationInterface
@@ -29,7 +29,7 @@ interface UserDataGet {
     fun loginOrSignUp(user: UserDTO?): UserDTO?
     fun getUserSkill(userId: Int?): List<SkillDTO>
     fun getUserEdcation(userId: Int?): List<EdcationDTO>
-    fun getUserServices(userId: Int?): List<ServiceDTO>
+    fun getUserServices(userId: Int?, type: String?): List<ServiceDTO>
     fun getAllUser(start: Int): List<UserDTO>
     fun getAllUser(): List<UserDTO>
     fun getUserById(userId: Int?): UserTable?
@@ -44,14 +44,6 @@ interface UserDataGet {
 
 }
 
-fun UserTable.convertUser(): UserDTO {
-    val userdto = AppFactory.mapToDto(this, UserDTO::class.java)
-    userdto.bD = birthDate?.time
-    userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
-    userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
-    userdto.uSkills = this.skillCollection?.stream()?.map { it.convertSkill() }?.collect(Collectors.toList())
-    return userdto
-}
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
@@ -140,8 +132,10 @@ private open class UserDataGetImpl : UserDataGet {
 
     override fun getUserByID(userId: Int?): UserDTO? =
             userInterface.getUser(userId)?.convertUser()
+
     override fun getUserById(userId: Int?): UserTable? =
             userInterface.getUser(userId)
+
     override fun getAllUser(start: Int): List<UserDTO> {
         return userInterface.getAllUser(start).stream().map { it.convertUser() }.collect(Collectors.toList())
                 ?: emptyList()
@@ -203,8 +197,9 @@ private open class UserDataGetImpl : UserDataGet {
                 ?: emptyList()
     }
 
-    override fun getUserServices(userId: Int?): List<ServiceDTO> {
-        return userService.getUserServices(userId)?.stream()?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
+    override fun getUserServices(userId: Int?, type: String?): List<ServiceDTO> {
+        return userService.getUserServices(userId)?.stream()?.filter { it.type == type }
+                ?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
                 ?: emptyList()
     }
 
@@ -216,11 +211,14 @@ interface UserDataSet {
     fun addSkillToUser(skillDTO: SkillDTO?, userId: Int?): Boolean
     fun addTelephonToUser(telephone: String?, userId: Int?): Boolean
     fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO?
-    fun setUserFirebase(userId: Int?, firebase: String?,type: String?): Boolean
+    fun setUserFirebase(userId: Int?, firebase: String?, type: String?): Boolean
+    fun updateUserDate(userDto: UserDTO?): Boolean
+    fun updateUserService(serviceDTO: ServiceDTO?): Boolean
 }
 
 @Component
 private class UserDataSetImol : UserDataSet {
+
     @Autowired
     lateinit var userSkillInterFace: UserSkillInterFace
     @Autowired
@@ -236,13 +234,15 @@ private class UserDataSetImol : UserDataSet {
     @Autowired
     lateinit var skillINterface: SkillInterface
 
-    override fun setUserFirebase(userId: Int?, firebase: String?,type: String?): Boolean =
+    override fun setUserFirebase(userId: Int?, firebase: String?, type: String?): Boolean =
             if (userId != null)
                 userInterFace.getUser(userId)?.let {
-                    var userFirebaseToken:UserFirebaseToken=UserFirebaseToken()
-                    userFirebaseToken.userTable.id=userId
-                    userFirebaseToken.userFirebaseTokenPK.type=type
-                    userFirebaseToken.userFirebaseTokenPK.token=firebase
+                    val userFirebaseToken = UserFirebaseToken()
+                    userFirebaseToken.userTable = it
+                    userFirebaseToken.userFirebaseTokenPK = UserFirebaseTokenPK()
+                    userFirebaseToken.userFirebaseTokenPK?.type = type
+                    userFirebaseToken.userFirebaseTokenPK?.token = firebase
+                    userFirebaseToken.userFirebaseTokenPK?.userId = userId
                     it.userFirebaseTokenCollection.add(userFirebaseToken)
                     userInterFace.updateUser(it)
                     true
@@ -290,6 +290,33 @@ private class UserDataSetImol : UserDataSet {
         } else null
 
     }
+
+    override fun updateUserDate(userDto: UserDTO?): Boolean =
+            userInterFace.getUser(userDto?.id)?.let {
+                it.name = userDto?.name
+                it.image = userDto?.image
+                it.address = userDto?.address
+                it.bio = userDto?.bio
+                it.status = userDto?.status ?: UserTable.ONLINE
+                it.description = userDto?.descrption
+                userInterFace.updateUser(it)
+                true
+            } ?: false
+
+    override fun updateUserService(serviceDTO: ServiceDTO?): Boolean {
+        println(serviceDTO)
+        return userService.getServiceById(serviceDTO?.id)?.let {
+            it.duration = serviceDTO?.duration?.toInt()
+            it.description = serviceDTO?.description
+            it.image = serviceDTO?.image
+            it.name = serviceDTO?.name
+            it.price = serviceDTO?.price
+            userService.updateService(it)
+
+
+        } ?: false
+    }
+
 
 }
 

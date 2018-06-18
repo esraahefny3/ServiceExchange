@@ -24,6 +24,10 @@ public interface UserServicesInterFace {
     Boolean removeServiceForUser(Integer userId, Integer serviceId, Boolean forced);
 
     Boolean disableServiceForUser(Integer userId, Service service, Boolean forced);
+
+    Boolean updateService(Service service);
+
+    Service getServiceById(Integer serviceId);
 }
 
 

@@ -3,12 +3,21 @@ package com.service_exchange.api_services.dao.user.userTranaction
 import com.service_exchange.api_services.dao.user.UserInterFace
 import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
-@Component
-class UserTransactionImpl : UserTransactionInterFace {
+
+public interface UserTransactionInterFace {
+    fun getSuccsfullTransaction(userId: Int?): List<TransactionInfo>
+
+    fun getWorkingDuration(userId: Int?): Long?
+
+    fun getWoringDurtation(user: Int?, start: Long, end: Long): Long?
+}
+
+@Service
+private open class UserTransactionImpl : UserTransactionInterFace {
     val onSuccess = "sucsesfull";
     val onEnd = "ended"
     @Autowired

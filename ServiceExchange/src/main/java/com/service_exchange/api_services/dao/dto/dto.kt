@@ -73,6 +73,11 @@ class UserDTO {
     var UserTelephone: List<String>? = null
     var isFrist: Boolean? = null
     var uSkills: List<SkillDTO>? = null
+    var bio: String? = null
+    var address: String? = null
+    var joinedDate: Long? = null
+    var descrption: String? = null
+
 
 }
 
@@ -83,34 +88,14 @@ class UserInfo(val userName: String?, val id: Int?, val image: String?) {
     }
 }
 
-class ServiceDTO {
-    var id: Int? = null
+data class ServiceDTO(var id: Int?, var name: String?, var image: String?, var price: Int?, var type: String?,
+                      var description: String?, var available: String?, var skillList: List<Int>?, var expectDur: Long?,
+                      var duration: Long?, var uO: UserInfo?, var numberOfTransaction: Int?, var rating: Double?,
+                      var revList: MutableList<ReviewDTO>?) {
+    constructor() : this(null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null)
 
-    var name: String? = null
 
-    var image: String? = null
-
-    var price: Int? = null
-
-    var type: String? = null
-
-    var description: String? = null
-
-    var available: String? = null
-
-    var skillList: List<Int>? = null
-
-    var expectDur: Long? = null
-
-    var duration: Long? = null
-
-    var uO: UserInfo? = null
-    // number of completed transaction
-    var numberOfTransaction: Int? = null
-    //rating of service 0 if no one used it
-    var rating: Double? = null
-
-    var revList: MutableList<ReviewDTO>? = null
 
 }
 

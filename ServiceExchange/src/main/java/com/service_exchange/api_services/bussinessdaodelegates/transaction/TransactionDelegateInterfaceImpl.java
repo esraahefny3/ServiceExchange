@@ -43,7 +43,9 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
         try {
             if (transactionInfo != null) {
                 transactionInfo = transactionDaoInterfaceImpl.save(transactionInfo);
-                return AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                TransactionDto transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
+                transactionDto.setsByUser(transactionInfo.getStartedBy().getId());
+                return transactionDto;
             }
             return null;
         } catch (Exception e) {
@@ -143,12 +145,32 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     @Override
     public boolean approveCompletedTransaction(TransactionInfo transactionInfo) {
         try {
-            transactionInfo.setState(TransactionInfo.COMPLETED_APPROVED_STATE);
-            return true;
+            UserTable serviceBuyer;
+            UserTable serviceProvider;
+            if (transactionInfo.getType().equals(Service.OFFERED)) {
+                serviceBuyer = transactionInfo.getStartedBy();
+                serviceProvider = transactionInfo.getServiceId().getMadeBy();
+            } else {
+                serviceBuyer = transactionInfo.getServiceId().getMadeBy();
+                serviceProvider = transactionInfo.getStartedBy();
+            }
+            System.out.println("old balance buyer: " + serviceBuyer.getBalance());
+            System.out.println("old balance provider: " + serviceProvider.getBalance());
+            System.out.println("service price: " + transactionInfo.getPrice());
+            if (serviceBuyer.getBalance() >= transactionInfo.getPrice()) {
+                transactionInfo.setState(TransactionInfo.COMPLETED_APPROVED_STATE);
+//                serviceBuyer.setBalance(serviceBuyer.getBalance() - transactionInfo.getPrice());
+                serviceProvider.setBalance(serviceProvider.getBalance() + transactionInfo.getPrice());
+                System.out.println("new balance buyer: " + serviceBuyer.getBalance());
+                System.out.println("new balance provider: " + serviceProvider.getBalance());
+                return true;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        return false;
     }
 
     @Override
@@ -174,7 +196,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
@@ -211,7 +233,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {
@@ -248,7 +270,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 TransactionInfo userTransaction = userActiveTransactions.get(i);
                 Integer userId = userTransaction.getStartedBy().getId();
                 transactionDtoList.add(transactionDto);
-                transactionDto.setStartedByUser(userId);
+                transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
                 if (userId == user.getId()) {

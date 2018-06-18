@@ -28,6 +28,7 @@ public class UserRestController {
 
     private final UserService service;
 
+
     @Autowired
     public UserRestController(UserService service) {
 
@@ -107,8 +108,8 @@ return false;
 
     @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
-    private List<ServiceDTO> getUserServices(@RequestParam Integer userId) {
-        return service.getUserService(userId);
+    private List<ServiceDTO> getUserServices(@RequestParam Integer userId, @RequestParam String type) {
+        return service.getUserService(userId, type);
     }
 
     @RolesAllowed({"admin_view", "User"})
@@ -194,6 +195,18 @@ return false;
     private HodaProfile getUserProfileData(Integer userId) {
 
         return service.getData(userId);
+    }
+
+    @RequestMapping(value = "/updateUserService", method = RequestMethod.POST)
+    private Boolean updateService(@RequestBody ServiceDTO serviceDTO) {
+        return service.updateService(serviceDTO);
+    }
+
+    @RequestMapping(value = "/updateUserData", method = RequestMethod.POST)
+    private Boolean updateUser(@RequestBody UserDTO userDTO) {
+
+
+        return service.updataUser(userDTO);
     }
     //mubarak//
 }
