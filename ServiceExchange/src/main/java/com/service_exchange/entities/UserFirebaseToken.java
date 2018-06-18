@@ -32,6 +32,9 @@ public class UserFirebaseToken implements Serializable {
     @ManyToOne(optional = false)
     private UserTable userTable;
 
+    public static String androidType="android";
+    public static String webType="web";
+
     public UserFirebaseToken() {
     }
 

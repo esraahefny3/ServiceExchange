@@ -23,6 +23,7 @@ import java.util.Map;
  * @author Altysh
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserRestController {
 
@@ -102,7 +103,7 @@ return false;
     //mubarak//
     @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
     private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
-
+        System.out.println("hello");
         return service.logInORSignUp(user);
     }
 

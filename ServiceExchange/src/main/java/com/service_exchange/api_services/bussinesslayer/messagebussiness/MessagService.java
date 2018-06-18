@@ -15,6 +15,8 @@ import com.service_exchange.api_services.dao.dto.MessagePrivateDto;
 import com.service_exchange.api_services.dao.dto.TransactionChatDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.*;
+import com.service_exchange.utal.firebasenotificationsutil.FirebaseNotificationMessageMaker;
+import com.service_exchange.utal.firebasenotificationsutil.NotificationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -82,7 +84,33 @@ public class MessagService implements MessageServiceInterface{
 
     @Override
     public MessageGeneralDto sendTransactionMessage(Integer senderId, Integer recieverId, Message message, Integer TransactionId) {
-            return messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
+        try {
+
+            System.out.println("uss"+userDelegateInterfaceImpl);
+            MessageGeneralDto messageGeneralDto = messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
+            UserTable reciever = userDelegateInterfaceImpl.getUserById(messageGeneralDto.getReceiverId());
+            System.out.println("r"+messageGeneralDto.getReceiverId());
+            for (UserFirebaseToken userFirebaseToken:reciever.getUserFirebaseTokenCollection()) {
+                if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.androidType)==true)
+                {
+                    NotificationData notificationData=AppFactory.getNotificationDataInstance();
+                    String description=notificationData.createMessageFirebaseDescription(messageGeneralDto);
+                    FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserAndroid(messageGeneralDto,userFirebaseToken.getUserFirebaseTokenPK().getToken(),NotificationData.messageType,description);
+                }
+                else  if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.webType)==true)
+                {
+                    NotificationData notificationData=AppFactory.getNotificationDataInstance();
+                    String description=notificationData.createMessageFirebaseDescription(messageGeneralDto);
+                    FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserWeb(messageGeneralDto,userFirebaseToken.getUserFirebaseTokenPK().getToken(),NotificationData.messageType,description);
+                }
+            }
+            return messageGeneralDto;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return  null;
+        }
     }
 
     @Override

@@ -4,12 +4,10 @@ import com.service_exchange.api_services.bussinesslayer.ServiceBussness
 import com.service_exchange.api_services.dao.dto.ServiceDTO
 import com.service_exchange.api_services.dao.dto.TransactionEslam
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@CrossOrigin(origins = arrayOf("*"))
 @RequestMapping("/service")
 class ServiceRestfull {
     @Autowired
