@@ -188,7 +188,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     public List<TransactionDto> getUserActiveTransactions(UserTable user, Integer pageNumber) {
 
         try {
-            String state = TransactionInfo.ACCEPTED_STATE;
+            String state = TransactionInfo.ON_PROGRESS_STATE;
             List<TransactionInfo> userActiveTransactions = transactionDaoInterfaceImpl.findUserTransactionsByState(user, state, PageRequest.of(pageNumber, size));
             List<TransactionDto> transactionDtoList = new ArrayList<>();
             for (int i = 0; i < userActiveTransactions.size(); i++) {
