@@ -52,20 +52,49 @@ public class TransactionService implements TransactionServiceInterface {
         //  UserTable serviceOfferedOrRequestedByUser=userDelegateInterfaceImpl.getUserById(transactionDto.getServiceOfferedOrRequestedByUserId());
         if (transactionInfo != null) {
             Service service = transactionInfo.getServiceId();
-            UserTable transactionStartedByUser = service.getMadeBy();
             if (transactionDelegateInterfaceImpl.getAllUserAcceptedTransactionsOnService(service).isEmpty() == true)
             //user can accept only one transaction
             {
-                if (transactionStartedByUser != null && (transactionInfo.getState().equals(TransactionInfo.PENDING_STATE) == true || transactionInfo.getState().equals(TransactionInfo.POSTPONED) == true)) {
-                    //make sure an l user l start l transaction hoa hoa l user l m2dm l service aw 3mlha request
-                    // transactionInfo.setState(TransactionInfo.ACCEPTED_STATE);
-                    transactionInfo.setPrice(transactionDto.getPrice());
-                    transactionInfo.setStartedBy(transactionStartedByUser);
-                    transactionInfo.setDuration(transactionDto.getDuration());
-                    transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
-                    transactionInfo.setStartDate(new Date());
-                    if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
-                        return transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
+                if (transactionInfo.getStartedBy() != null &&
+                        (transactionInfo.getState().equals(TransactionInfo.PENDING_STATE) == true ||
+                                transactionInfo.getState().equals(TransactionInfo.POSTPONED) == true)) {
+
+                    UserTable transactionStartedByUser = transactionInfo.getStartedBy();
+                    UserTable serviceBuyer;
+                    UserTable serviceProvider;
+                    if (transactionInfo.getType().equals(Service.OFFERED)) {
+                        serviceBuyer = transactionInfo.getStartedBy();
+                        serviceProvider = transactionInfo.getServiceId().getMadeBy();
+                    } else {
+                        serviceBuyer = transactionInfo.getServiceId().getMadeBy();
+                        serviceProvider = transactionInfo.getStartedBy();
+                    }
+
+                    System.out.println("old balance buyer: " + serviceBuyer.getBalance());
+                    System.out.println("old balance provider: " + serviceProvider.getBalance());
+                    System.out.println("service price: " + transactionDto.getPrice());
+
+                    if (serviceBuyer.getBalance() >= transactionDto.getPrice()) {
+
+                        //make sure an l user l start l transaction hoa hoa l user l m2dm l service aw 3mlha request
+                        // transactionInfo.setState(TransactionInfo.ACCEPTED_STATE);
+                        transactionInfo.setPrice(transactionDto.getPrice());
+                        transactionInfo.setStartedBy(transactionStartedByUser);
+                        transactionInfo.setDuration(transactionDto.getDuration());
+                        transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
+                        transactionInfo.setStartDate(new Date());
+
+                        serviceBuyer.setBalance(serviceBuyer.getBalance() - transactionDto.getPrice());
+
+                        System.out.println("new balance buyer: " + serviceBuyer.getBalance());
+                        System.out.println("new balance provider: " + serviceProvider.getBalance());
+                        System.out.println("service price: " + transactionDto.getPrice());
+
+                        userDataInterFace.save(serviceBuyer);
+
+                        if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
+                            return transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
+                        }
                     }
                 }
             }
@@ -154,8 +183,14 @@ public class TransactionService implements TransactionServiceInterface {
         if ((delegate.checkIfUserExists(transactionDto.getStartedByUser()) != null) &&
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
-                if (userDataInterFace.findById(transactionDto.getStartedByUser()).get().getBalance() >= transactionDto.getPrice()) {
-                    Service service = serviceData.findById(transactionDto.getServiceId()).get();
+                Service service = serviceData.findById(transactionDto.getServiceId()).get();
+                UserTable serviceBuyer;
+                if (service.getType().equals(Service.OFFERED)) {
+                    serviceBuyer = userDataInterFace.findById(transactionDto.getStartedByUser()).get();
+                } else {
+                    serviceBuyer = service.getMadeBy();
+                }
+                if (serviceBuyer.getBalance() >= transactionDto.getPrice()) {
                     Boolean hasOnProgressTransactions = false;
                     List<TransactionInfo> onProgressTransactionsOnService = transactionDao.findOnProgressTransactionsOnService(service);
                     if (onProgressTransactionsOnService.isEmpty()) {
