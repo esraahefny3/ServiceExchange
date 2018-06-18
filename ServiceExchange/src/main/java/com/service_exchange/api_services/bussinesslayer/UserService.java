@@ -20,8 +20,6 @@ import com.service_exchange.entities.UserTable;
 import com.service_exchange.securty.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -69,17 +67,17 @@ UserService {
 
     }
 
-    @Secured({"ROLE_Admin"})
+    //  @Secured({"ROLE_Admin"})
     public UserTable createUser(UserTable user) {
         return daoImpl.createUser(user);
     }
 
-    @Secured({"ROLE_Admin"})
+    //   @Secured({"ROLE_Admin"})
     public UserDTO getUser(int userId) {
         return userDataGet.getUserByID(userId);
     }
 
-    @Secured({"ROLE_Admin"})
+    //  @Secured({"ROLE_Admin"})
     public List<UserDTO> getAllUser() {
         return userDataGet.getAllUser();
     }
@@ -103,7 +101,7 @@ UserService {
         }
     }
 
-    @Secured({"ROLE_Admin", "ROLE_User"})
+    //@Secured({"ROLE_Admin", "ROLE_User"})
     public UserStatics getUserStatic(int userId) {
         if (userDataGet.getUserById(userId) != null) {
             Calendar calendar = Calendar.getInstance();
@@ -142,14 +140,14 @@ UserService {
      Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_MONTH, 1);
     */
-    @Secured({"ROLE_Admin", "ROLE_User"})
+    //  @Secured({"ROLE_Admin", "ROLE_User"})
     public List<EarningListObject> getEaringList(Integer userId) {
         UserTable userTable = userDataGet.getUserById(userId);
         final List<EarningListObject> list = new ArrayList<>();
         return userStaticsGetter.getEaringList(userId);
     }
 
-    @Secured("ROLE_Admin")
+    // @Secured("ROLE_Admin")
     public List<UserDTO> getAllUser(int start) {
 
         return userDataGet.getAllUser(start);
@@ -172,7 +170,7 @@ UserService {
         return userDataGet.getUserServices(userId, type);
     }
 
-    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
+    //@PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addEmail(String email, Integer userId) {
         return userDataSet.addEmailToUser(email, userId);
     }
@@ -185,7 +183,7 @@ UserService {
         return false;
     }
 
-    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
+    // @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addSkill(SkillDTO skillDTO, Integer userId) {
         return userDataSet.addSkillToUser(skillDTO, userId);
     }
@@ -195,27 +193,27 @@ UserService {
         return userDataSet.addServiceToUser(serviceDTO);
     }
 
-    @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
+    // @PreAuthorize("isAuthenticated() and hasRole('ROLE_User') and @userService.isUser(authentication.principal,#userId)")
     public Boolean addTelephone(String telephone, Integer userId) {
         return userDataSet.addTelephonToUser(telephone, userId);
     }
 
-    @Secured("ROLE_User")
+    // @Secured("ROLE_User")
     public Boolean removeTelephone(String telephone, Integer userId) {
         return userDataDelete.removeTelePhoneFormUser(telephone, userId);
     }
 
-    @Secured("ROLE_User")
+    // @Secured("ROLE_User")
     public Boolean removeEmail(String email, Integer userId) {
         return userDataDelete.removeEmailFormUser(email, userId);
     }
 
-    @Secured("ROLE_User")
+    // @Secured("ROLE_User")
     public Boolean removeSkill(Integer skillId, Integer userId) {
         return userDataDelete.removeSkillFormUser(skillId, userId);
     }
 
-    @Secured("ROLE_User")
+    //@Secured("ROLE_User")
     public Boolean removeService(Integer service, Integer userId, Boolean forced) {
         return userDataDelete.removeServiceToUser(userId, service, forced);
     }
