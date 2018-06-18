@@ -239,24 +239,27 @@ class JwtAuthorizationTokenFilter(private val userDetailsService: UserDetailsSer
         println(requestHeader)
         if (requestHeader != null && requestHeader.startsWith(":")) {
             authToken = requestHeader.substring(1)
-            println(authToken + " filter")
+
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken)
                 println(username + " filter")
             } catch (e: IllegalArgumentException) {
+                println("the token is expired and not valid anymore $e")
                 logger2.error("an error occured during getting username from token", e)
             } catch (e: ExpiredJwtException) {
+                println("the token is expired and not valid anymore $e")
                 logger2.warn("the token is expired and not valid anymore", e)
             }
 
         } else {
+            println("couldn't find : string, will ignore the header ")
             logger2.warn("couldn't find : string, will ignore the header")
         }
-
+        println("checking authentication for user '{}', $username")
         logger2.debug("checking authentication for user '{}'", username)
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
             logger2.debug("security context was null, so authorizating user")
-
+            println("security context was null, so authorizating user")
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
             val userDetails = this.userDetailsService.loadUserByUsername(username)
@@ -267,6 +270,7 @@ class JwtAuthorizationTokenFilter(private val userDetailsService: UserDetailsSer
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 logger2.info("authorizated user '{}', setting security context", username)
+                println("\"authorizated user '{}', setting security context\", $username")
                 SecurityContextHolder.getContext().authentication = authentication
                 println(authentication)
             }
