@@ -62,7 +62,7 @@ private class SkillGettableImpl : SkillGettable {
     override fun getServiceUnderSkill(skillId: Int, type: String, page: Int): List<ServiceDTO> =
             skillInterface.getSkillById(skillId)?.serviceCollection?.stream()?.filter {
                 it.type == type
-            }?.map { it.convertServie() }?.collect(Collectors.toList())?.filterIndexed { index, serviceDTO -> (index < (page * 20) + 20) && (index >= page * 20) }
+            }?.map { it.convertServie() }?.collect(Collectors.toList())?.filterIndexed { index, serviceDTO -> (index < (page * 50) + 50) && (index >= page * 50) }
                     ?: emptyList()
 
     override fun getUserWtihSkill(skillId: Int, page: Int): List<UserDTO> =
