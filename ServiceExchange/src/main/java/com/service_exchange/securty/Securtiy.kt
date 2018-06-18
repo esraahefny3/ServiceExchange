@@ -208,7 +208,11 @@ class JwtTokenUtil : Serializable {
     }
 
     private fun calculateExpirationDate(createdDate: Date): Date {
-        return Date(createdDate.time + expiration!! * 1000)
+        val cal = Calendar.getInstance();
+
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        cal.time
+        return Date(cal.time.time)
     }
 
     companion object {
