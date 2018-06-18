@@ -199,7 +199,7 @@ public class TransactionService implements TransactionServiceInterface {
                         hasOnProgressTransactions = false;
                     }
                     UserTable user = userDataInterFace.findById(transactionDto.getsByUser()).get();
-                    List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user);
+                    List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user, service);
                     if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
                         Integer userId = transactionDto.getsByUser();
                         TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
