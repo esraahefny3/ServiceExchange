@@ -1,7 +1,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.service
 
 import com.service_exchange.api_services.KotlinUtal.convertServie
-import com.service_exchange.api_services.bussinessdaodelegates.user.convertUser
+import com.service_exchange.api_services.KotlinUtal.convertUser
 import com.service_exchange.api_services.dao.dto.ServiceDTO
 import com.service_exchange.api_services.dao.dto.UserDTO
 import com.service_exchange.api_services.dao.service.ServiceInterface

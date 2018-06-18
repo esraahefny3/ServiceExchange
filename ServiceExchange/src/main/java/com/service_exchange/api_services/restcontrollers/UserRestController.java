@@ -196,5 +196,17 @@ return false;
 
         return service.getData(userId);
     }
+
+    @RequestMapping(value = "/updateUserService", method = RequestMethod.POST)
+    private Boolean updateService(@RequestBody ServiceDTO serviceDTO) {
+        return service.updateService(serviceDTO);
+    }
+
+    @RequestMapping(value = "/updateUserData", method = RequestMethod.POST)
+    private Boolean updateUser(@RequestBody UserDTO userDTO) {
+
+
+        return service.updataUser(userDTO);
+    }
     //mubarak//
 }

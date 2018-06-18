@@ -94,7 +94,7 @@ class JwtFactory {
             val email = user.userEmailCollection?.elementAt(0)
             val authority = listOf(user.userAuthority?.authority)
             val u = UserSercurity(id = user.id, email = user.name, authortys = mapToGrantedAuthorities(authority.filterNotNull())
-                    , enabled = user.isEnabled(), password = user.accountId, username = email?.userEmailPK?.email)
+                    , enabled = user.isEnabled, password = user.accountId, username = email?.userEmailPK?.email)
 
             return u
 
@@ -117,7 +117,7 @@ class JwtTokenUtil : Serializable {
     private val secret: String? = null
 
     @Value("\${jwt.expiration}")
-    private val expiration: Long? = null
+    private val expiration: Long? = 1000
 
     fun getUsernameFromToken(token: String): String {
         return getClaimFromToken(token, java.util.function.Function<Claims, String> { it.getSubject() })
