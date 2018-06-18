@@ -12,6 +12,7 @@ import com.service_exchange.api_services.bussinessdaodelegates.user.UserStaticsG
 import com.service_exchange.api_services.bussinessdaodelegates.userdelegates.userbadgedelegate.UserBadgesSelegateInterface;
 import com.service_exchange.api_services.bussinesslayer.messagebussiness.MessageServiceInterface;
 import com.service_exchange.api_services.dao.dto.*;
+import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.api_services.dao.user.UserDaoImpl;
 import com.service_exchange.api_services.dao.user.userTranaction.UserTransactionInterFace;
 import com.service_exchange.entities.Badge;
@@ -32,7 +33,8 @@ import java.util.Objects;
  * @author Altysh
  */
 @Component
-public class UserService {
+public class
+UserService {
     private final UserDaoImpl daoImpl;
 
 
@@ -238,6 +240,12 @@ public class UserService {
 
     public Boolean updataUser(UserDTO userDTO) {
         return userDataSet.updateUserDate(userDTO);
+    }
+
+
+    public List<TransactionDto> getAllUserTransAction(Integer userId) {
+        return userDataGet.getUserIncomingReq(userId);
+
     }
     //mubarak//
 

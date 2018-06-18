@@ -1,11 +1,13 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
 
+import com.service_exchange.api_services.KotlinUtal.convert
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.KotlinUtal.convertToServiceHoda
 import com.service_exchange.api_services.KotlinUtal.convertUser
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
+import com.service_exchange.api_services.dao.transaction.TransactionDto
 import com.service_exchange.api_services.dao.user.UserEducationInterface
 import com.service_exchange.api_services.dao.user.UserEmailInterface
 import com.service_exchange.api_services.dao.user.UserInterFace
@@ -40,6 +42,7 @@ interface UserDataGet {
     fun getLastActiveReq(userId: Int?): ServiceHoda?
     fun getLastCompletedReq(userId: Int?): ServiceHoda?
     fun getTopUser(size: Int?): List<UserDTO>
+    fun getUserIncomingReq(userId: Int?): List<TransactionDto>
 
 
 }
@@ -47,6 +50,17 @@ interface UserDataGet {
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
+    override fun getUserIncomingReq(userId: Int?): List<TransactionDto> =
+            Collections.synchronizedList(LinkedList<TransactionDto>()).apply {
+                userInterface.getUser(userId)?.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
+                        ?.parallel()
+                        ?.forEach { t ->
+                            t.transactionInfoCollection?.stream()?.filter {
+                                it.state == TransactionInfo.PENDING_STATE
+                                        || it.state == TransactionInfo.POSTPONED
+                            }?.forEach { add(it.convert()) }
+                        }
+            }
 
 
     override fun getUserInfoByID(userId: Int?): UserInfo? =
@@ -159,7 +173,9 @@ private open class UserDataGetImpl : UserDataGet {
                     if (retVal.frist) {
                         user.userEmailCollection?.forEach { retVal?.addEmail(retVal?.id, it) }
                         user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
-
+                        retVal.signUpDate = Date()
+                        retVal.description = ""
+                        retVal.bio = ""
                         retVal.userAuthority = UserAuthority()
                         retVal.userAuthority?.authority = "ROLE_User"
                         retVal.userAuthority?.userId = retVal.id
@@ -284,7 +300,10 @@ private class UserDataSetImol : UserDataSet {
     override fun addServiceToUser(serviceDTO: ServiceDTO?): ServiceDTO? {
         return if (serviceDTO != null && serviceDTO.uO != null) {
             val service = serviceDTO.convertServie(skillINterface, userInterface = userInterFace)
-            service.available = Service.AVALIBLE
+            if (serviceDTO.price != null)
+                service.available = Service.AVALIBLE
+            else
+                service.available = Service.PAUSED
             service.startDate = Date()
             userService.addServiceToUser(serviceDTO.uO?.id, service)?.convertServie()
         } else null

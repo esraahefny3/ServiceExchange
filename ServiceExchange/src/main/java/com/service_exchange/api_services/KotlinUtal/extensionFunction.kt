@@ -85,6 +85,12 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
 
 fun TransactionInfo.convert(): TransactionDto =
         AppFactory.mapToDto(this, TransactionDto::class.java).apply {
+            this.serviceId = this@convert.serviceId?.id
+            this.serviceName = this@convert.serviceId?.name
+            this.serviceDescription = this@convert.serviceId?.description
+            this.setsByUser(this@convert.startedBy?.id)
+            this.otherUserImage = this@convert.startedBy?.image
+            this.otherUserName = this@convert.startedBy?.name
 
         }
 
