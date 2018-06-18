@@ -304,7 +304,7 @@ private class UserDataSetImol : UserDataSet {
 
     override fun updateUserService(serviceDTO: ServiceDTO?): Boolean {
         println(serviceDTO)
-        userService.getServiceById(serviceDTO?.id)?.let {
+        return userService.getServiceById(serviceDTO?.id)?.let {
             it.duration = serviceDTO?.duration?.toInt()
             it.description = serviceDTO?.description
             it.image = serviceDTO?.image
@@ -313,8 +313,7 @@ private class UserDataSetImol : UserDataSet {
             userService.updateService(it)
 
 
-        }
-        return false
+        } ?: false
     }
 
 
