@@ -144,7 +144,11 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     public boolean approveCompletedTransaction(TransactionInfo transactionInfo) {
         try {
             transactionInfo.setState(TransactionInfo.COMPLETED_APPROVED_STATE);
+            transactionInfo.getStartedBy().setBalance(transactionInfo.getStartedBy().getBalance() - transactionInfo.getPrice());
+            System.out.println("new balance: " + transactionInfo.getStartedBy().getBalance());
             return true;
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

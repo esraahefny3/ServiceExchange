@@ -21,18 +21,31 @@ import java.util.stream.Collectors
 */
 @Component
 open class UserServiceImpl : UserServicesInterFace {
+
     @Autowired
     lateinit var userInterface: UserInterFace;
     @Autowired
     lateinit var serviceInterFace: ServiceInterface
 
     override fun addServiceToUser(userId: Int?, service: Service?): Service? {
-        var user: UserTable? = userInterface.getUser(userId);
+        val user: UserTable? = userInterface.getUser(userId);
         service?.madeBy = user
         val bool = serviceInterFace.createService(service)
         userInterface.updateUser(user)
         return bool
     }
+
+    override fun getServiceById(serviceId: Int?): Service? =
+            serviceInterFace.getService(serviceId)
+
+    override fun updateService(service: Service?): Boolean =
+            serviceInterFace.modifieService(service).let {
+                it?.let {
+                    println("hmada")
+                    return true
+                }
+                return false
+            }
 
 
     override fun disableServiceForUser(userId: Int?, service: Service?, forced: Boolean?): Boolean? {

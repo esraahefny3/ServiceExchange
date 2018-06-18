@@ -232,7 +232,13 @@ public class UserService {
                 , userDataGet.getLastCompletedReq(userId));
     }
 
+    public Boolean updateService(ServiceDTO serviceDTO) {
+        return userDataSet.updateUserService(serviceDTO);
+    }
 
+    public Boolean updataUser(UserDTO userDTO) {
+        return userDataSet.updateUserDate(userDTO);
+    }
     //mubarak//
 
 
