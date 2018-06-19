@@ -111,12 +111,12 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     public BadgeDto assignBadgeToTransactionUser(UserTable user) {
 
         try {
-            Long userWorkingHours = transactionDaoInterfaceImpl.getUserWorkingHourse(user);
+            BigInteger userWorkingHours = transactionDaoInterfaceImpl.getUserWorkingHourse(user);
             System.out.println("wh"+userWorkingHours);
             if(userWorkingHours!=null) {
                 Badge badgeUserWillGet = null;
                 for (Badge badge : badgeDelegateInterfaceImpl.getAllBadges()) {
-                    if (userWorkingHours >=  badge.getTimeNeeded()) {
+                    if (userWorkingHours.compareTo(badge.getTimeNeeded()) ==0||userWorkingHours.compareTo(badge.getTimeNeeded()) ==1) {
 
                         badgeUserWillGet = badge;
                     }

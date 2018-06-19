@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -40,7 +41,7 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
 
     @Query("select sum(t.duration) from TransactionInfo t where t.state='completed and approved'" +
             " and ((t.serviceId.madeBy=:user and t.serviceId.type='offerd') or(t.startedBy=:user and t.serviceId.type='requested')) group by t.id")
-    public Long getUserWorkingHourse(@Param("user") UserTable user);
+    public BigInteger getUserWorkingHourse(@Param("user") UserTable user);
     ////////////////////////////Esraa////////////////////////////
 
 
