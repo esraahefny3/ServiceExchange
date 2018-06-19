@@ -174,7 +174,7 @@ fun Message.convertToDefult() =
             receiverId = this@convertToDefult.receiverId?.id
             senderId = this@convertToDefult.senderId?.id
             userReadIt = this@convertToDefult.isSeen
-            readDate = this@convertToDefult.seenDate
+            readDate = this@convertToDefult.seenDate?.time
             complaintId = this@convertToDefult.complaintId?.id
         }
 

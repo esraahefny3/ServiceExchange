@@ -242,7 +242,7 @@ class MessageGeneralDto {
     var receiverId: Int? = null
     var senderId: Int? = null
     var userReadIt: Short? = null
-    var readDate: Date? = null
+    var readDate: Long? = null
     var complaintId: Int? = null
 }
 
