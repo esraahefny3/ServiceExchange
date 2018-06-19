@@ -1,6 +1,6 @@
 package com.service_exchange.api_services.bussinesslayer
 
-import com.service_exchange.api_services.KotlinUtal.convertServie
+import com.service_exchange.api_services.KotlinUtal.*
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceAddAble
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable
 import com.service_exchange.api_services.dao.dto.*
@@ -22,13 +22,19 @@ interface ServiceBussness {
     fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam>
     fun getAllServices(page: Int): List<ServicesWEB>
     fun getAllRequests(page: Int): List<RequestsWEB>
+    fun getServiceDetailsWeb(servieId: Int): ServiceDetailWeb?
 
 }
 
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
-
+    override fun getServiceDetailsWeb(servieId: Int): ServiceDetailWeb? =
+            serviceGet.getService(servieId)?.let {
+                val x = it.convertServie().convertToServcieDetailWEB()
+                x.allreview = it.transactionInfoCollection?.reviewList()?.map { it.convetToReviewWEB() }
+                x
+            }
     override fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam> {
         return serviceGet.getService(servieId)?.transactionInfoCollection
                 ?.stream()?.filter { it.state == TransactionInfo.PENDING_STATE || it.state == TransactionInfo.POSTPONED }
@@ -44,25 +50,12 @@ class ServiceBussnessImpl : ServiceBussness {
 
     override fun getAllRequests(page: Int): List<RequestsWEB> =
             getAllReqService(page).stream().map {
-                RequestsWEB().apply {
-                    requestId = it.id
-                    requestDesc = it.description
-                    requestTitle = it.name
-                    numOfPointsPay = it.price
-                    userImg = it.uO?.image
-                    userId = it.uO?.id
-                }
+                it.convertTOReqeustWeb()
             }.collect(Collectors.toList())
 
     override fun getAllServices(page: Int): List<ServicesWEB> =
             getAllReqService(page).stream().map {
-                ServicesWEB().apply {
-                    serviceId = it.id
-                    serviceImg = it.image
-                    serviceName = it.name
-                    numOfReviews = it.revList?.size ?: 0
-                    numOfPoints = it.price
-                }
+                it.convertToServcieWEB()
             }.collect(Collectors.toList())
     @Autowired
     lateinit var serviceGet: ServiceGettable

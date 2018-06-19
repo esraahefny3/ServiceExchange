@@ -2,10 +2,7 @@ package com.service_exchange.api_services.restcontrollers
 
 import com.service_exchange.api_services.KotlinUtal.convertToServcieWEB
 import com.service_exchange.api_services.bussinesslayer.ServiceBussness
-import com.service_exchange.api_services.dao.dto.RequestsWEB
-import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.dto.ServicesWEB
-import com.service_exchange.api_services.dao.dto.TransactionEslam
+import com.service_exchange.api_services.dao.dto.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.stream.Collectors
@@ -60,6 +57,8 @@ class ServiceRestfull {
                 it.convertToServcieWEB()
             }.collect(Collectors.toList())
 
-
+    @RequestMapping(value = ["/getServiceDetail"], method = arrayOf(RequestMethod.GET))
+    fun getServiceDetailWeb(serviceId: Int): ServiceDetailWeb? =
+            serviceBussness.getServiceDetailsWeb(serviceId)
 
 }

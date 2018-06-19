@@ -229,4 +229,18 @@ return false;
         return service.getUserData(userId);
     }
 
+    @RequestMapping(value = "/getUserServiceData", method = RequestMethod.GET)
+    public UserServiceData getUserServiceData(int userId) {
+        return service.getUserServiceData(userId);
+    }
+
+    @RequestMapping(value = "/getUserDataIndetals", method = RequestMethod.GET)
+    public UserDataWEBInDetails getUserDataIndetals(int userId) {
+        return service.getUserDataIndetals(userId);
+    }
+
+    @RequestMapping(value = "/getAllUserReq", method = RequestMethod.GET)
+    public MyRequerstWeB getAllUserReq(int userId) {
+        return service.getAllUserReq(userId);
+    }
 }

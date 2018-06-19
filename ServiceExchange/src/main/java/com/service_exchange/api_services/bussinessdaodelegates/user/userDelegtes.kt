@@ -42,8 +42,9 @@ interface UserDataGet {
     fun getTopUserWeb(size: Int?): List<UserWEB>
     fun getUserIncomingReq(userId: Int?): List<TransactionDto>
     fun getUserData(userId: Int?): UserDataWEB?
-    fun getUserServiceData(userId: Int?): UserServiceData
-
+    fun getUserServiceData(userId: Int?): UserServiceData?
+    fun getUserDataDetails(userId: Int?): UserDataWEBInDetails?
+    fun getAllReq(userId: Int?): MyRequerstWeB?
 
 }
 
@@ -60,9 +61,43 @@ fun Education.convert(): EdcationDTO =
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
-    override fun getUserServiceData(userId: Int?): UserServiceData {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getAllReq(userId: Int?): MyRequerstWeB? =
+
+            getUserServiceData(userId)?.convertToMyReqest()
+
+    override fun getUserDataDetails(userId: Int?): UserDataWEBInDetails? =
+            userInterface.getUser(userId)?.converToUserDataWEebINDetails(userStatic)
+
+
+    override fun getUserServiceData(userId: Int?): UserServiceData? =
+            userInterface.getUser(userId)?.let {
+                UserServiceData().apply {
+                    this.UserRequestActive = it.serviceCollection?.stream()?.filter { it.type == Service.REQUSETED && it.available == Service.AVALIBLE }
+                            ?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.user_id = it.id
+                    this.UserRequestCompleted = it.serviceCollection?.stream()?.filter {
+                        it.type == Service.REQUSETED && it.transactionInfoCollection?.stream()
+                                ?.anyMatch { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE } ?: false
+                    }?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.UserRequestPaused = it.serviceCollection?.stream()?.filter { it.type == Service.REQUSETED && it.available == Service.PAUSED }
+                            ?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.UserServicesActive = it.serviceCollection?.stream()?.filter { it.available == Service.AVALIBLE }?.map { it.convertServie().convertToServcieWEB() }
+                            ?.collect(Collectors.toList())
+                    this.UserServicesPaused = it.serviceCollection?.stream()?.filter { it.available == Service.PAUSED }?.map { it.convertServie().convertToServcieWEB() }
+                            ?.collect(Collectors.toList())
+                    this.userServicesReviews = it.serviceCollection?.let {
+                        val list: MutableList<ReviewWEB> = mutableListOf()
+                        it.forEach { t: Service? ->
+                            list.addAll(t?.transactionInfoCollection?.reviewList()?.map { it.convetToReviewWEB() }?.toList()
+                                    ?: emptyList())
+                        }
+
+                        list
+                    }
+
+                }
+            }
+
 
     override fun getUserData(userId: Int?): UserDataWEB? =
             userInterface.getUser(userId)?.convetToUserDataWeb(userStatic)
