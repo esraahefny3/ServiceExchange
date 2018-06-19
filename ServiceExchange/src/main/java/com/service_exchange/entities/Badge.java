@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 
 /**
@@ -42,7 +43,7 @@ public class Badge implements Serializable {
     @Column(name = "description")
     private String description;
     @Column(name = "time_needed")
-    private Integer timeNeeded;
+    private BigInteger timeNeeded;
     @Column(name = "type")
     private String type;
     @Column(name = "is_deleted")
@@ -108,11 +109,11 @@ public class Badge implements Serializable {
         this.description = description;
     }
 
-    public Integer getTimeNeeded() {
+    public BigInteger getTimeNeeded() {
         return timeNeeded;
     }
 
-    public void setTimeNeeded(Integer timeNeeded) {
+    public void setTimeNeeded(BigInteger timeNeeded) {
         this.timeNeeded = timeNeeded;
     }
 
