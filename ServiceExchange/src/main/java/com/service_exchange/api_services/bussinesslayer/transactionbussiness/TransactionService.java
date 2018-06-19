@@ -207,8 +207,8 @@ public class TransactionService implements TransactionServiceInterface {
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
                 Service service = serviceData.findById(transactionDto.getServiceId()).get();
-                    System.out.println("*/*/*/*/*/*/*/*/*/"+service.getMadeBy().getId());
-                    System.out.println("*/*/*/*/*/*/*/*/*/"+userDataInterFace.findById(transactionDto.getsByUser()));
+                System.out.println("*/*/*/*/*/*/*/*/*/"+service.getMadeBy().getId());
+                System.out.println("*/*/*/*/*/*/*/*/*/"+userDataInterFace.findById(transactionDto.getsByUser()));
                 UserTable serviceBuyer;
                 if (service.getType().equals(Service.OFFERED)) {
                     serviceBuyer = userDataInterFace.findById(transactionDto.getsByUser()).get();

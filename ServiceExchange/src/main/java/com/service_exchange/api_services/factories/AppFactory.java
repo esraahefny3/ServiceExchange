@@ -110,4 +110,13 @@ public class AppFactory {
     {
         return new Message();
     }
+
+    public static UserBadge getUserBadgeInstance()
+    {
+        return new UserBadge();
+    }
+    public static UserBadgePK getUserBadgePKInstance()
+    {
+        return new UserBadgePK();
+    }
 }

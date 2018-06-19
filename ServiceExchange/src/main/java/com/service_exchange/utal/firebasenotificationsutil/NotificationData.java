@@ -3,6 +3,7 @@ package com.service_exchange.utal.firebasenotificationsutil;
 import com.google.gson.annotations.SerializedName;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegate;
 import com.service_exchange.api_services.bussinessdaodelegates.user.UserDelegateInterface;
+import com.service_exchange.api_services.dao.dto.BadgeDto;
 import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
 import com.service_exchange.api_services.dao.dto.NotificationDto;
 import com.service_exchange.api_services.factories.AppFactory;
@@ -11,7 +12,7 @@ import org.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Generated;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Transient;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
@@ -32,7 +33,8 @@ public class NotificationData {
     @Transient
     public static String messageType="messageType";
 
-
+    @Transient
+    public static String badgeType="badgeType";
     public Object getObjectData() {
         return objectData;
     }
@@ -73,6 +75,21 @@ public class NotificationData {
         else {
             return "Message from " + sender.getName() + "\n" +
                     messageGeneralDto.getText();
+        }
+    }
+
+    public  String createBadgeFirebaseDescription(BadgeDto badgeDto)
+    {
+        if(badgeDto.getDescription().length()>=30)
+        {
+            return "Congratulations you have got a new badge \n"+badgeDto.getName()+":\n"
+                    +badgeDto.getDescription().substring(0,30)+"...";
+        }
+        else
+        {
+
+            return "Congratulations you have got a new badge \n"+badgeDto.getName()+":\n"
+                    +badgeDto.getDescription();
         }
     }
 }
