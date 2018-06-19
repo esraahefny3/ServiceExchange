@@ -20,7 +20,8 @@ public interface UserBadgesSelegateInterface {
     public UserTable checkIfUserExist(Integer userId);
     public List<Badge> getAllUserBadges(UserTable user);
    public List<Badge> getAllUserBadges(UserTable user, Pageable page);
-   public boolean assignBadgeToUser(UserTable user,Badge Badge);
+    public boolean assignBadgeToUser(UserTable user,Badge Badge);
+    public Long getUserWorkingHourse(Integer userId);
    
     //isUserDeserveBadge
     

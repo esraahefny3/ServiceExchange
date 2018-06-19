@@ -55,6 +55,18 @@ return null;
     }
 
     @Override
+    public Long getUserWorkingHourse(Integer userId) {
+
+        Optional<UserTable>userTableOptional=userDataInterface.findById(userId);
+        if(userTableOptional.isPresent())
+        {
+            UserTable user=userTableOptional.get();
+
+        }
+
+        return -1l;
+    }
+    @Override
     public UserTable checkIfUserExist(Integer userId) {
         Optional<UserTable> userOptional = userDataInterface.findById(userId);
         if (userOptional.isPresent()) {

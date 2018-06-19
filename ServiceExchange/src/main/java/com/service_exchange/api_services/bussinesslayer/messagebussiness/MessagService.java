@@ -20,10 +20,7 @@ import com.service_exchange.utal.firebasenotificationsutil.NotificationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  *
@@ -89,6 +86,7 @@ public class MessagService implements MessageServiceInterface{
             System.out.println("uss"+userDelegateInterfaceImpl);
             MessageGeneralDto messageGeneralDto = messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
             UserTable reciever = userDelegateInterfaceImpl.getUserById(messageGeneralDto.getReceiverId());
+            Collection<UserFirebaseToken>userFirebaseTokens=reciever.getUserFirebaseTokenCollection();
            for (UserFirebaseToken userFirebaseToken:reciever.getUserFirebaseTokenCollection()) {
                 if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.androidType)==true)
                 {

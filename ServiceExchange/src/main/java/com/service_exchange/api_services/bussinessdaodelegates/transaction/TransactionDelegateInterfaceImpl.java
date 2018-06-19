@@ -2,18 +2,19 @@ package com.service_exchange.api_services.bussinessdaodelegates.transaction;
 
 //ersaaa
 
+import com.service_exchange.api_services.bussinessdaodelegates.badgedelegate.BadgeDelegateInterface;
+import com.service_exchange.api_services.dao.dto.BadgeDto;
 import com.service_exchange.api_services.dao.service.ServiceData;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
-import com.service_exchange.entities.Service;
-import com.service_exchange.entities.TransactionInfo;
-import com.service_exchange.entities.UserTable;
+import com.service_exchange.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,12 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     @Autowired
     private TransactionDaoInterface transactionDaoInterfaceImpl;
 
+//
+//    @Autowired
+//    private UserTransactionInterFace userTransactionInterFaceImpl;
+
+    @Autowired
+    private BadgeDelegateInterface badgeDelegateInterfaceImpl;
     @Override
     public TransactionInfo checkIfTransactionExist(Integer transactionId) {
         Optional<TransactionInfo> transactionInfoOptional = transactionDaoInterfaceImpl.findById(transactionId);
@@ -99,6 +106,56 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
             return -1;
         }
     }
+
+    @Override
+    public BadgeDto assignBadgeToTransactionUser(UserTable user) {
+
+        try {
+            BigInteger userWorkingHours = transactionDaoInterfaceImpl.getUserWorkingHourse(user);
+            System.out.println("wh"+userWorkingHours);
+            if(userWorkingHours!=null) {
+                Badge badgeUserWillGet = null;
+                for (Badge badge : badgeDelegateInterfaceImpl.getAllBadges()) {
+                    if (userWorkingHours.compareTo(badge.getTimeNeeded()) ==0||userWorkingHours.compareTo(badge.getTimeNeeded()) ==1) {
+
+                        badgeUserWillGet = badge;
+                    }
+                }
+                if (badgeUserWillGet != null) {
+                    UserBadge userBadge = AppFactory.getUserBadgeInstance();
+                    UserBadgePK userBadgePK = AppFactory.getUserBadgePKInstance();
+                    userBadgePK.setBadgeId(badgeUserWillGet.getId());
+                    userBadgePK.setUserId(user.getId());
+                    userBadge.setUserBadgePK(userBadgePK);
+                    userBadge.setBadge(badgeUserWillGet);
+                    userBadge.setUserTable(user);
+
+                    user.getUserBadgeCollection().add(userBadge);
+                    userDataInterface.save(user);
+                    BadgeDto badgeDto = AppFactory.mapToDto(badgeUserWillGet, BadgeDto.class);
+                    if(badgeUserWillGet.getAddedBy()!=null)
+                    {
+                        badgeDto.setAddedByAdminEmail(badgeUserWillGet.getAddedBy().getEmail());
+                    }
+                    if(badgeUserWillGet.getNextLevel()!=null)
+                    {
+                        badgeDto.setNextLevelId(badgeUserWillGet.getNextLevel().getId());
+                    }
+                    return badgeDto;
+                }
+            }
+
+            return null;
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
 
 
     ////////////////////////////Esraa////////////////////////////

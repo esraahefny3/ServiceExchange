@@ -1,5 +1,6 @@
 package com.service_exchange.api_services.bussinessdaodelegates.transaction;
 
+import com.service_exchange.api_services.dao.dto.BadgeDto;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
@@ -22,6 +23,7 @@ public interface TransactionDelegateInterface {
     int postponeAllOtherUserPindingTransactionOnService(Service service);
 
     int rejectAcceptedTransactionOnService(Service service);
+    BadgeDto assignBadgeToTransactionUser(UserTable user);
 
     ////////////////////////////Esraa////////////////////////////
 
