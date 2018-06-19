@@ -137,7 +137,7 @@ private class ServiceImpl : ServiceInterface {
 
     override fun getTopRated(size: Int): List<Service> =
             serviceData.findAll().filter { service -> service.type == Service.OFFERED }
-                    .sortedBy { service ->
+                    .sortedByDescending { service ->
                         var avg = 0.0
                         service.transactionInfoCollection?.stream()?.filter { it.state == TransactionInfo.LATE_STATE || it.state == TransactionInfo.COMPLETED_STATE }
                                 ?.mapToDouble {
@@ -146,7 +146,7 @@ private class ServiceImpl : ServiceInterface {
                                             ?.average()?.ifPresent { avg = it }
                                     avg
                                 }?.average()?.ifPresent(DoubleConsumer { avg = it })
-                        return@sortedBy avg
+                        avg
                     }
                     .take(size)
 

@@ -3,9 +3,7 @@ package com.service_exchange.api_services.bussinesslayer
 import com.service_exchange.api_services.KotlinUtal.convertServie
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceAddAble
 import com.service_exchange.api_services.bussinessdaodelegates.service.ServiceGettable
-import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.dto.TransactionEslam
-import com.service_exchange.api_services.dao.dto.UserInfo
+import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.entities.Service
 import com.service_exchange.entities.TransactionInfo
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,8 +20,11 @@ interface ServiceBussness {
     fun getTopRatedService(size: Int): List<ServiceDTO>
     fun createService(serviceDTO: ServiceDTO?): ServiceDTO?
     fun getAllPreStartTransactionOnService(servieId: Int): List<TransactionEslam>
+    fun getAllServices(page: Int): List<ServicesWEB>
+    fun getAllRequests(page: Int): List<RequestsWEB>
 
 }
+
 
 @Component
 class ServiceBussnessImpl : ServiceBussness {
@@ -41,6 +42,28 @@ class ServiceBussnessImpl : ServiceBussness {
 
     }
 
+    override fun getAllRequests(page: Int): List<RequestsWEB> =
+            getAllReqService(page).stream().map {
+                RequestsWEB().apply {
+                    request_id = it.id
+                    request_desc = it.description
+                    request_title = it.name
+                    numOfPointsPay = it.price
+                    user_img = it.uO?.image
+                    user_id = it.uO?.id
+                }
+            }.collect(Collectors.toList())
+
+    override fun getAllServices(page: Int): List<ServicesWEB> =
+            getAllReqService(page).stream().map {
+                ServicesWEB().apply {
+                    service_id = it.id
+                    service_img = it.image
+                    service_name = it.name
+                    numOfReviews = it.revList?.size ?: 0
+                    numOfPoints = it.price
+                }
+            }.collect(Collectors.toList())
     @Autowired
     lateinit var serviceGet: ServiceGettable
     @Autowired

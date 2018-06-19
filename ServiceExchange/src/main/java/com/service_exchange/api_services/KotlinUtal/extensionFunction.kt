@@ -1,5 +1,7 @@
 package com.service_exchange.api_services.KotlinUtal
 
+import com.service_exchange.api_services.bussinessdaodelegates.user.UserStaticsGetter
+import com.service_exchange.api_services.bussinessdaodelegates.user.convert
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.transaction.TransactionDto
@@ -160,4 +162,23 @@ fun Service.convertToServiceHoda() =
             ratingAvg = transactionInfoCollection?.avgRating()
             RevList = transactionInfoCollection?.reviewList()
             reviewCount = RevList?.size
+        }
+
+fun UserTable.convetToUserDataWeb(userStatic: UserStaticsGetter): UserDataWEB =
+        UserDataWEB().apply {
+            this.User_Bio = bio
+            this.User_desc = description
+            this.User_education = educationCollection?.stream()?.map { it.convert() }?.collect(Collectors.toList())
+            this.User_emails = userEmailCollection?.stream()?.map { it.userEmailPK?.email }?.collect(Collectors.toList())?.filterNotNull()
+            this.User_img = image
+            this.User_location = address
+            this.User_name = name
+            this.User_skills = skillCollection?.stream()?.map { it.convertSkillInfo() }?.collect(Collectors.toList())
+                    ?.toList()
+            this.avg_response_time = userStatic.getResponceRate(id)
+            this.numOfReviews = transactionInfoCollection?.reviewList()?.size ?: 0
+            this.level = userStatic.getUserLevel(id!!)
+            this.user_id = id
+
+
         }

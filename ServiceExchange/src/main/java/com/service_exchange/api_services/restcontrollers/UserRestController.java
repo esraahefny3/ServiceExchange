@@ -216,4 +216,17 @@ return false;
         return service.getAllUserTransAction(userId);
     }
     //mubarak//
+
+
+    //hoda//
+    @RequestMapping(value = "/getTopUsersWeb", method = RequestMethod.GET)
+    private List<UserWEB> getTopUsers(Integer size) {
+        return service.getTopUserWeb(size);
+    }
+
+    @RequestMapping(value = "/getUserData", method = RequestMethod.GET)
+    private UserDataWEB getUserData(Integer userId) {
+        return service.getUserData(userId);
+    }
+
 }

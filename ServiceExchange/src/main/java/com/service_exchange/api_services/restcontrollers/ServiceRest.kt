@@ -1,10 +1,13 @@
 package com.service_exchange.api_services.restcontrollers
 
 import com.service_exchange.api_services.bussinesslayer.ServiceBussness
+import com.service_exchange.api_services.dao.dto.RequestsWEB
 import com.service_exchange.api_services.dao.dto.ServiceDTO
+import com.service_exchange.api_services.dao.dto.ServicesWEB
 import com.service_exchange.api_services.dao.dto.TransactionEslam
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.stream.Collectors
 
 @RestController
 @CrossOrigin(origins = arrayOf("*"))
@@ -31,15 +34,38 @@ class ServiceRestfull {
 
     @RequestMapping(value = ["/getTopRated"], method = arrayOf(RequestMethod.GET))
     fun getTopRated(@RequestParam size: Int): List<ServiceDTO> =
-            serviceBussness.getAllService(size)
+            serviceBussness.getTopRatedService(size)
 
     @RequestMapping(value = ["/getPub"], method = arrayOf(RequestMethod.GET))
     fun getPub(@RequestParam size: Int): List<ServiceDTO> =
-            serviceBussness.getAllService(size)
+            serviceBussness.getPublerService(size)
 
     @RequestMapping(value = ["/getAllRequstOnService"], method = arrayOf(RequestMethod.GET))
     fun getAllRequstOnService(serviceId: Int): List<TransactionEslam> =
             serviceBussness.getAllPreStartTransactionOnService(serviceId)
+
+    //hoda
+    @RequestMapping(value = ["/getAllService"], method = arrayOf(RequestMethod.GET))
+    fun getAllServices(page: Int): List<ServicesWEB> =
+            serviceBussness.getAllServices(page)
+
+    @RequestMapping(value = ["/getAllRequests"], method = arrayOf(RequestMethod.GET))
+    fun getAllRequests(page: Int): List<RequestsWEB> =
+            serviceBussness.getAllRequests(page)
+
+    @RequestMapping(value = ["/getTopService"], method = arrayOf(RequestMethod.GET))
+    fun getTopServices(size: Int): List<ServicesWEB> =
+            serviceBussness.getTopRatedService(size).stream().map {
+                ServicesWEB().apply {
+                    service_id = it.id
+                    service_img = it.image
+                    service_name = it.name
+                    numOfReviews = it.revList?.size ?: 0
+                    numOfPoints = it.price
+                }
+            }.collect(Collectors.toList())
+
+
 
 
 }
