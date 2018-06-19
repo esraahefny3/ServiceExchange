@@ -36,8 +36,10 @@ public class ReviewDelegateImpl implements ReviewDelegateInterface {
         boolean reviewIsValid = true;
         for (Object aReviewsOnTransaction : reviewsOnTransaction) {
             Review review = (Review) aReviewsOnTransaction;
-            if (review.getMadeBy().getId().equals(user.getId())) {
-                reviewIsValid = false;
+            if (review.getMadeBy() != null && user != null) {
+                if (review.getMadeBy().getId().equals(user.getId())) {
+                    reviewIsValid = false;
+                }
             }
         }
 
