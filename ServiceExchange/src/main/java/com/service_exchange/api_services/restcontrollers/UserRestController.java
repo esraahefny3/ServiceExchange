@@ -8,6 +8,7 @@ package com.service_exchange.api_services.restcontrollers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service_exchange.api_services.bussinesslayer.UserService;
 import com.service_exchange.api_services.dao.dto.*;
+import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Badge;
 import com.service_exchange.entities.UserTable;
@@ -103,11 +104,8 @@ return false;
     //mubarak//
     @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
     private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
-        System.out.println(user);
 
-        UserDTO user2 = service.logInORSignUp(user);
-        System.out.println(user2);
-        return user2;
+        return service.logInORSignUp(user);
     }
 
     @RolesAllowed({"admin_view", "User"})
@@ -211,6 +209,11 @@ return false;
 
 
         return service.updataUser(userDTO);
+    }
+
+    @RequestMapping(value = "/getUserIncomingReq", method = RequestMethod.GET)
+    private List<TransactionDto> getUserIncomingReq(Integer userId) {
+        return service.getAllUserTransAction(userId);
     }
     //mubarak//
 }

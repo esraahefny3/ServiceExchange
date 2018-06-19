@@ -89,8 +89,7 @@ public class MessagService implements MessageServiceInterface{
             System.out.println("uss"+userDelegateInterfaceImpl);
             MessageGeneralDto messageGeneralDto = messageDelegateInterface.sendTransactionMessage(senderId, recieverId, message, TransactionId);
             UserTable reciever = userDelegateInterfaceImpl.getUserById(messageGeneralDto.getReceiverId());
-            System.out.println("r"+messageGeneralDto.getReceiverId());
-            for (UserFirebaseToken userFirebaseToken:reciever.getUserFirebaseTokenCollection()) {
+           for (UserFirebaseToken userFirebaseToken:reciever.getUserFirebaseTokenCollection()) {
                 if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.androidType)==true)
                 {
                     NotificationData notificationData=AppFactory.getNotificationDataInstance();

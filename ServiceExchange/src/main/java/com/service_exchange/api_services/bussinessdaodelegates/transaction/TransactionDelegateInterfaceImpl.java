@@ -45,6 +45,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionInfo = transactionDaoInterfaceImpl.save(transactionInfo);
                 TransactionDto transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto.setsByUser(transactionInfo.getStartedBy().getId());
+                transactionDto.setServiceId(transactionInfo.getServiceId().getId());
                 return transactionDto;
             }
             return null;

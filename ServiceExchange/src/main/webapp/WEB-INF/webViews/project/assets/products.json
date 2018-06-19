@@ -1,0 +1,38 @@
+[{
+    "image":"../assets/img/Ecobee Smart Thermostat.jpg",
+    "name":"Ecobee Smart Thermostat",
+    "Category":"Tech",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$38.45"
+    
+},{
+    "image":"../assets/img/Nest Protect.jpg",
+    "name":"Nest Protect",
+    "Category":"Tech",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$40.45"
+},{
+    "image":"../assets/img/Sonos Wireless Speaker System.jpg",
+    "name":"Sonos Wireless Speaker",
+    "Category":"Tech",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$35.45"
+},{
+    "image":"../assets/img/HAPIfork.jpg",
+    "name":"HAPIfork",
+    "Category":"Kitchen",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$53.95"
+},{
+    "image":"../assets/img/GeniCan.jpg",
+    "name":"GeniCan",
+    "Category":"Tech",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$63.95"
+},{
+    "image":"../assets/img/Behmor Brazen Plus Coffee Maker.jpg",
+    "name":"Behmor Brazen Plus Coffee",
+    "Category":"Kitchen",
+    "details":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
+    "price":"$44.95"
+}]
