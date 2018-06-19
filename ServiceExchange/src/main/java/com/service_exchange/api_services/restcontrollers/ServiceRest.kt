@@ -57,9 +57,9 @@ class ServiceRestfull {
     fun getTopServices(size: Int): List<ServicesWEB> =
             serviceBussness.getTopRatedService(size).stream().map {
                 ServicesWEB().apply {
-                    service_id = it.id
-                    service_img = it.image
-                    service_name = it.name
+                    serviceId = it.id
+                    serviceImg = it.image
+                    serviceName = it.name
                     numOfReviews = it.revList?.size ?: 0
                     numOfPoints = it.price
                 }

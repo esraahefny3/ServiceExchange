@@ -372,51 +372,51 @@ data class SkillInfo(var id: Int?, var descrption: String?, var name: String?) {
     constructor() : this(null, null, null)
 }
 
-data class ServicesWEB(var service_id: Int?, var service_img: String?, var service_name: String?, var numOfPoints: Int?, var numOfReviews: Int?) {
+data class ServicesWEB(var serviceId: Int?, var serviceImg: String?, var serviceName: String?, var numOfPoints: Int?, var numOfReviews: Int?) {
     constructor() : this(null, null, null, null, null)
 }
 
-data class RequestsWEB(var request_id: Int?, var user_img: String?, var user_id: Int?, var request_title: String?, var numOfPointsPay: Int?, var request_desc: String?) {
+data class RequestsWEB(var requestId: Int?, var userImg: String?, var userId: Int?, var requestTitle: String?, var numOfPointsPay: Int?, var requestDesc: String?) {
     constructor() : this(null, null, null, null, null, null)
 }
 
-data class UserWEB(var user_id: Int?, var user_img: String?, var user_name: String?, var numOfReviews: Int?, var numOfPoints: Int?
-                   , var user_location: String?, var user_Bio: String?) {
+data class UserWEB(var userId: Int?, var userImg: String?, var userName: String?, var numOfReviews: Int?, var numOfPoints: Int?
+                   , var userLocation: String?, var userBio: String?) {
     constructor() : this(null, null, null, null, null, null, null)
 }
 
 class UserDataWEB {
-    var user_id: Int? = null
-    var User_img: String? = null
-    var User_name: String? = null
+    var userId: Int? = null
+    var UserImg: String? = null
+    var UserName: String? = null
     var numOfReviews: Int? = null
-    var User_Bio: String? = null
-    var User_location: String? = null
-    var avg_response_time: Double? = null
-    var recent_delievery: String? = null
+    var UserBio: String? = null
+    var UserLocation: String? = null
+    var avgResponseTime: Double? = null
+    var recentDelievery: String? = null
     var level: String? = null
     var status: String? = null
-    var User_desc: String? = null
-    var User_emails: List<String>? = null
-    var User_skills: List<SkillInfo>? = null
-    var User_education: List<EdcationDTO>? = null
+    var UserDesc: String? = null
+    var UserEmails: List<String>? = null
+    var UserSkills: List<SkillInfo>? = null
+    var UserEducation: List<EdcationDTO>? = null
 }
 
 
 class UserServiceData {
     var user_id: Int? = null
-    var User_services_active: List<ServicesWEB>? = null
-    var User_services_paused: List<ServicesWEB>? = null
-    var User_request_active: List<ServicesWEB>? = null
-    var User_request_paused: List<ServicesWEB>? = null
-    var User_request_completed: List<ServicesWEB>? = null
-    var user_services_reviews: List<ReviewWEB>? = null
+    var UserServicesActive: List<ServicesWEB>? = null
+    var UserServicesPaused: List<ServicesWEB>? = null
+    var UserRequestActive: List<RequestsWEB>? = null
+    var UserRequestPaused: List<ReviewWEB>? = null
+    var UserRequestCompleted: List<RequestsWEB>? = null
+    var userServicesReviews: List<ReviewWEB>? = null
 }
 
 class ReviewWEB {
-    var person_img: String? = null
-    var person_name: String? = null
-    var service_review: Double? = null
+    var personImg: String? = null
+    var personName: String? = null
+    var serviceReview: Double? = null
     var time: Long? = null
-    var person_comment: String? = null
+    var personComment: String? = null
 }

@@ -42,6 +42,7 @@ interface UserDataGet {
     fun getTopUserWeb(size: Int?): List<UserWEB>
     fun getUserIncomingReq(userId: Int?): List<TransactionDto>
     fun getUserData(userId: Int?): UserDataWEB?
+    fun getUserServiceData(userId: Int?): UserServiceData
 
 
 }
@@ -59,6 +60,10 @@ fun Education.convert(): EdcationDTO =
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
+    override fun getUserServiceData(userId: Int?): UserServiceData {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun getUserData(userId: Int?): UserDataWEB? =
             userInterface.getUser(userId)?.convetToUserDataWeb(userStatic)
 
@@ -183,11 +188,11 @@ private open class UserDataGetImpl : UserDataGet {
                                 }
                     })?.map {
                         UserWEB().apply {
-                            user_Bio = it.bio
-                            user_id = it.id
-                            user_img = it.image
-                            user_name = it.name
-                            user_location = it.address
+                            userBio = it.bio
+                            userId = it.id
+                            userImg = it.image
+                            userName = it.name
+                            userLocation = it.address
                             numOfPoints = it.balance
                             numOfReviews = it.transactionInfoCollection?.reviewList()?.size ?: 0
                         }

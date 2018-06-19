@@ -45,21 +45,21 @@ class ServiceBussnessImpl : ServiceBussness {
     override fun getAllRequests(page: Int): List<RequestsWEB> =
             getAllReqService(page).stream().map {
                 RequestsWEB().apply {
-                    request_id = it.id
-                    request_desc = it.description
-                    request_title = it.name
+                    requestId = it.id
+                    requestDesc = it.description
+                    requestTitle = it.name
                     numOfPointsPay = it.price
-                    user_img = it.uO?.image
-                    user_id = it.uO?.id
+                    userImg = it.uO?.image
+                    userId = it.uO?.id
                 }
             }.collect(Collectors.toList())
 
     override fun getAllServices(page: Int): List<ServicesWEB> =
             getAllReqService(page).stream().map {
                 ServicesWEB().apply {
-                    service_id = it.id
-                    service_img = it.image
-                    service_name = it.name
+                    serviceId = it.id
+                    serviceImg = it.image
+                    serviceName = it.name
                     numOfReviews = it.revList?.size ?: 0
                     numOfPoints = it.price
                 }
