@@ -9,11 +9,13 @@ import com.service_exchange.api_services.dao.service.ServiceData;
 import com.service_exchange.api_services.dao.transaction.TransactionDaoInterface;
 import com.service_exchange.api_services.dao.transaction.TransactionDto;
 import com.service_exchange.api_services.dao.user.UserDataInterFace;
+import com.service_exchange.api_services.dao.user.UserInterFace;
 import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Service;
 import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserFirebaseToken;
 import com.service_exchange.entities.UserTable;
+import com.service_exchange.utal.firebasenotificationsutil.FirebaseNotificationMessageMaker;
 import com.service_exchange.utal.firebasenotificationsutil.NotificationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import com.service_exchange.utal.firebasenotificationsutil.FirebaseNotificationMessageMaker;
 
 @Component
 public class TransactionService implements TransactionServiceInterface {
@@ -44,12 +45,13 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Autowired
     UserDataInterFace userDataInterFace;
-
+    @Autowired
+    UserInterFace userInterFace;
     @Autowired
     ServiceData serviceData;
 
     @Autowired
-    private  MessageServiceInterface messageServiceInterfaceImpl;
+    private MessageServiceInterface messageServiceInterfaceImpl;
 
     ////////////////////////////Esraa////////////////////////////
 
@@ -101,7 +103,7 @@ public class TransactionService implements TransactionServiceInterface {
                         userDataInterFace.save(serviceBuyer);
 
                         if (transactionDelegateInterfaceImpl.postponeAllOtherUserPindingTransactionOnService(service) >= 0) {
-                            TransactionDto transactionDtoNew= transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
+                            TransactionDto transactionDtoNew = transactionDelegateInterfaceImpl.saveTransaction(transactionInfo);
 
                             //start message
 //                                Optional<UserTable>userTableOptional=userDataInterFace.findById(service.getMadeBy().getId());
@@ -211,8 +213,8 @@ public class TransactionService implements TransactionServiceInterface {
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
                 Service service = serviceData.findById(transactionDto.getServiceId()).get();
-                System.out.println("*/*/*/*/*/*/*/*/*/"+service.getMadeBy().getId());
-                System.out.println("*/*/*/*/*/*/*/*/*/"+userDataInterFace.findById(transactionDto.getsByUser()));
+                System.out.println("*/*/*/*/*/*/*/*/*/" + service.getMadeBy().getId());
+                System.out.println("*/*/*/*/*/*/*/*/*/" + userDataInterFace.findById(transactionDto.getsByUser()));
                 UserTable serviceBuyer;
                 if (service.getType().equals(Service.OFFERED)) {
                     serviceBuyer = userDataInterFace.findById(transactionDto.getsByUser()).get();
@@ -228,7 +230,7 @@ public class TransactionService implements TransactionServiceInterface {
                     } else {
                         hasOnProgressTransactions = false;
                     }
-                    System.out.println("******************** "+transactionDto.getsByUser());
+                    System.out.println("******************** " + transactionDto.getsByUser());
                     UserTable user = userDataInterFace.findById(transactionDto.getsByUser()).get();
                     List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user, service);
                     if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
@@ -241,10 +243,15 @@ public class TransactionService implements TransactionServiceInterface {
                         transactionInfo.setStartDate(new Date());
                         transactionInfo.setStartedBy(user);
 
-                        transactionDao.save(transactionInfo);
+                        transactionInfo = transactionDao.save(transactionInfo);
                         transactionInfo.setStartedBy(userDataInterFace.findById(userId).get());
                         transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                         transactionDto.setsByUser(userId);
+                        if (transactionInfo.getEndDate() != null)
+                            transactionDto.seteD(transactionInfo.getEndDate().getTime());
+                        if (transactionInfo.getStartDate() != null)
+                            transactionDto.seteD(transactionInfo.getStartDate().getTime());
+
 
                         return transactionDto;
                     }
@@ -265,6 +272,7 @@ public class TransactionService implements TransactionServiceInterface {
             Boolean done = delegate.completeTransaction(transactionInfo);
             if (done) {
                 transactionInfo.setEndDate(new Date());
+                transactionInfo.setJopFile(transactionDto.getJopFile());
                 transactionDao.save(transactionInfo);
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
@@ -291,24 +299,21 @@ public class TransactionService implements TransactionServiceInterface {
                 TransactionDto transactionDto2 = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
                 transactionDto2.setsByUser((transactionInfo.getStartedBy()).getId());
                 //assign badge to users
-                Optional<Service> serviceOptional=serviceData.findById(transactionDto2.getServiceId());
-                if(serviceOptional.isPresent())
-                {
-                    Service service=serviceOptional.get();
+                Optional<Service> serviceOptional = serviceData.findById(transactionDto2.getServiceId());
+                if (serviceOptional.isPresent()) {
+                    Service service = serviceOptional.get();
                     UserTable user1 = userDelegateInterfaceImpl.getUserById(transactionDto2.getsByUser());
-                    UserTable user2= userDelegateInterfaceImpl.getUserById(service.getMadeBy().getId());
-                    BadgeDto badgeDtoUser1=transactionDelegateInterfaceImpl.assignBadgeToTransactionUser(user1);
-                    if (badgeDtoUser1!=null)
-                    {
+                    UserTable user2 = userDelegateInterfaceImpl.getUserById(service.getMadeBy().getId());
+                    BadgeDto badgeDtoUser1 = transactionDelegateInterfaceImpl.assignBadgeToTransactionUser(user1);
+                    if (badgeDtoUser1 != null) {
                         System.out.println("hnaaa");
                         //send notification
-                        sendBadgeNotificationToUser(user1,badgeDtoUser1);
+                        sendBadgeNotificationToUser(user1, badgeDtoUser1);
                     }
-                    BadgeDto badgeDtoUser2=transactionDelegateInterfaceImpl.assignBadgeToTransactionUser(user2);
-                    if (badgeDtoUser1!=null)
-                    {
+                    BadgeDto badgeDtoUser2 = transactionDelegateInterfaceImpl.assignBadgeToTransactionUser(user2);
+                    if (badgeDtoUser1 != null) {
                         //send notification
-                        sendBadgeNotificationToUser(user2,badgeDtoUser2);
+                        sendBadgeNotificationToUser(user2, badgeDtoUser2);
                     }
                     return transactionDto2;
                 }
@@ -320,20 +325,16 @@ public class TransactionService implements TransactionServiceInterface {
         return null;
     }
 
-    private void sendBadgeNotificationToUser(UserTable user,BadgeDto badgeDtoUser)
-    {
-        for (UserFirebaseToken userFirebaseToken:user.getUserFirebaseTokenCollection()) {
-            if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.androidType)==true)
-            {
-                NotificationData notificationData=AppFactory.getNotificationDataInstance();
-                String description=notificationData.createBadgeFirebaseDescription(badgeDtoUser);
-                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserAndroid(badgeDtoUser,userFirebaseToken.getUserFirebaseTokenPK().getToken(),NotificationData.badgeType,description);
-            }
-            else  if(userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.webType)==true)
-            {
-                NotificationData notificationData=AppFactory.getNotificationDataInstance();
-                String description=notificationData.createBadgeFirebaseDescription(badgeDtoUser);
-                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserWeb(badgeDtoUser,userFirebaseToken.getUserFirebaseTokenPK().getToken(),NotificationData.badgeType,description);
+    private void sendBadgeNotificationToUser(UserTable user, BadgeDto badgeDtoUser) {
+        for (UserFirebaseToken userFirebaseToken : user.getUserFirebaseTokenCollection()) {
+            if (userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.androidType) == true) {
+                NotificationData notificationData = AppFactory.getNotificationDataInstance();
+                String description = notificationData.createBadgeFirebaseDescription(badgeDtoUser);
+                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserAndroid(badgeDtoUser, userFirebaseToken.getUserFirebaseTokenPK().getToken(), NotificationData.badgeType, description);
+            } else if (userFirebaseToken.getUserFirebaseTokenPK().getType().equals(UserFirebaseToken.webType) == true) {
+                NotificationData notificationData = AppFactory.getNotificationDataInstance();
+                String description = notificationData.createBadgeFirebaseDescription(badgeDtoUser);
+                FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserWeb(badgeDtoUser, userFirebaseToken.getUserFirebaseTokenPK().getToken(), NotificationData.badgeType, description);
             }
         }
     }
@@ -371,7 +372,9 @@ public class TransactionService implements TransactionServiceInterface {
     @Override
     public List<TransactionDto> getUserCompletedTransactions(Integer userId, Integer pageNum) {
         UserTable user = userDelegateInterfaceImpl.getUserById(userId);
-        if (user != null) {
+
+        if (user != null && user.getTransactionInfoCollection() != null) {
+            //  return    user.getTransactionInfoCollection().stream().filter(transactionInfo -> Objects.equals(transactionInfo.getState(), TransactionInfo.COMPLETED_STATE)).collect(Collectors.toList());
             return transactionDelegate.getUserCompletedTransactions(user, pageNum);
         } else {
             return null;

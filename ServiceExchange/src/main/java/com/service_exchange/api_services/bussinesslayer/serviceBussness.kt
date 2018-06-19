@@ -42,7 +42,7 @@ class ServiceBussnessImpl : ServiceBussness {
 
                     TransactionEslam(UserInfo(userName = it.startedBy?.name, id = it.startedBy?.id, image = it.startedBy?.image)
                             , descrption = it.descrption, numberOfDays = it.duration?.toInt(),
-                            date = it.startDate, duration = it.duration?.toInt(), price = it.price, serviceId = it.id)
+                            date = it.startDate?.time, duration = it.duration?.toInt(), price = it.price, serviceId = it.id)
                 }?.collect(Collectors.toList()) ?: emptyList()
 
 
