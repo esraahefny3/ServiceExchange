@@ -245,6 +245,26 @@ UserService {
         return userDataGet.getUserIncomingReq(userId);
 
     }
+
+    public List<UserWEB> getTopUserWeb(int size) {
+        return userDataGet.getTopUserWeb(size);
+    }
+
+    public UserDataWEB getUserData(int userId) {
+        return userDataGet.getUserData(userId);
+    }
+
+    public UserServiceData getUserServiceData(int userId) {
+        return userDataGet.getUserServiceData(userId);
+    }
+
+    public UserDataWEBInDetails getUserDataIndetals(int userId) {
+        return userDataGet.getUserDataDetails(userId);
+    }
+
+    public MyRequerstWeB getAllUserReq(int userId) {
+        return userDataGet.getAllReq(userId);
+    }
     //mubarak//
 
 

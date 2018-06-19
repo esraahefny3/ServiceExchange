@@ -1,10 +1,7 @@
 package com.service_exchange.api_services.bussinessdaodelegates.user
 
 
-import com.service_exchange.api_services.KotlinUtal.convert
-import com.service_exchange.api_services.KotlinUtal.convertServie
-import com.service_exchange.api_services.KotlinUtal.convertToServiceHoda
-import com.service_exchange.api_services.KotlinUtal.convertUser
+import com.service_exchange.api_services.KotlinUtal.*
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.transaction.TransactionDto
@@ -42,14 +39,70 @@ interface UserDataGet {
     fun getLastActiveReq(userId: Int?): ServiceHoda?
     fun getLastCompletedReq(userId: Int?): ServiceHoda?
     fun getTopUser(size: Int?): List<UserDTO>
+    fun getTopUserWeb(size: Int?): List<UserWEB>
     fun getUserIncomingReq(userId: Int?): List<TransactionDto>
-
+    fun getUserData(userId: Int?): UserDataWEB?
+    fun getUserServiceData(userId: Int?): UserServiceData?
+    fun getUserDataDetails(userId: Int?): UserDataWEBInDetails?
+    fun getAllReq(userId: Int?): MyRequerstWeB?
 
 }
+
+fun Education.convert(): EdcationDTO =
+        EdcationDTO().apply {
+            this.degree = this@convert.degree
+            this.endDate = this@convert.endDate.time
+            this.grade = this@convert.grade
+            this.major = this@convert.major
+            this.startDate = this@convert.startDate.time
+
+        }
 
 
 @org.springframework.stereotype.Service
 private open class UserDataGetImpl : UserDataGet {
+    override fun getAllReq(userId: Int?): MyRequerstWeB? =
+
+            getUserServiceData(userId)?.convertToMyReqest()
+
+    override fun getUserDataDetails(userId: Int?): UserDataWEBInDetails? =
+            userInterface.getUser(userId)?.converToUserDataWEebINDetails(userStatic)
+
+
+    override fun getUserServiceData(userId: Int?): UserServiceData? =
+            userInterface.getUser(userId)?.let {
+                UserServiceData().apply {
+                    this.UserRequestActive = it.serviceCollection?.stream()?.filter { it.type == Service.REQUSETED && it.available == Service.AVALIBLE }
+                            ?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.user_id = it.id
+                    this.UserRequestCompleted = it.serviceCollection?.stream()?.filter {
+                        it.type == Service.REQUSETED && it.transactionInfoCollection?.stream()
+                                ?.anyMatch { t -> t.state == TransactionInfo.COMPLETED_STATE || t.state == TransactionInfo.LATE_STATE } ?: false
+                    }?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.UserRequestPaused = it.serviceCollection?.stream()?.filter { it.type == Service.REQUSETED && it.available == Service.PAUSED }
+                            ?.map { it.convertServie().convertTOReqeustWeb() }?.collect(Collectors.toList())
+                    this.UserServicesActive = it.serviceCollection?.stream()?.filter { it.available == Service.AVALIBLE }?.map { it.convertServie().convertToServcieWEB() }
+                            ?.collect(Collectors.toList())
+                    this.UserServicesPaused = it.serviceCollection?.stream()?.filter { it.available == Service.PAUSED }?.map { it.convertServie().convertToServcieWEB() }
+                            ?.collect(Collectors.toList())
+                    this.userServicesReviews = it.serviceCollection?.let {
+                        val list: MutableList<ReviewWEB> = mutableListOf()
+                        it.forEach { t: Service? ->
+                            list.addAll(t?.transactionInfoCollection?.reviewList()?.map { it.convetToReviewWEB() }?.toList()
+                                    ?: emptyList())
+                        }
+
+                        list
+                    }
+
+                }
+            }
+
+
+    override fun getUserData(userId: Int?): UserDataWEB? =
+            userInterface.getUser(userId)?.convetToUserDataWeb(userStatic)
+
+
     override fun getUserIncomingReq(userId: Int?): List<TransactionDto> =
             Collections.synchronizedList(LinkedList<TransactionDto>()).apply {
                 userInterface.getUser(userId)?.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
@@ -81,7 +134,8 @@ private open class UserDataGetImpl : UserDataGet {
     lateinit var userTelephoneInterface: UserTelephoneInterface
     @Autowired
     lateinit var userBadgeInterFace: UserBadgesInterface
-
+    @Autowired
+    lateinit var userStatic: UserStaticsGetter
     override fun getLastActiveService(userId: Int?): ServiceHoda? =
             userService.getUserServices(userId)?.stream()?.filter { it.type == Service.OFFERED }
                     ?.filter { it.available == Service.AVALIBLE }?.sorted(compareBy { it.startDate?.time })
@@ -144,6 +198,40 @@ private open class UserDataGetImpl : UserDataGet {
                                 }
                     })?.map { it.convertUser() }?.collect(Collectors.toList())?.take(size ?: 0) ?: emptyList()
 
+    override fun getTopUserWeb(size: Int?): List<UserWEB> =
+            userInterface.allUser.stream().filter { it.serviceCollection?.size ?: 0 > 0 }
+
+                    ?.sorted(compareByDescending {
+                        it.serviceCollection?.stream()?.filter { it.type == Service.OFFERED && it.transactionInfoCollection?.size != 0 }
+                                ?.mapToDouble {
+                                    it.transactionInfoCollection?.stream()
+
+                                            ?.filter { it.state == TransactionInfo.COMPLETED_STATE || it.state == TransactionInfo.LATE_STATE }
+                                            ?.mapToDouble { value ->
+                                                value.reviewCollection?.stream()
+                                                        ?.mapToDouble { it.rating?.toDouble() ?: 0.0 }?.average()
+                                                        ?.let { if (it.isPresent) it.asDouble else 0.0 } ?: 0.0
+                                            }
+                                            ?.average().let {
+                                                if (it != null && it.isPresent)
+                                                    it.asDouble
+                                                else 0.0
+                                            }
+                                }?.average().let {
+                                    if (it?.isPresent ?: false) it?.asDouble
+                                    else 0.0
+                                }
+                    })?.map {
+                        UserWEB().apply {
+                            userBio = it.bio
+                            userId = it.id
+                            userImg = it.image
+                            userName = it.name
+                            userLocation = it.address
+                            numOfPoints = it.balance
+                            numOfReviews = it.transactionInfoCollection?.reviewList()?.size ?: 0
+                        }
+                    }?.collect(Collectors.toList())?.take(size ?: 0) ?: emptyList()
     override fun getUserByID(userId: Int?): UserDTO? =
             userInterface.getUser(userId)?.convertUser()
 

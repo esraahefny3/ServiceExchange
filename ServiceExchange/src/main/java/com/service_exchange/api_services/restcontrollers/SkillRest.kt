@@ -1,9 +1,10 @@
 package com.service_exchange.api_services.restcontrollers
 
+import com.service_exchange.api_services.KotlinUtal.convertTOReqeustWeb
+import com.service_exchange.api_services.KotlinUtal.convertToServcieWEB
 import com.service_exchange.api_services.bussinesslayer.SkillBussness
-import com.service_exchange.api_services.dao.dto.ServiceDTO
-import com.service_exchange.api_services.dao.dto.SkillDTO
-import com.service_exchange.api_services.dao.dto.UserDTO
+import com.service_exchange.api_services.dao.dto.*
+import com.service_exchange.entities.Service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RequestMapping
@@ -40,6 +41,16 @@ class SkillRestfull {
     @RequestMapping(value = ["/getTop"], method = arrayOf(RequestMethod.GET))
     fun getSkillsMostImplemented(size: Int): List<SkillDTO> =
             skillussnes.getTopSkills(size)
+
+    @RequestMapping(value = ["/getAllServices"], method = arrayOf(RequestMethod.GET))
+    fun getAllServices(skillId: Int, page: Int): List<ServicesWEB> =
+            skillussnes.getServiceUsedBySkill(skillId, Service.OFFERED, page)
+                    .map { it.convertToServcieWEB() }
+
+    @RequestMapping(value = ["/getAllReq"], method = arrayOf(RequestMethod.GET))
+    fun getAllReq(skillId: Int, page: Int): List<RequestsWEB> =
+            skillussnes.getServiceUsedBySkill(skillId, Service.REQUSETED, page)
+                    .map { it.convertTOReqeustWeb() }
 
 
 }
