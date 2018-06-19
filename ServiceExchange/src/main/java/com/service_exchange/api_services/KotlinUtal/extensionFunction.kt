@@ -85,6 +85,15 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
             ob
         }
 
+fun ServiceDTO.convertToServcieWEB(): ServicesWEB =
+        ServicesWEB().apply {
+            serviceId = this@convertToServcieWEB.id
+            serviceImg = this@convertToServcieWEB.image
+            serviceName = this@convertToServcieWEB.name
+            numOfReviews = this@convertToServcieWEB.revList?.size ?: 0
+            numOfPoints = this@convertToServcieWEB.price
+        }
+
 fun TransactionInfo.convert(): TransactionDto =
         AppFactory.mapToDto(this, TransactionDto::class.java).apply {
             this.serviceId = this@convert.serviceId?.id

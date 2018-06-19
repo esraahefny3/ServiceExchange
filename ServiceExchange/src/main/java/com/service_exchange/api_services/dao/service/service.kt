@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
+import java.util.*
 import java.util.function.DoubleConsumer
 import java.util.stream.Collectors
 
@@ -76,8 +77,10 @@ private class ServiceImpl : ServiceInterface {
     }
 
     override fun createService(service: Service?): Service? =
-            if (service != null)
+            if (service != null) {
+                service.startDate = Date()
                 serviceData.save(service)
+            }
             else null
 
 

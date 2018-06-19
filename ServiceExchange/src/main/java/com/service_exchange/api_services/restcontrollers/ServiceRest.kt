@@ -1,5 +1,6 @@
 package com.service_exchange.api_services.restcontrollers
 
+import com.service_exchange.api_services.KotlinUtal.convertToServcieWEB
 import com.service_exchange.api_services.bussinesslayer.ServiceBussness
 import com.service_exchange.api_services.dao.dto.RequestsWEB
 import com.service_exchange.api_services.dao.dto.ServiceDTO
@@ -56,15 +57,8 @@ class ServiceRestfull {
     @RequestMapping(value = ["/getTopService"], method = arrayOf(RequestMethod.GET))
     fun getTopServices(size: Int): List<ServicesWEB> =
             serviceBussness.getTopRatedService(size).stream().map {
-                ServicesWEB().apply {
-                    serviceId = it.id
-                    serviceImg = it.image
-                    serviceName = it.name
-                    numOfReviews = it.revList?.size ?: 0
-                    numOfPoints = it.price
-                }
+                it.convertToServcieWEB()
             }.collect(Collectors.toList())
-
 
 
 
