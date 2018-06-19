@@ -60,6 +60,9 @@ fun UserTable.convertUser(): UserDTO {
     userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
     userdto.uSkills = this.skillCollection?.stream()?.map { it.convertSkill() }?.collect(Collectors.toList())
     userdto.joinedDate = signUpDate?.time
+    userdto.bio = this.bio
+    userdto.descrption = this.description
+    userdto.address = this.address
     return userdto
 }
 fun Review.convertReview(): ReviewDTO =
