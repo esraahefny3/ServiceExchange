@@ -157,7 +157,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
             System.out.println("old balance buyer: " + serviceBuyer.getBalance());
             System.out.println("old balance provider: " + serviceProvider.getBalance());
             System.out.println("service price: " + transactionInfo.getPrice());
-            if (serviceBuyer.getBalance() >= transactionInfo.getPrice()) {
+            if ((serviceBuyer.getBalance() >= transactionInfo.getPrice()) && !transactionInfo.getState().equals(TransactionInfo.COMPLETED_APPROVED_STATE)) {
                 transactionInfo.setState(TransactionInfo.COMPLETED_APPROVED_STATE);
 //                serviceBuyer.setBalance(serviceBuyer.getBalance() - transactionInfo.getPrice());
                 serviceProvider.setBalance(serviceProvider.getBalance() + transactionInfo.getPrice());
@@ -206,8 +206,10 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                         transactionDto.setServiceProvider(true);
                     }
                 } else {
-                    transactionDto.setOtherUserName(user.getName());
-                    transactionDto.setOtherUserImage(user.getImage());
+//                    transactionDto.setOtherUserName(user.getName());
+//                    transactionDto.setOtherUserImage(user.getImage());
+                    transactionDto.setOtherUserName(userDataInterface.findById(transactionDto.getsByUser()).get().getName());
+                    transactionDto.setOtherUserImage(userDataInterface.findById(transactionDto.getsByUser()).get().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
                         transactionDto.setServiceProvider(true);
                     }

@@ -180,16 +180,23 @@ public class TransactionService implements TransactionServiceInterface {
 
     @Override
     public TransactionDto makeTransactionOnService(TransactionDto transactionDto) {
+        System.out.println(transactionDto.getDuration());
+        System.out.println(transactionDto.getPrice());
+        System.out.println(transactionDto.getServiceId());
+        System.out.println(transactionDto.getsByUser());
         if ((delegate.checkIfUserExists(transactionDto.getsByUser()) != null) &&
                 (delegate.checkIfServiceExists(transactionDto.getServiceId()) != null)) {
             if (serviceData.findById(transactionDto.getServiceId()).isPresent()) {
                 Service service = serviceData.findById(transactionDto.getServiceId()).get();
+                    System.out.println("*/*/*/*/*/*/*/*/*/"+service.getMadeBy().getId());
+                    System.out.println("*/*/*/*/*/*/*/*/*/"+userDataInterFace.findById(transactionDto.getsByUser()));
                 UserTable serviceBuyer;
                 if (service.getType().equals(Service.OFFERED)) {
                     serviceBuyer = userDataInterFace.findById(transactionDto.getsByUser()).get();
                 } else {
                     serviceBuyer = service.getMadeBy();
                 }
+
                 if (serviceBuyer.getBalance() >= transactionDto.getPrice()) {
                     Boolean hasOnProgressTransactions = false;
                     List<TransactionInfo> onProgressTransactionsOnService = transactionDao.findOnProgressTransactionsOnService(service);
@@ -198,9 +205,11 @@ public class TransactionService implements TransactionServiceInterface {
                     } else {
                         hasOnProgressTransactions = false;
                     }
+                    System.out.println("******************** "+transactionDto.getsByUser());
                     UserTable user = userDataInterFace.findById(transactionDto.getsByUser()).get();
                     List<TransactionInfo> userUnavailableTransactions = transactionDao.findUserUnavailableTransactions(user, service);
                     if (userUnavailableTransactions.isEmpty() && hasOnProgressTransactions) {
+                        System.out.println("------------true------------");
                         Integer userId = transactionDto.getsByUser();
                         TransactionInfo transactionInfo = AppFactory.mapToEntity(transactionDto, TransactionInfo.class);
 
