@@ -372,13 +372,14 @@ data class SkillInfo(var id: Int?, var descrption: String?, var name: String?) {
     constructor() : this(null, null, null)
 }
 
-open class ServicesWEB(var serviceId: Int?, var serviceImg: String?, var serviceName: String?, var numOfPoints: Int?, var numOfReviews: Int?) {
-    constructor() : this(null, null, null, null, null)
+open class ServicesWEB(var serviceId: Int?, var serviceImg: String?, var serviceName: String?, var numOfPoints: Int?, var numOfReviews: Int?, var serviceOwnerImage: String?) {
+    constructor() : this(null, null, null, null, null, null)
 }
 
-class ServiceDetailWeb : ServicesWEB(null, null, null, null, null) {
+class ServiceDetailWeb : ServicesWEB(null, null, null, null, null, null) {
     var serviceOwnerId: Int? = null
     var allreview: List<ReviewWEB>? = null
+
 }
 data class RequestsWEB(var requestId: Int?, var userImg: String?, var userId: Int?, var requestTitle: String?, var numOfPointsPay: Int?, var requestDesc: String?) {
     constructor() : this(null, null, null, null, null, null)

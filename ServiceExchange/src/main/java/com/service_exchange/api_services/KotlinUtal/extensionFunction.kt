@@ -95,6 +95,7 @@ fun ServiceDTO.convertToServcieWEB(): ServicesWEB =
             serviceName = this@convertToServcieWEB.name
             numOfReviews = this@convertToServcieWEB.revList?.size ?: 0
             numOfPoints = this@convertToServcieWEB.price
+            this.serviceOwnerImage = this@convertToServcieWEB.uO?.image
         }
 
 fun ServiceDTO.convertToServcieDetailWEB(): ServiceDetailWeb =
@@ -104,6 +105,7 @@ fun ServiceDTO.convertToServcieDetailWEB(): ServiceDetailWeb =
             serviceName = this@convertToServcieDetailWEB.name
             numOfReviews = this@convertToServcieDetailWEB.revList?.size ?: 0
             numOfPoints = this@convertToServcieDetailWEB.price
+            this.serviceOwnerImage = this@convertToServcieDetailWEB.uO?.image
 
         }
 
