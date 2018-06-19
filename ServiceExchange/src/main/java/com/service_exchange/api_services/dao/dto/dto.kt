@@ -99,7 +99,6 @@ data class ServiceDTO(var id: Int?, var name: String?, var image: String?, var p
             null, null, null, null, null)
 
 
-
 }
 
 class SkillDTO {
@@ -371,4 +370,80 @@ class HodaProfile(val lastActiveService: ServiceHoda?, val lastPousedServiceHoda
 
 data class SkillInfo(var id: Int?, var descrption: String?, var name: String?) {
     constructor() : this(null, null, null)
+}
+
+open class ServicesWEB(var serviceId: Int?, var serviceImg: String?, var serviceName: String?, var numOfPoints: Int?, var numOfReviews: Int?, var serviceOwnerImage: String?) {
+    constructor() : this(null, null, null, null, null, null)
+}
+
+class ServiceDetailWeb : ServicesWEB(null, null, null, null, null, null) {
+    var serviceOwnerId: Int? = null
+    var allreview: List<ReviewWEB>? = null
+
+}
+data class RequestsWEB(var requestId: Int?, var userImg: String?, var userId: Int?, var requestTitle: String?, var numOfPointsPay: Int?, var requestDesc: String?) {
+    constructor() : this(null, null, null, null, null, null)
+}
+
+data class UserWEB(var userId: Int?, var userImg: String?, var userName: String?, var numOfReviews: Int?, var numOfPoints: Int?
+                   , var userLocation: String?, var userBio: String?) {
+    constructor() : this(null, null, null, null, null, null, null)
+}
+
+open class UserDataWEB {
+    var userId: Int? = null
+    var UserImg: String? = null
+    var UserName: String? = null
+    var numOfReviews: Int? = null
+    var UserBio: String? = null
+    var UserLocation: String? = null
+    var avgResponseTime: Double? = null
+    var recentDelievery: String? = null
+    var level: String? = null
+    var status: String? = null
+    var UserDesc: String? = null
+    var UserEmails: List<String>? = null
+    var UserSkills: List<SkillInfo>? = null
+    var UserEducation: List<EdcationDTO>? = null
+}
+
+class UserDataWEBInDetails : UserDataWEB() {
+    var currentBalance: Int? = null
+    var onHoldBalance: Int? = null
+    var availablealance: Int? = null
+    var transactionHistory: List<TransActionHistory>? = null
+}
+
+class TransActionHistory {
+    var date: Long? = null
+    var description: String? = null
+    var amount: Int? = null
+    var balance: Int? = null
+}
+
+
+
+class UserServiceData {
+    var user_id: Int? = null
+    var UserServicesActive: List<ServicesWEB>? = null
+    var UserServicesPaused: List<ServicesWEB>? = null
+    var UserRequestActive: List<RequestsWEB>? = null
+    var UserRequestPaused: List<RequestsWEB>? = null
+    var UserRequestCompleted: List<RequestsWEB>? = null
+    var userServicesReviews: List<ReviewWEB>? = null
+}
+
+class ReviewWEB {
+    var personImg: String? = null
+    var personName: String? = null
+    var serviceReview: Double? = null
+    var time: Long? = null
+    var personComment: String? = null
+}
+
+class MyRequerstWeB {
+    var UserRequestActive: List<RequestsWEB>? = null
+    var UserRequestPaused: List<RequestsWEB>? = null
+    var UserRequestCompleted: List<RequestsWEB>? = null
+
 }

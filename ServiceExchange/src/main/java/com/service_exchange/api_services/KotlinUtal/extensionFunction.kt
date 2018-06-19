@@ -1,5 +1,7 @@
 package com.service_exchange.api_services.KotlinUtal
 
+import com.service_exchange.api_services.bussinessdaodelegates.user.UserStaticsGetter
+import com.service_exchange.api_services.bussinessdaodelegates.user.convert
 import com.service_exchange.api_services.dao.dto.*
 import com.service_exchange.api_services.dao.skill.SkillInterface
 import com.service_exchange.api_services.dao.transaction.TransactionDto
@@ -58,6 +60,9 @@ fun UserTable.convertUser(): UserDTO {
     userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
     userdto.uSkills = this.skillCollection?.stream()?.map { it.convertSkill() }?.collect(Collectors.toList())
     userdto.joinedDate = signUpDate?.time
+    userdto.bio = this.bio
+    userdto.descrption = this.description
+    userdto.address = this.address
     return userdto
 }
 fun Review.convertReview(): ReviewDTO =
@@ -81,6 +86,37 @@ fun ServiceDTO.convertServie(skillInterface: SkillInterface, userInterface: User
             ob.available = t.available
 
             ob
+        }
+
+fun ServiceDTO.convertToServcieWEB(): ServicesWEB =
+        ServicesWEB().apply {
+            serviceId = this@convertToServcieWEB.id
+            serviceImg = this@convertToServcieWEB.image
+            serviceName = this@convertToServcieWEB.name
+            numOfReviews = this@convertToServcieWEB.revList?.size ?: 0
+            numOfPoints = this@convertToServcieWEB.price
+            this.serviceOwnerImage = this@convertToServcieWEB.uO?.image
+        }
+
+fun ServiceDTO.convertToServcieDetailWEB(): ServiceDetailWeb =
+        ServiceDetailWeb().apply {
+            serviceId = this@convertToServcieDetailWEB.id
+            serviceImg = this@convertToServcieDetailWEB.image
+            serviceName = this@convertToServcieDetailWEB.name
+            numOfReviews = this@convertToServcieDetailWEB.revList?.size ?: 0
+            numOfPoints = this@convertToServcieDetailWEB.price
+            this.serviceOwnerImage = this@convertToServcieDetailWEB.uO?.image
+
+        }
+
+fun ServiceDTO.convertTOReqeustWeb(): RequestsWEB =
+        RequestsWEB().apply {
+            requestId = this@convertTOReqeustWeb.id
+            requestDesc = this@convertTOReqeustWeb.description
+            requestTitle = this@convertTOReqeustWeb.name
+            numOfPointsPay = this@convertTOReqeustWeb.price
+            userImg = this@convertTOReqeustWeb.uO?.image
+            userId = this@convertTOReqeustWeb.uO?.id
         }
 
 fun TransactionInfo.convert(): TransactionDto =
@@ -160,4 +196,65 @@ fun Service.convertToServiceHoda() =
             ratingAvg = transactionInfoCollection?.avgRating()
             RevList = transactionInfoCollection?.reviewList()
             reviewCount = RevList?.size
+        }
+
+fun UserTable.convetToUserDataWeb(userStatic: UserStaticsGetter): UserDataWEB =
+        UserDataWEB().apply {
+            this.UserBio = bio
+            this.UserDesc = description
+            this.UserEducation = educationCollection?.stream()?.map { it.convert() }?.collect(Collectors.toList())
+            this.UserEmails = userEmailCollection?.stream()?.map { it.userEmailPK?.email }?.collect(Collectors.toList())?.filterNotNull()
+            this.UserImg = image
+            this.UserLocation = address
+            this.UserName = name
+            this.UserSkills = skillCollection?.stream()?.map { it.convertSkillInfo() }?.collect(Collectors.toList())
+                    ?.toList()
+            this.avgResponseTime = userStatic.getResponceRate(id)
+            this.numOfReviews = transactionInfoCollection?.reviewList()?.size ?: 0
+            this.level = userStatic.getUserLevel(id!!)
+            this.userId = id
+
+
+        }
+
+fun UserTable.converToUserDataWEebINDetails(userStatic: UserStaticsGetter): UserDataWEBInDetails =
+        UserDataWEBInDetails().apply {
+            this.UserBio = bio
+            this.UserDesc = description
+            this.UserEducation = educationCollection?.stream()?.map { it.convert() }?.collect(Collectors.toList())
+            this.UserEmails = userEmailCollection?.stream()?.map { it.userEmailPK?.email }?.collect(Collectors.toList())?.filterNotNull()
+            this.UserImg = image
+            this.UserLocation = address
+            this.UserName = name
+            this.UserSkills = skillCollection?.stream()?.map { it.convertSkillInfo() }?.collect(Collectors.toList())
+                    ?.toList()
+            this.avgResponseTime = userStatic.getResponceRate(id)
+            this.numOfReviews = transactionInfoCollection?.reviewList()?.size ?: 0
+            this.level = userStatic.getUserLevel(id!!)
+            this.userId = id
+            this.availablealance = this@converToUserDataWEebINDetails.balance ?: 0 - (this@converToUserDataWEebINDetails
+                    .transactionInfoCollection?.stream()?.filter { it.state == TransactionInfo.ON_PROGRESS_STATE }
+                    ?.mapToInt { it.price ?: 0 }?.sum() ?: 0)
+            this.currentBalance = this@converToUserDataWEebINDetails.balance
+            this.onHoldBalance = this.currentBalance ?: 0 - (this.availablealance ?: 0)
+            this.transactionHistory = emptyList()
+
+        }
+
+
+fun ReviewDTO.convetToReviewWEB() =
+        ReviewWEB().also {
+            it.personComment = this.comment
+            it.personImg = this.userInfo?.image
+            it.personName = this.userInfo?.userName
+            it.serviceReview = this.rating?.toDouble()
+            it.time = this.reviewDate
+
+        }
+
+fun UserServiceData.convertToMyReqest() =
+        MyRequerstWeB().apply {
+            this.UserRequestActive = this@convertToMyReqest.UserRequestActive
+            this.UserRequestCompleted = this@convertToMyReqest.UserRequestCompleted
+            this.UserRequestPaused = this@convertToMyReqest.UserRequestPaused
         }
