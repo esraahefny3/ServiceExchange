@@ -207,8 +207,6 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                         transactionDto.setServiceProvider(true);
                     }
                 } else {
-//                    transactionDto.setOtherUserName(user.getName());
-//                    transactionDto.setOtherUserImage(user.getImage());
                     transactionDto.setOtherUserName(userDataInterface.findById(transactionDto.getsByUser()).get().getName());
                     transactionDto.setOtherUserImage(userDataInterface.findById(transactionDto.getsByUser()).get().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.OFFERED)) {
