@@ -294,7 +294,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
-                if (userId == user.getId()) {
+                if (userId.intValue() == user.getId().intValue()) {
                     transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
                     transactionDto.setOtherUserImage(userTransaction.getServiceId().getMadeBy().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {

@@ -41,6 +41,9 @@ class ServiceRestfull {
     @RequestMapping(value = ["/getAllRequstOnService"], method = arrayOf(RequestMethod.GET))
     fun getAllRequstOnService(serviceId: Int): List<TransactionEslam> =
             serviceBussness.getAllPreStartTransactionOnService(serviceId)
+                    .apply {
+                        println(this)
+                    }
 
     //hoda
     @RequestMapping(value = ["/getAllService"], method = arrayOf(RequestMethod.GET))
@@ -55,7 +58,7 @@ class ServiceRestfull {
     fun getTopServices(size: Int): List<ServicesWEB> =
             serviceBussness.getTopRatedService(size).stream().map {
                 it.convertToServcieWEB()
-            }.collect(Collectors.toList())
+            }.collect(Collectors.toList()).toList()
 
     @RequestMapping(value = ["/getServiceDetail"], method = arrayOf(RequestMethod.GET))
     fun getServiceDetailWeb(serviceId: Int): ServiceDetailWeb? =

@@ -1,15 +1,14 @@
 package com.service_exchange.api_services.dao.transaction;
 
 import java.math.BigInteger;
-import java.util.Date;
 
 public class TransactionDto {
 
     private Integer id;
     private String type;
     private String state;
-    private Date startDate;
-    private Date endDate;
+    private Long sD;
+    private Long eD;
     private BigInteger duration;
     private Integer price;
     private String serviceName;
@@ -48,20 +47,20 @@ public class TransactionDto {
         this.state = state;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Long getsD() {
+        return sD;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setsD(Long sD) {
+        this.sD = sD;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Long geteD() {
+        return eD;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void seteD(Long eD) {
+        this.eD = eD;
     }
 
     public BigInteger getDuration() {

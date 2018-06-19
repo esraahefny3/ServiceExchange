@@ -354,7 +354,7 @@ class TransactionStatices {
 }
 
 data class TransactionEslam(var userInfo: UserInfo?, var descrption: String?
-                            , var numberOfDays: Int?, var date: Date?, var price: Int?
+                            , var numberOfDays: Int?, var date: Long?, var price: Int?
                             , var duration: Int?, var serviceId: Int?) {
     constructor() : this(null, null, null, null, null, null, null)
 }
