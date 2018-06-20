@@ -100,7 +100,10 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
     @Override
     public int rejectAcceptedTransactionOnService(Service service) {
         try {
-            return transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service, TransactionInfo.ACCEPTED_STATE, TransactionInfo.REJECTED_STATE);
+            int b = transactionDaoInterfaceImpl.changeAllUserTransactionsStateOnServiceWithState(service, TransactionInfo.PENDING_STATE, TransactionInfo.REJECTED_STATE);
+
+            System.out.println(b);
+            return b;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -257,7 +260,7 @@ public class TransactionDelegateInterfaceImpl implements TransactionDelegateInte
                 transactionDto.setsByUser(userId);
                 transactionDto.setServiceName(userTransaction.getServiceId().getName());
                 transactionDto.setServiceDescription(userTransaction.getServiceId().getDescription());
-                if (userId == user.getId()) {
+                if (userId != null && userId.equals(user.getId())) {
                     transactionDto.setOtherUserName(userTransaction.getServiceId().getMadeBy().getName());
                     transactionDto.setOtherUserImage(userTransaction.getServiceId().getMadeBy().getImage());
                     if ((userTransaction.getServiceId().getType()).equals(Service.REQUSETED)) {

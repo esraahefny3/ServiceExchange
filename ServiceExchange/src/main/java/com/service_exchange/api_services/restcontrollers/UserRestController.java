@@ -102,25 +102,25 @@ return false;
      //---userBadge services
 
     //mubarak//
-    @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
+    // @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
     private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
 
         return service.logInORSignUp(user);
     }
 
-    @RolesAllowed({"admin_view", "User"})
+    // @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserServices", method = RequestMethod.GET)
     private List<ServiceDTO> getUserServices(@RequestParam Integer userId, @RequestParam String type) {
         return service.getUserService(userId, type);
     }
 
-    @RolesAllowed({"admin_view", "User"})
+    // @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserSkills", method = RequestMethod.GET)
     private List<SkillDTO> getUserSkills(@RequestParam Integer userId) {
         return service.getUserSkill(userId);
     }
 
-    @RolesAllowed({"admin_view", "User"})
+    // @RolesAllowed({"admin_view", "User"})
     @RequestMapping(value = "/getUserEducation", method = RequestMethod.GET)
     private List<EdcationDTO> getUserEducation(@RequestParam Integer userId) {
 

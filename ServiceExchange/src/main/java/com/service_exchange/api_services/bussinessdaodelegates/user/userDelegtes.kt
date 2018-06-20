@@ -22,6 +22,7 @@ import java.util.function.DoubleConsumer
 import java.util.function.ToDoubleFunction
 import java.util.function.ToIntFunction
 import java.util.stream.Collectors
+import kotlin.collections.HashSet
 
 
 interface UserDataGet {
@@ -104,16 +105,16 @@ private open class UserDataGetImpl : UserDataGet {
 
 
     override fun getUserIncomingReq(userId: Int?): List<TransactionDto> =
-            Collections.synchronizedList(LinkedList<TransactionDto>()).apply {
+            Collections.synchronizedSet(HashSet<TransactionDto>()).apply {
                 userInterface.getUser(userId)?.serviceCollection?.stream()?.filter { it.type == Service.OFFERED }
-                        ?.parallel()
+
                         ?.forEach { t ->
                             t.transactionInfoCollection?.stream()?.filter {
                                 it.state == TransactionInfo.PENDING_STATE
                                         || it.state == TransactionInfo.POSTPONED
                             }?.forEach { add(it.convert()) }
                         }
-            }
+            }.toList()
 
 
     override fun getUserInfoByID(userId: Int?): UserInfo? =
@@ -303,7 +304,7 @@ private open class UserDataGetImpl : UserDataGet {
 
     override fun getUserServices(userId: Int?, type: String?): List<ServiceDTO> {
         return userService.getUserServices(userId)?.stream()?.filter { it.type == type }
-                ?.filter { it.available != null && it.available != Service.DELETED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
+                ?.filter { it.available != null && it.available != Service.DELETED && it.available != Service.PAUSED }?.map { AppFactory.mapToDto(it, ServiceDTO::class.java) }?.collect(Collectors.toList())
                 ?: emptyList()
     }
 

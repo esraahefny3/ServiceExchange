@@ -78,7 +78,7 @@ class ServiceBussnessImpl : ServiceBussness {
 
 
     override fun getAllReqService(page: Int): List<ServiceDTO> =
-            serviceGet.getAllService(page, Service.REQUSETED)
+            serviceGet.getAllService(page, Service.REQUSETED).filter { it.available != Service.PAUSED }
 
     override fun getServiceWithSkills(page: Int, skills: List<Int>): List<ServiceDTO> =
             serviceGet.getServiceWithSkills(page, skills)
