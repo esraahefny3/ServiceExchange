@@ -44,10 +44,6 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
     public BigInteger getUserWorkingHourse(@Param("user") UserTable user);
     ////////////////////////////Esraa////////////////////////////
 
-    List<TransactionInfo> findAllByStartedByEqualsAndStateEqualsOrServiceId_MadeByAndStateEquals(UserTable user, String state2, UserTable user2, String state);
-
-    @Query("select t  from TransactionInfo t where (t.serviceId.madeBy = :user or t.startedBy = :user) and t.state = :state ")
-    public List<TransactionInfo> getAllUserTransAction(@Param("user") UserTable user, @Param("state") String state);
 
     //mubarak//
     Long countAllByIdIsNotNull();
@@ -77,9 +73,4 @@ public interface TransactionDaoInterface extends PagingAndSortingRepository<Tran
 
     ////////////////////////////Nouran////////////////////////////
 
-}
-
-interface ss extends PagingAndSortingRepository<Service, Integer> {
-
-    List<Service> findAllByTypeEqualsAndAvailableEqualsOrderByIdDesc(String type, String isAvalible, Pageable pageable);
 }

@@ -23,7 +23,7 @@ interface ServiceData : PagingAndSortingRepository<Service, Int> {
     fun findIfSubsetOfSkillExists(skills: List<Skill>, page: Pageable): List<Service>
 
     fun findAllByTypeEqualsAndAvailableEquals(type: String, isAvalible: String, pageable: Pageable): Page<Service>
-    fun findAllByTypeEqualsAndAvailableEqualsOrderByIdDesc(type: String, isAvalible: String, pageable: Pageable): Page<Service>
+
     fun findAllByMadeByEquals(userTable: UserTable): List<Service>
 
     fun countAllByIdIsNotNull(): Long
@@ -73,7 +73,7 @@ private class ServiceImpl : ServiceInterface {
 
     override fun getAll(start: Int, type: String): Page<Service> {
 
-        return serviceData.findAllByTypeEqualsAndAvailableEqualsOrderByIdDesc(type, Service.AVALIBLE, PageRequest.of(start, 20))
+        return serviceData.findAllByTypeEqualsAndAvailableEquals(type, Service.AVALIBLE, PageRequest.of(start, 20))
     }
 
     override fun createService(service: Service?): Service? =

@@ -187,7 +187,7 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
                         messageGeneralDto.setReceiverId(recieverId);
                         messageGeneralDto.setTransactionId(transactionId);
                         messageGeneralDto.setDate(message.getDate().getTime());
-                        messageGeneralDto.setReadDate(message.getSeenDate().getTime());
+                       // messageGeneralDto.setReadDate(message.getSeenDate().getTime());
                         return messageGeneralDto;
                     }
                 }

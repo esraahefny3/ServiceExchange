@@ -2,25 +2,26 @@ package com.service_exchange.utal.firebasenotificationsutil;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.service_exchange.api_services.dao.dto.MessageGeneralDto;
+import com.service_exchange.api_services.dao.dto.NotificationDto;
+import com.service_exchange.entities.UserTable;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-
-@Component
 public class FirebaseNotificationMessageMaker {
 
     private static String firebaseSendUrlString = "https://fcm.googleapis.com/fcm/send";
     private static String firebaseApplicationAuthorizationKeyStringAndroid = "AIzaSyD_1-Un77E_MzwikLPBMll1YTYMY6c4tAo";
     private static String firebaseApplicationAuthorizationKeyStringWeb = "AIzaSyBmT6CUc3S0UDzYyANcZE8D2DMVVZxrQms";
 
-    public static int sendFirebaseNotificationMessageToUserAndroid(Object objectData, String userToken, String typeData, String description) {
+    public static int sendFirebaseNotificationMessageToUserAndroid(Object objectData, String userToken,String typeData,String description)
+    {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
@@ -43,7 +44,7 @@ public class FirebaseNotificationMessageMaker {
         }.getType();
 
         String json = gson.toJson(notificationRequestModel, type);
-        System.out.println(json);
+
         StringEntity input = null;
         try {
             input = new StringEntity(json);
@@ -65,7 +66,7 @@ public class FirebaseNotificationMessageMaker {
 //
 //            }
 
-            return response.getStatusLine().getStatusCode();
+           return response.getStatusLine().getStatusCode();
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -143,7 +144,8 @@ public class FirebaseNotificationMessageMaker {
 
     //==============================================================================================================================
 
-    public static int sendFirebaseNotificationMessageToUserWeb(Object objectData, String userToken,String typeData,String description) {
+    public static int sendFirebaseNotificationMessageToUserWeb(Object objectData, String userToken,String typeData,String description)
+    {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost postRequest = new HttpPost(
                 firebaseSendUrlString);
