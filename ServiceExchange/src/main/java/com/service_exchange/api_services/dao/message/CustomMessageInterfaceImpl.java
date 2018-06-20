@@ -73,7 +73,7 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
            // resultList.forEach(obj -> resultDtoList.add(AppFactory.mapToDto(obj, MessageComplaintDto.class)));
             for (Message message:resultList) {
                 MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
-                messageGeneralDto.setReadDate(message.getSeenDate().getTime());
+             //   messageGeneralDto.setReadDate(message.getSeenDate().getTime());
                 messageGeneralDto.setUserReadIt(message.getIsSeen());
                 resultDtoList.add(messageGeneralDto);
             }
