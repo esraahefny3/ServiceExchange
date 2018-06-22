@@ -114,7 +114,7 @@ UserService {
             userStatics.setEarningInThisMounth(userStaticsGetter.getEarning(userId, calendar));
             userStatics.setFeedBackRate(userStaticsGetter.getTotalFeedBack(userId));
             userStatics.setNextLevelDescription(userStaticsGetter.getUserNextLevel(userId));
-            userStatics.setNumberOfUnreadedMessage(messageInterface.selectAllUserUnreadedMessages(userId).size());
+//            userStatics.setNumberOfUnreadedMessage(messageInterface.selectAllUserUnreadedMessages(userId).size());
             userStatics.setOnTimeDelivery(userStaticsGetter.getOnTimeDelevrey(userId));
             userStatics.setOrderCompletion(userStaticsGetter.getOrderCompletion(userId));
             userStatics.setPresonalBalance(userStaticsGetter.getUserBalance(userId));

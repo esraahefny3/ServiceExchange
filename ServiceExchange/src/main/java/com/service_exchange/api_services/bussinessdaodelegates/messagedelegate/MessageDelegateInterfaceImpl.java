@@ -19,7 +19,6 @@ import com.service_exchange.entities.TransactionInfo;
 import com.service_exchange.entities.UserTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -187,7 +186,7 @@ public class MessageDelegateInterfaceImpl implements MessageDelegateInterface{
                         messageGeneralDto.setReceiverId(recieverId);
                         messageGeneralDto.setTransactionId(transactionId);
                         messageGeneralDto.setDate(message.getDate().getTime());
-                        messageGeneralDto.setReadDate(message.getSeenDate().getTime());
+                        // messageGeneralDto.setReadDate(message.getSeenDate().getTime());
                         return messageGeneralDto;
                     }
                 }

@@ -102,7 +102,7 @@ return false;
      //---userBadge services
 
     //mubarak//
-    // @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
+    @RequestMapping(value = "/logInOrSignup", method = RequestMethod.POST)
     private UserDTO loginOrSignUp(@RequestBody UserDTO user) {
 
         return service.logInORSignUp(user);

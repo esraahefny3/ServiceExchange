@@ -451,33 +451,6 @@ public class UserTable implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "UserTable{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", image='" + image + '\'' +
-                ", status='" + status + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", accountId='" + accountId + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", skillCollection=" + skillCollection +
-                ", userEmailCollection=" + userEmailCollection +
-                ", educationCollection=" + educationCollection +
-                ", userTelephoneCollection=" + userTelephoneCollection +
-                ", userNotificationCollection=" + userNotificationCollection +
-                ", messageCollection=" + messageCollection +
-                ", messageCollection1=" + messageCollection1 +
-                ", userChallengeCollection=" + userChallengeCollection +
-                ", userAuthority=" + userAuthority +
-                ", complaintCollection=" + complaintCollection +
-                ", userBadgeCollection=" + userBadgeCollection +
-                ", reviewCollection=" + reviewCollection +
-                ", serviceCollection=" + serviceCollection +
-                ", transactionInfoCollection=" + transactionInfoCollection +
-                ", isFrist=" + isFrist +
-                '}';
-    }
 
     public Boolean addChallange(Integer ch) {
         UserChallenge uc = new UserChallenge(id, ch);

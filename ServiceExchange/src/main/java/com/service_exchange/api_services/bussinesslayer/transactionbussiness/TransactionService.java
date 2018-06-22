@@ -47,8 +47,6 @@ public class TransactionService implements TransactionServiceInterface {
     UserInterFace userInterFace;
     @Autowired
     ServiceData serviceData;
-    @Autowired
-    FirebaseNotificationMessageMaker firebaseNotificationMessageMaker;
 
     @Autowired
     private MessageServiceInterface messageServiceInterfaceImpl;
@@ -113,7 +111,7 @@ public class TransactionService implements TransactionServiceInterface {
                                 if(userTableOptional.isPresent())
                                 {System.out.println(userTableOptional.get().getId());
                                     UserTable sender=userTableOptional.get();
-                                    String messageText = sender.getName()+ " is waving you...";
+                                    String messageText = sender.getName() + " is waving at you...";
                                     Message message=AppFactory.getMessageInstance();
                                     message.setText(messageText);
                                     messageServiceInterfaceImpl.sendTransactionMessage(sender.getId(),transactionDtoNew.getsByUser(),message,transactionDtoNew.getId());

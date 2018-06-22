@@ -57,7 +57,7 @@ fun UserTable.convertUser(): UserDTO {
     val userdto = AppFactory.mapToDto(this, UserDTO::class.java)
     userdto.bD = birthDate?.time
     userdto.userEmailCollection = this.userEmailCollection?.stream()?.map { it.userEmailPK.email }?.collect(Collectors.toList())
-    userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
+    // userdto.UserTelephone = this.userTelephoneCollection?.stream()?.map { it.userTelephonePK.telephone }?.collect(Collectors.toList())
     userdto.uSkills = this.skillCollection?.stream()?.map { it.convertSkill() }?.collect(Collectors.toList())
     userdto.joinedDate = signUpDate?.time
     userdto.bio = this.bio

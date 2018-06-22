@@ -11,11 +11,11 @@ import com.service_exchange.api_services.factories.AppFactory;
 import com.service_exchange.entities.Message;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -102,7 +102,7 @@ public class CustomMessageInterfaceImpl implements CustomMessageInterface{
 
             for (Message message:resultList) {
                 MessageGeneralDto messageGeneralDto=AppFactory.mapToDto(message, MessageGeneralDto.class);
-                messageGeneralDto.setReadDate(message.getSeenDate().getTime());
+///                messageGeneralDto.setReadDate(message.getSeenDate().getTime());
                 messageGeneralDto.setUserReadIt(message.getIsSeen());
                 resultDtoList.add(messageGeneralDto);
             }

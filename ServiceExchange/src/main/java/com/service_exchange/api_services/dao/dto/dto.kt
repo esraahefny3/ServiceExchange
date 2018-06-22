@@ -70,7 +70,7 @@ class UserDTO {
     var accountId: String? = null
     var balance: Int? = null
     var userEmailCollection: List<String>? = null
-    var UserTelephone: List<String>? = null
+    // var UserTelephone: List<String>? = null
     var isFrist: Boolean? = null
     var uSkills: List<SkillDTO>? = null
     var bio: String? = null
@@ -78,7 +78,7 @@ class UserDTO {
     var joinedDate: Long? = null
     var descrption: String? = null
     override fun toString(): String {
-        return "UserDTO(id=$id, name=$name, image=$image, status=$status, bD=$bD, accountType=$accountType, accountId=$accountId, balance=$balance, userEmailCollection=$userEmailCollection, UserTelephone=$UserTelephone, isFrist=$isFrist, uSkills=$uSkills, bio=$bio, address=$address, joinedDate=$joinedDate, descrption=$descrption)"
+        return "UserDTO(id=$id, name=$name, image=$image, status=$status, bD=$bD, accountType=$accountType, accountId=$accountId, balance=$balance, userEmailCollection=$userEmailCollection, isFrist=$isFrist, uSkills=$uSkills, bio=$bio, address=$address, joinedDate=$joinedDate, descrption=$descrption)"
     }
 
 

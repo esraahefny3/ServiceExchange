@@ -261,7 +261,7 @@ private open class UserDataGetImpl : UserDataGet {
                 if (retVal != null) {
                     if (retVal.frist) {
                         user.userEmailCollection?.forEach { retVal?.addEmail(retVal?.id, it) }
-                        user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
+                        //   user.UserTelephone?.forEach { retVal?.addTelephone(retVal?.id, it) }
                         retVal.signUpDate = Date()
                         retVal.description = ""
                         retVal.bio = ""
