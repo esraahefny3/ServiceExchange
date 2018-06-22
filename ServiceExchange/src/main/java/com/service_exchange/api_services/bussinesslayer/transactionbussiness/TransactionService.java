@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class TransactionService implements TransactionServiceInterface {
@@ -91,8 +90,6 @@ public class TransactionService implements TransactionServiceInterface {
                         transactionInfo.setDuration(transactionDto.getDuration());
                         transactionInfo.setState(TransactionInfo.ON_PROGRESS_STATE);
                         transactionInfo.setStartDate(new Date());
-                        if (service.getType().equals(Service.REQUSETED))
-                            service.setAvailable(Service.PAUSED);
 
                         serviceBuyer.setBalance(serviceBuyer.getBalance() - transactionDto.getPrice());
 
@@ -174,13 +171,10 @@ public class TransactionService implements TransactionServiceInterface {
     public boolean userRejectTransaction(TransactionDto transactionDto) {
         TransactionInfo transactionInfo = transactionDelegateInterfaceImpl.checkIfTransactionExist(transactionDto.getId());
         if (transactionInfo != null) {
-            System.out.println("in frist if");
             UserTable transactionStartedByUser = transactionInfo.getStartedBy();
             Service service = transactionInfo.getServiceId();
-            System.out.println(service);
-            System.out.println();
-            if (transactionStartedByUser != null && service != null && !transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE)) {
-                System.out.println("in secand if");
+            if (transactionInfo != null && transactionStartedByUser != null && service != null && transactionInfo.getState().equals(TransactionInfo.ACCEPTED_STATE) == true) {
+
                 int retVal = transactionDelegateInterfaceImpl.rejectAcceptedTransactionOnService(service);
                 if (retVal > -1) {
                     return true;
@@ -254,16 +248,6 @@ public class TransactionService implements TransactionServiceInterface {
                             transactionDto.seteD(transactionInfo.getEndDate().getTime());
                         if (transactionInfo.getStartDate() != null)
                             transactionDto.seteD(transactionInfo.getStartDate().getTime());
-                        transactionDto.setOtherUserName(service.getMadeBy().getName());
-                        transactionDto.setOtherUserImage(service.getMadeBy().getImage());
-                        TransactionDto finalTransactionDto = transactionDto;
-                        service.getMadeBy().getUserFirebaseTokenCollection().stream().forEach(
-                                userFirebaseToken -> {
-                                    System.out.println(FirebaseNotificationMessageMaker.sendFirebaseNotificationMessageToUserAndroid(finalTransactionDto,
-                                            userFirebaseToken.getUserFirebaseTokenPK().getToken(), "transaction", "this is new Transaction")
-                                    );
-                                }
-                        );
 
 
                         return transactionDto;
@@ -321,7 +305,6 @@ public class TransactionService implements TransactionServiceInterface {
                     if (badgeDtoUser1 != null) {
                         System.out.println("hnaaa");
                         //send notification
-
                         sendBadgeNotificationToUser(user1, badgeDtoUser1);
                     }
                     BadgeDto badgeDtoUser2 = transactionDelegateInterfaceImpl.assignBadgeToTransactionUser(user2);
@@ -388,41 +371,18 @@ public class TransactionService implements TransactionServiceInterface {
         UserTable user = userDelegateInterfaceImpl.getUserById(userId);
 
         if (user != null && user.getTransactionInfoCollection() != null) {
-            return transactionDao.getAllUserTransAction(user, TransactionInfo.COMPLETED_STATE).stream()
-                    .map(transactionInfo -> convertTransaction(transactionInfo, userId, user)).collect(Collectors.toList());
-            //return transactionDelegate.getUserCompletedTransactions(user, pageNum);
+            //  return    user.getTransactionInfoCollection().stream().filter(transactionInfo -> Objects.equals(transactionInfo.getState(), TransactionInfo.COMPLETED_STATE)).collect(Collectors.toList());
+            return transactionDelegate.getUserCompletedTransactions(user, pageNum);
         } else {
             return null;
         }
-    }
-
-    public TransactionDto convertTransaction(TransactionInfo transactionInfo, Integer userId, UserTable user) {
-        TransactionDto transactionDto = AppFactory.mapToDto(transactionInfo, TransactionDto.class);
-
-        transactionDto.setsByUser(userId);
-        if (userId != null && userId.equals(user.getId())) {
-            transactionDto.setOtherUserName(transactionInfo.getServiceId().getMadeBy().getName());
-            transactionDto.setOtherUserImage(transactionInfo.getServiceId().getMadeBy().getImage());
-            if ((transactionInfo.getServiceId().getType()).equals(Service.REQUSETED)) {
-                transactionDto.setServiceProvider(true);
-            }
-        } else {
-            transactionDto.setOtherUserName(userDataInterFace.findById(transactionDto.getsByUser()).get().getName());
-            transactionDto.setOtherUserImage(userDataInterFace.findById(transactionDto.getsByUser()).get().getImage());
-            if ((transactionInfo.getServiceId().getType()).equals(Service.OFFERED)) {
-                transactionDto.setServiceProvider(true);
-            }
-        }
-        return transactionDto;
     }
 
     @Override
     public List<TransactionDto> getUserCompletedAndApprovedTransactions(Integer userId, Integer pageNum) {
         UserTable user = userDelegateInterfaceImpl.getUserById(userId);
         if (user != null) {
-            //return transactionDelegate.getUserCompletedAndApprovedTransactions(user, pageNum);
-            return transactionDao.getAllUserTransAction(user, TransactionInfo.COMPLETED_APPROVED_STATE).stream()
-                    .map(transactionInfo -> convertTransaction(transactionInfo, userId, user)).collect(Collectors.toList());
+            return transactionDelegate.getUserCompletedAndApprovedTransactions(user, pageNum);
         } else {
             return null;
         }
