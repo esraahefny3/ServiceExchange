@@ -1,5 +1,7 @@
 
 # ServiceExchange
+![logo-8](https://user-images.githubusercontent.com/10559038/83448687-9b6b5e80-a452-11ea-8b3b-8bf358e49e52.png)
+
 ## HAT W KHOD  
 ### Introduction  
 #### Background (Problem)  
