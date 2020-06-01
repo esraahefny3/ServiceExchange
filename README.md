@@ -1,13 +1,12 @@
 
 # ServiceExchange
-HAT W KHOD 
-1.Introduction
-
-1.1 Background (Problem)
-1- Many job seekers do not find jobs due to lack of experience. They need to enhance their skills and work on them. However, they do not find the chance to make use of their skills and abilities. 
-They may work as freelancers, but they do not get many offers as they are beginners in their field. So, they cannot find the opportunity to gain experience. 
-2- On the other hand, many people seek services but are not willing to pay much money. Also, there are not many platforms for small services. 
-3- Most platforms which provide services are not providing them for free. As people who work at them are professionals, they seek much money to provide a service. 
+HAT W KHOD  
+1.Introduction  
+1.1 Background (Problem)  
+1- Many job seekers do not find jobs due to lack of experience. They need to enhance their skills and work on them. However, they do not find the chance to make use of their skills and abilities.   
+They may work as freelancers, but they do not get many offers as they are beginners in their field. So, they cannot find the opportunity to gain experience.  
+2- On the other hand, many people seek services but are not willing to pay much money. Also, there are not many platforms for small services.  
+3- Most platforms which provide services are not providing them for free. As people who work at them are professionals, they seek much money to provide a service.   
 
 1.2 Purpose
 1- Our platform is a Service-Trading platform. 
